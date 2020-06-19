@@ -1,0 +1,36 @@
+# In AWS AppSync -> Run a query
+
+# Seed maps
+mutation SeedContent {
+  map1: createMap(input: {name: "de_cache"}) {
+    id
+  }
+  map2: createMap(input: {name: "de_dust2"}) {
+    id
+  }
+  map3: createMap(input: {name: "de_inferno"}) {
+    id
+  }
+  map4: createMap(input: {name: "de_mirage"}) {
+    id
+  }
+  map5: createMap(input: {name: "de_nuke"}) {
+    id
+  }
+  map6: createMap(input: {name: "de_overpass"}) {
+    id
+  }
+  map7: createMap(input: {name: "de_train"}) {
+    id
+  }
+  map8: createMap(input: {name: "de_vertigo"}) {
+    id
+  }
+}
+
+# Delete map
+mutation Deletemap {
+  deleteMap(input: {id: "3f6c1cea-3924-47b7-9d35-946284456717"}) {
+    id
+  }
+}
