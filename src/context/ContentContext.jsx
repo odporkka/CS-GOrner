@@ -19,7 +19,7 @@ const ContentContextProvider = (props) => {
     async function fetchMaps() {
         try {
             const mapsData = await API.graphql(graphqlOperation(listMaps))
-            console.log(mapsData)
+            console.log('maps:', mapsData)
             const maps = mapsData.data.listMaps.items
             setContentData({ maps: maps })
         } catch (err) { console.log('Error fetching maps') }
