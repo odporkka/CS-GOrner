@@ -10,6 +10,7 @@ const Footer = () => {
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.primary.contrastText,
             marginTop: '50px',
+            bottom: 0,
             // borderRadius: 0,
             // boxShadow: "none"
         }
@@ -17,7 +18,7 @@ const Footer = () => {
     const classes = useStyles();
 
     return (
-        <Paper className={classes.root} xs={12}>
+        <Paper className={classes.root} xs={12} square={true}>
             <Typography variant="body2" component="p">
                 &copy; {new Date().getFullYear()} <a href="https://www.linkedin.com/in/odporkka/">Otto Porkka</a>
             </Typography>

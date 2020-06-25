@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 import Grid from "@material-ui/core/Grid";
 
 import ContentContextProvider from "./context/ContentContext"
-import Footer from "./components/Footer"
+import Footer from "./components/content/Footer"
 import NavBar from "./components/navigation/NavBar"
 import Router from "./Router"
 
@@ -44,7 +44,7 @@ function App() {
             // border: '1px solid blue',
             display: 'inline',
         },
-        rightSideAd: {
+        rightSideBanner: {
             width: '300px',
             marginLeft: '20px',
             float: 'right',
@@ -61,15 +61,15 @@ function App() {
                 <ContentContextProvider>
                     <CssBaseline />
                         <BrowserRouter>
+
                             <NavBar />
 
-                            {/*<div id="app-content">*/}
                             <Grid container>
-                                <Grid item className={classes.mainContent} >
+                                <Grid item className={classes.mainContent}>
                                     <Router />
                                 </Grid>
 
-                                <Grid item className={classes.rightSideAd}>
+                                <Grid item className={classes.rightSideBanner}>
                                     <p>
                                         Sidebanner
                                     </p>
@@ -78,8 +78,6 @@ function App() {
                             </Grid>
 
                             <Footer />
-
-                            {/*</div>*/}
                         </BrowserRouter>
                 </ContentContextProvider>
             </Container>
