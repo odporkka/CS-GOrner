@@ -2,6 +2,9 @@
 
 # Seed maps
 mutation SeedContent {
+  map0: createMap(input: {name: "general"}) {
+    id
+  }
   map1: createMap(input: {name: "de_cache"}) {
     id
   }

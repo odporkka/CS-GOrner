@@ -1,50 +1,88 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {ThemeProvider, createMuiTheme, makeStyles} from '@material-ui/core/styles'
 import CssBaseline from "@material-ui/core/CssBaseline";
-
+import Container from '@material-ui/core/Container';
+import Grid from "@material-ui/core/Grid";
 
 import ContentContextProvider from "./context/ContentContext"
+import Footer from "./components/Footer"
 import NavBar from "./components/navigation/NavBar"
 import Router from "./Router"
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#62727b',
-            main: '#37474f',
-            dark: '#102027',
-            contrastText: '#fff',
-        },
-        secondary: {
-            light: '#ff7961',
-            main: '#f44336',
-            dark: '#ba000d',
-            contrastText: '#000',
-        },
-        text: {
-            primary: '#fff'
-        },
-        background: {
-            default: "#102027"
-        }
-    },
-});
-
 function App() {
+    const theme = createMuiTheme({
+        palette: {
+            primary: {
+                light: '#62727b',
+                main: '#37474f',
+                dark: '#102027',
+                contrastText: '#fff',
+            },
+            secondary: {
+                light: '#ff7961',
+                main: '#f44336',
+                dark: '#ba000d',
+                contrastText: '#000',
+            },
+            text: {
+                primary: '#fff'
+            },
+            background: {
+                default: "#102027"
+            }
+        },
+    })
+    const useStyles = makeStyles((theme) => ({
+        root: {
+        },
+        item: {
+            maxWidth: 300,
+        },
+        mainContent: {
+            width: 'calc(100% - 320px)',
+            // border: '1px solid blue',
+            display: 'inline',
+        },
+        rightSideAd: {
+            width: '300px',
+            marginLeft: '20px',
+            float: 'right',
+            border: '1px solid black',
+            display: 'inline',
+        },
+    }))
+    const classes = useStyles();
+
+
     return (
         <ThemeProvider theme={theme}>
-            <ContentContextProvider>
-                <CssBaseline />
-                <div className="App" style={{backgroundColor: theme.palette.primary.dark}}>
-                    <BrowserRouter>
-                        <header className="App-header">
+            <Container className={classes.root}>
+                <ContentContextProvider>
+                    <CssBaseline />
+                        <BrowserRouter>
                             <NavBar />
-                        </header>
-                        <Router />
-                    </BrowserRouter>
-                </div>
-            </ContentContextProvider>
+
+                            {/*<div id="app-content">*/}
+                            <Grid container>
+                                <Grid item className={classes.mainContent} >
+                                    <Router />
+                                </Grid>
+
+                                <Grid item className={classes.rightSideAd}>
+                                    <p>
+                                        Sidebanner
+                                    </p>
+                                </Grid>
+
+                            </Grid>
+
+                            <Footer />
+
+                            {/*</div>*/}
+                        </BrowserRouter>
+                </ContentContextProvider>
+            </Container>
         </ThemeProvider>
 
     );

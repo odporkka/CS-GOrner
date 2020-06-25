@@ -1,17 +1,38 @@
 import React, {useContext} from 'react'
 import {ContentContext} from "../../context/ContentContext"
-import Typography from "@material-ui/core/Typography"
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import MapCard from "../MapCard"
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    item: {
+        maxWidth: 300
+    }
+}));
 
 const MapPage = () => {
+    const classes = useStyles();
+
     const { contentData } = useContext(ContentContext)
 
     return (
-        <div>
-            { contentData.maps.map((map) => (
-                <Typography key={map.name} color="inherit">{map.name}</Typography>
-                )
-            )}
+        <div className={classes.root}>
+            <Grid container spacing={5}
+                direction="row"
+                justify="center"
+                alignItems="center">
+                { contentData.maps.map((map) => (
+                    <Grid item key={map.id}>
+                        <MapCard map={map} key={map.id} />
+                    </Grid>
+                    )
+                )}
+            </Grid>
         </div>
+
     );
 }
 

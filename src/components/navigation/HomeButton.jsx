@@ -2,12 +2,12 @@ import React from 'react'
 
 const HomeButton = () => {
     const style = {
-        width: '200px'
+        height: '85px'
     }
 
     return (
         <div>
-            <img src="home-logo-placeholder.png" style={style}/>
+            <img src="home-logo-placeholder.png" alt="CS:GOrner-logo" style={style}/>
         </div>
     )
 }

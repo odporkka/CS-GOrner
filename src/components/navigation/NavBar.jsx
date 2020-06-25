@@ -1,4 +1,4 @@
-import React, { useContext }  from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,16 +8,15 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 
-import { ContentContext } from '../../context/ContentContext'
 import HomeButton from "./HomeButton"
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        width: '100%'
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
+        width: '100%',
+        marginBottom: '20px',
+        // border: '1px solid yellow'
+        // height: '85px'
     },
     title: {
         flexGrow: 1,
@@ -68,8 +67,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = () => {
-    const { contentData } = useContext(ContentContext)
-
     const classes = useStyles();
 
     return (
@@ -86,7 +83,7 @@ const NavBar = () => {
 
                     <Typography className={classes.title} variant="h6" noWrap>
                         <Link component={RouterLink} to="/maps" color="inherit">
-                            Maps
+                            Tactics
                         </Link>
                     </Typography>
 
