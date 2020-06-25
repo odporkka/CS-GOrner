@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from "./components/views/HomePage"
 import AboutPage from "./components/views/AboutPage"
 import ForumPage from "./components/views/ForumPage"
-import MapPage from "./components/views/MapPage"
+import TacticsPage from "./components/views/TacticsPage"
 import ErrorPage404 from "./components/views/ErrorPage404"
 
 /*
@@ -15,8 +15,8 @@ const Router = () => (
     <Switch>
         <Route path="/forum" component={ForumPage} />
         <Route path="/about" component={AboutPage} />
-        <Route path="/maps" component={MapPage} />
-        <Route path="/map/:mapId" component={MapPage} />
+        <Route path="/maps" component={TacticsPage} />
+        <Route path="/map/:mapId" component={TacticsPage} />
         <Route path="/" exact={true} component={HomePage} />
         {/* Fallthrough if no route matches */}
         <Route path="*" component={ErrorPage404} />

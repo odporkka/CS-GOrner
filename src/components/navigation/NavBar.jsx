@@ -99,6 +99,12 @@ const NavBar = () => {
                         </Link>
                     </Typography>
 
+                    <Typography className={classes.title} variant="h6" noWrap>
+                        <Link component={RouterLink} to="/new" color="inherit">
+                            New post
+                        </Link>
+                    </Typography>
+
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <SearchIcon />
