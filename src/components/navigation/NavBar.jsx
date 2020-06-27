@@ -100,7 +100,7 @@ const NavBar = () => {
                     </Typography>
 
                     <Typography className={classes.title} variant="h6" noWrap>
-                        <Link component={RouterLink} to="/new" color="inherit">
+                        <Link component={RouterLink} to="/post-editor" color="inherit">
                             New post
                         </Link>
                     </Typography>

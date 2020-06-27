@@ -3,7 +3,6 @@ import {makeStyles, useTheme} from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
 import Card from "@material-ui/core/Card"
 import CardContent from "@material-ui/core/CardContent"
-import Grid from "@material-ui/core/Grid"
 
 const OneLinerBanner = () => {
     const theme = useTheme();
@@ -21,7 +20,7 @@ const OneLinerBanner = () => {
                     "Git gud kid!"
                 </Typography>
                 <Typography variant='body2' display='inline'>
-                    - Unknown CS god
+                    -Unknown CS god
                 </Typography>
             </CardContent>
         </Card>

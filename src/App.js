@@ -51,6 +51,9 @@ function App() {
             border: '1px solid black',
             display: 'inline',
         },
+        paper: {
+
+        }
     }))
     const classes = useStyles();
 

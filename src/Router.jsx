@@ -6,6 +6,7 @@ import AboutPage from "./components/views/AboutPage"
 import ForumPage from "./components/views/ForumPage"
 import TacticsPage from "./components/views/TacticsPage"
 import ErrorPage404 from "./components/views/ErrorPage404"
+import PostEditorPage from "./components/views/PostEditorPage"
 
 /*
  * A <Switch> looks through its children <Route>s and
@@ -14,6 +15,7 @@ import ErrorPage404 from "./components/views/ErrorPage404"
 const Router = () => (
     <Switch>
         <Route path="/forum" component={ForumPage} />
+        <Route path="/post-editor" component={PostEditorPage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/maps" component={TacticsPage} />
         <Route path="/map/:mapId" component={TacticsPage} />
