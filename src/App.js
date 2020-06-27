@@ -28,13 +28,25 @@ function App() {
             text: {
                 primary: '#fff'
             },
-            background: {
-                default: "#102027"
-            }
         },
+        overrides: {
+            MuiCssBaseline: {
+                "@global": {
+                    body: {
+                        backgroundColor: '#000',
+                        backgroundImage: "url('background.jpg')",
+                        backgroundSize: '100%',
+                        backgroundRepeat: 'no-repeat'
+                    }
+                }
+            }
+        }
     })
     const useStyles = makeStyles((theme) => ({
         root: {
+            // backgroundImage: "url('blueprint_bg.jpg')"
+        },
+        rootContainer: {
         },
         item: {
             maxWidth: 300,
@@ -59,33 +71,34 @@ function App() {
 
 
     return (
-        <ThemeProvider theme={theme}>
-            <Container className={classes.root}>
-                <ContentContextProvider>
-                    <CssBaseline />
-                        <BrowserRouter>
+        <div className={classes.root}>
+            <ThemeProvider theme={theme}>
+                <Container className={classes.rootContainer}>
+                    <ContentContextProvider>
+                        <CssBaseline />
+                            <BrowserRouter>
 
-                            <NavBar />
+                                <NavBar />
 
-                            <Grid container>
-                                <Grid item className={classes.mainContent}>
-                                    <Router />
+                                <Grid container>
+                                    <Grid item className={classes.mainContent}>
+                                        <Router />
+                                    </Grid>
+
+                                    <Grid item className={classes.rightSideBanner}>
+                                        <p>
+                                            Sidebanner
+                                        </p>
+                                    </Grid>
+
                                 </Grid>
 
-                                <Grid item className={classes.rightSideBanner}>
-                                    <p>
-                                        Sidebanner
-                                    </p>
-                                </Grid>
-
-                            </Grid>
-
-                            <Footer />
-                        </BrowserRouter>
-                </ContentContextProvider>
-            </Container>
-        </ThemeProvider>
-
+                                <Footer />
+                            </BrowserRouter>
+                    </ContentContextProvider>
+                </Container>
+            </ThemeProvider>
+        </div>
     );
 }
 
