@@ -43,13 +43,13 @@ function App() {
         }
     })
     const useStyles = makeStyles((theme) => ({
-        root: {
-            // backgroundImage: "url('blueprint_bg.jpg')"
-        },
         rootContainer: {
+            display: 'flex',
+            minHeight: '100vh',
+            flexDirection: 'column'
         },
-        item: {
-            maxWidth: 300,
+        mainGrid: {
+            flex: 1
         },
         mainContent: {
             width: 'calc(100% - 320px)',
@@ -60,45 +60,40 @@ function App() {
             width: '300px',
             marginLeft: '20px',
             float: 'right',
-            border: '1px solid black',
+            border: '1px solid blue',
             display: 'inline',
         },
-        paper: {
-
-        }
     }))
     const classes = useStyles();
 
 
     return (
-        <div className={classes.root}>
-            <ThemeProvider theme={theme}>
-                <Container className={classes.rootContainer}>
-                    <ContentContextProvider>
-                        <CssBaseline />
-                            <BrowserRouter>
+        <ThemeProvider theme={theme}>
+            <Container className={classes.rootContainer}>
+                <ContentContextProvider>
+                    <CssBaseline />
+                        <BrowserRouter>
 
-                                <NavBar />
+                            <NavBar />
 
-                                <Grid container>
-                                    <Grid item className={classes.mainContent}>
-                                        <Router />
-                                    </Grid>
-
-                                    <Grid item className={classes.rightSideBanner}>
-                                        <p>
-                                            Sidebanner
-                                        </p>
-                                    </Grid>
-
+                            <Grid container className={classes.mainGrid}>
+                                <Grid item className={classes.mainContent}>
+                                    <Router />
                                 </Grid>
 
-                                <Footer />
-                            </BrowserRouter>
-                    </ContentContextProvider>
-                </Container>
-            </ThemeProvider>
-        </div>
+                                <Grid item className={classes.rightSideBanner}>
+                                    <p>
+                                        Sidebanner
+                                    </p>
+                                </Grid>
+
+                            </Grid>
+
+                            <Footer />
+                        </BrowserRouter>
+                </ContentContextProvider>
+            </Container>
+        </ThemeProvider>
     );
 }
 

@@ -12,7 +12,7 @@ import HomeButton from "./HomeButton"
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        flexGrow: 0,
         width: '100%',
         marginBottom: '20px',
         // border: '1px solid yellow'
@@ -82,7 +82,7 @@ const NavBar = () => {
                     </Typography>
 
                     <Typography className={classes.title} variant="h6" noWrap>
-                        <Link component={RouterLink} to="/maps" color="inherit">
+                        <Link component={RouterLink} to="/tactics" color="inherit">
                             Tactics
                         </Link>
                     </Typography>

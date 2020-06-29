@@ -17,8 +17,8 @@ const Router = () => (
         <Route path="/forum" component={ForumPage} />
         <Route path="/post-editor" component={PostEditorPage} />
         <Route path="/about" component={AboutPage} />
-        <Route path="/maps" component={TacticsPage} />
-        <Route path="/map/:mapId" component={TacticsPage} />
+        <Route path="/tactics" component={TacticsPage} />
+        <Route path="/tactics/:mapId" component={TacticsPage} />
         <Route path="/" exact={true} component={HomePage} />
         {/* Fallthrough if no route matches */}
         <Route path="*" component={ErrorPage404} />
