@@ -17,28 +17,33 @@ const SocialButtonBar = () => {
     return (
         <Grid container justify='flex-end'>
             <Grid item>
-                <IconButton aria-label='discord' color='inherit'>
-                    <SportsEsportsIcon onClick={() => (window.open(discordLink))} />
+                <IconButton aria-label='discord' color='inherit'
+                    onClick={() => (window.open(discordLink))}>
+                    <SportsEsportsIcon  />
                 </IconButton>
             </Grid>
             <Grid item>
-                <IconButton aria-label='csgorner steam group' color='inherit'>
-                    <SportsEsportsIcon onClick={() => (window.open(steamGroupLink))} />
+                <IconButton aria-label='csgorner steam group' color='inherit'
+                    onClick={() => (window.open(steamGroupLink))} >
+                    <SportsEsportsIcon/>
                 </IconButton>
             </Grid>
             <Grid item>
-                <IconButton aria-label='facebook' color='inherit'>
-                    <FacebookIcon onClick={() => (window.open(facebookLink))} />
+                <IconButton aria-label='facebook' color='inherit'
+                    onClick={() => (window.open(facebookLink))} >
+                    <FacebookIcon />
                 </IconButton>
             </Grid>
             <Grid item>
-                <IconButton aria-label='instagram' color='inherit'>
-                    <InstagramIcon onClick={() => (window.open(instagramLink))} />
+                <IconButton aria-label='instagram' color='inherit'
+                    onClick={() => (window.open(instagramLink))} >
+                    <InstagramIcon />
                 </IconButton>
             </Grid>
             <Grid item>
-                <IconButton aria-label='linked in' color='inherit'>
-                    <LinkedInIcon onClick={() => (window.open(linkedInLink))} />
+                <IconButton aria-label='linked in' color='inherit'
+                    onClick={() => (window.open(linkedInLink))} >
+                    <LinkedInIcon />
                 </IconButton>
             </Grid>
 

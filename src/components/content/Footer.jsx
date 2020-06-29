@@ -1,11 +1,13 @@
 import React from 'react'
-import {makeStyles, useTheme} from "@material-ui/core/styles"
-import Typography from "@material-ui/core/Typography"
-import Paper from "@material-ui/core/Paper"
-import Grid from "@material-ui/core/Grid"
-import Container from "@material-ui/core/Container"
+import { Link as RouterLink } from 'react-router-dom'
+import {makeStyles, useTheme} from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+import Container from '@material-ui/core/Container'
+import Link from '@material-ui/core/Link'
 
-import SocialButtonBar from "../navigation/SocialButtonBar"
+import SocialButtonBar from '../navigation/SocialButtonBar'
 
 const Footer = () => {
     const theme = useTheme();
@@ -16,7 +18,16 @@ const Footer = () => {
             marginTop: '50px',
             bottom: 0,
             // borderRadius: 0,
-            // boxShadow: "none"
+            // boxShadow: 'none'
+        },
+        links: {
+            color: theme.palette.primary.contrastText,
+            paddingLeft: '50px',
+            textAlign: 'center'
+        },
+        link: {
+            paddingLeft: '10px',
+            paddingRight: '10px'
         }
     });
     const classes = useStyles();
@@ -24,25 +35,29 @@ const Footer = () => {
     return (
         <Paper className={classes.root} xs={12} square={true}>
             <Container>
-                <Grid container>
-                    <Grid container item xs={8} justify='flex-start' alignItems='center'>
-                        <Grid item xs={1}>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography variant="body2" component="p">
-                                Link1
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography variant="body2" component="p">
-                                Link2
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1}>
-                            <Typography variant="body2" component="p">
-                                Link3
-                            </Typography>
-                        </Grid>
+                <Grid container alignItems='center' justify='center'>
+                    <Grid item xs={8}>
+                        <Typography variant='body2' component='p' className={classes.links}>
+                            <Link component={RouterLink} to='/' color='inherit' className={classes.link}>
+                                    News
+                            </Link>
+                            {' - '}
+                            <Link component={RouterLink} to='/tactics' color='inherit' className={classes.link}>
+                                    Tactics
+                            </Link>
+                            {' - '}
+                            <Link component={RouterLink} to='/forum' color='inherit' className={classes.link}>
+                                    Forum
+                            </Link>
+                            {' - '}
+                            <Link component={RouterLink} to='/about' color='inherit' className={classes.link}>
+                                    About
+                            </Link>
+                            {' - '}
+                            <Link component={RouterLink} to='/' color='inherit' className={classes.link}>
+                                    Contact me
+                            </Link>
+                        </Typography>
                     </Grid>
                     <Grid item xs={4}>
                         <SocialButtonBar />
