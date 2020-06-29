@@ -1,14 +1,15 @@
-import React from 'react';
+import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
 import {ThemeProvider, createMuiTheme, makeStyles} from '@material-ui/core/styles'
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from '@material-ui/core/Container';
 import Grid from "@material-ui/core/Grid";
 
-import ContentContextProvider from "./context/ContentContext"
+import ContextAPIProvider from "./context/Context"
 import Footer from "./components/content/Footer"
 import NavBar from "./components/navigation/NavBar"
 import Router from "./Router"
+import ScrollToTopComponent from "./util/ScrollToTopComponent"
 
 function App() {
     const theme = createMuiTheme({
@@ -66,13 +67,13 @@ function App() {
     }))
     const classes = useStyles();
 
-
     return (
         <ThemeProvider theme={theme}>
             <Container className={classes.rootContainer}>
-                <ContentContextProvider>
+                <ContextAPIProvider>
                     <CssBaseline />
                         <BrowserRouter>
+                            <ScrollToTopComponent />
 
                             <NavBar />
 
@@ -91,7 +92,7 @@ function App() {
 
                             <Footer />
                         </BrowserRouter>
-                </ContentContextProvider>
+                </ContextAPIProvider>
             </Container>
         </ThemeProvider>
     );

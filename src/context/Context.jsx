@@ -6,9 +6,9 @@ const initialValues = {
     maps: []
 }
 
-export const ContentContext = createContext(initialValues)
+export const Context = createContext(initialValues)
 
-const ContentContextProvider = (props) => {
+const ContextAPIProvider = (props) => {
     const [ contentData, setContentData ] = useState(initialValues)
 
     useEffect(() => {
@@ -19,17 +19,17 @@ const ContentContextProvider = (props) => {
     async function fetchMaps() {
         try {
             const mapsData = await API.graphql(graphqlOperation(listMaps))
-            console.log('maps:', mapsData)
+            // console.log('maps:', mapsData)
             const maps = mapsData.data.listMaps.items
             setContentData({ maps: maps })
         } catch (err) { console.log('Error fetching maps') }
     }
 
     return (
-        <ContentContext.Provider value={{ contentData, setContentData}}>
+        <Context.Provider value={{ contentData, setContentData}}>
             {props.children}
-        </ContentContext.Provider>
+        </Context.Provider>
     )
 }
 
-export default ContentContextProvider;
+export default ContextAPIProvider;

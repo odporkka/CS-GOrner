@@ -59,7 +59,6 @@ const PostForm = (props) => {
         setState({...state, sanitizedHtml: sanitizedHtml })
     }
 
-    console.log(state)
     return (
         <>
             <form className={classes.form} noValidate autoComplete="off">

@@ -12,17 +12,20 @@ import PostEditorPage from "./components/views/PostEditorPage"
  * A <Switch> looks through its children <Route>s and
  * renders the first one that matches the current URL.
  */
-const Router = () => (
-    <Switch>
-        <Route path="/forum" component={ForumPage} />
-        <Route path="/post-editor" component={PostEditorPage} />
-        <Route path="/about" component={AboutPage} />
-        <Route path="/tactics" component={TacticsPage} />
-        <Route path="/tactics/:mapId" component={TacticsPage} />
-        <Route path="/" exact={true} component={HomePage} />
-        {/* Fallthrough if no route matches */}
-        <Route path="*" component={ErrorPage404} />
-    </Switch>
-);
+const Router = () => {
+
+    return (
+        <Switch>
+            <Route path="/" exact={true} component={HomePage} />
+            <Route path="/tactics" component={TacticsPage} />
+            <Route path="/tactics/:mapId" component={TacticsPage} />
+            <Route path="/forum" component={ForumPage} />
+            <Route path="/about" component={AboutPage} />
+            <Route path="/post-editor" component={PostEditorPage} />
+            {/* Fallthrough if no route matches */}
+            <Route path="*" component={ErrorPage404}/>
+        </Switch>
+    )
+};
 
 export default Router;

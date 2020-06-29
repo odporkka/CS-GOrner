@@ -15,7 +15,7 @@ const Footer = () => {
         root: {
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.primary.contrastText,
-            marginTop: '50px',
+            marginTop: '30px',
             bottom: 0,
             // borderRadius: 0,
             // boxShadow: 'none'

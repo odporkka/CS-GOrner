@@ -1,22 +1,23 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React  from 'react';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 
 import HomeButton from "./HomeButton"
+import Tabs from "@material-ui/core/Tabs"
+import Tab from "@material-ui/core/Tab"
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 0,
         width: '100%',
         marginBottom: '20px',
-        // border: '1px solid yellow'
-        // height: '85px'
+    },
+    toolbar: {
+        maxHeight: '80px'
     },
     title: {
         flexGrow: 1,
@@ -68,42 +69,29 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
     const classes = useStyles();
+    const location = useLocation();
+    console.log(location.pathname)
 
     return (
         <div className={classes.root}>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar className={classes.toolbar}>
+                    {/*<Grid container>*/}
+                    {/*    <Grid item xs={2}>*/}
+                    {/*        <HomeButton />*/}
+                    {/*    </Grid>*/}
+                    {/*    <Grid item>*/}
+                    {/*        */}
+                    {/*    </Grid>*/}
+                    {/*</Grid>*/}
                     <HomeButton />
-
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        <Link component={RouterLink} to="/" color="inherit">
-                            Home
-                        </Link>
-                    </Typography>
-
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        <Link component={RouterLink} to="/tactics" color="inherit">
-                            Tactics
-                        </Link>
-                    </Typography>
-
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        <Link component={RouterLink} to="/forum" color="inherit">
-                            Forum
-                        </Link>
-                    </Typography>
-
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        <Link component={RouterLink} to="/about" color="inherit">
-                            About
-                        </Link>
-                    </Typography>
-
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        <Link component={RouterLink} to="/post-editor" color="inherit">
-                            New post
-                        </Link>
-                    </Typography>
+                    <Tabs value={location.pathname} centered>
+                        <Tab label='News' value='/' component={RouterLink} to='/' />
+                        <Tab label='Tactics' value='/tactics' component={RouterLink} to='/tactics' />
+                        <Tab label='Forum' value='/forum' component={RouterLink} to='/forum' />
+                        <Tab label='About' value='/about' component={RouterLink} to='/about'/>
+                        <Tab label='New post' value='/post-editor'  component={RouterLink} to='/post-editor'/>
+                    </Tabs>
 
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
