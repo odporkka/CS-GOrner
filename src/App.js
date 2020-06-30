@@ -40,6 +40,11 @@ function App() {
                         backgroundRepeat: 'no-repeat'
                     }
                 }
+            },
+            MuiPaper: {
+                root: {
+                    backgroundColor: '#62727b',
+                }
             }
         }
     })

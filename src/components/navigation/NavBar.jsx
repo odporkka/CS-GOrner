@@ -9,22 +9,23 @@ import SearchIcon from '@material-ui/icons/Search';
 import HomeButton from "./HomeButton"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
+import Grid from "@material-ui/core/Grid"
+import UserMenu from "./UserMenu"
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 0,
         width: '100%',
+        marginTop: '10px',
         marginBottom: '20px',
     },
     toolbar: {
         maxHeight: '80px'
     },
-    title: {
-        flexGrow: 1,
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
+    tab: {
+        minWidth: '100px',
+        maxWidth: '140px',
+        display: 'inline-block'
     },
     search: {
         position: 'relative',
@@ -65,47 +66,53 @@ const useStyles = makeStyles((theme) => ({
             },
         },
     },
+    userDiv: {
+        minWidth: '100px'
+    },
+    avatar: {
+        float: 'right'
+    }
 }));
 
 const NavBar = () => {
     const classes = useStyles();
     const location = useLocation();
-    console.log(location.pathname)
 
     return (
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar className={classes.toolbar}>
-                    {/*<Grid container>*/}
-                    {/*    <Grid item xs={2}>*/}
-                    {/*        <HomeButton />*/}
-                    {/*    </Grid>*/}
-                    {/*    <Grid item>*/}
-                    {/*        */}
-                    {/*    </Grid>*/}
-                    {/*</Grid>*/}
-                    <HomeButton />
-                    <Tabs value={location.pathname} centered>
-                        <Tab label='News' value='/' component={RouterLink} to='/' />
-                        <Tab label='Tactics' value='/tactics' component={RouterLink} to='/tactics' />
-                        <Tab label='Forum' value='/forum' component={RouterLink} to='/forum' />
-                        <Tab label='About' value='/about' component={RouterLink} to='/about'/>
-                        <Tab label='New post' value='/post-editor'  component={RouterLink} to='/post-editor'/>
-                    </Tabs>
-
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search…"
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
+                    <Grid container alignItems='center' justify='space-between'>
+                        <Grid item >
+                            <HomeButton />
+                        </Grid>
+                        <Grid item >
+                            <Tabs value={location.pathname} centered className={classes.tabs}>
+                                <Tab label='News' value='/' component={RouterLink} to='/' className={classes.tab} />
+                                <Tab label='Tactics' value='/tactics' component={RouterLink} to='/tactics' className={classes.tab} />
+                                <Tab label='Forum' value='/forum' component={RouterLink} to='/forum' className={classes.tab} />
+                                <Tab label='About' value='/about' component={RouterLink} to='/about' className={classes.tab} />
+                            </Tabs>
+                        </Grid>
+                        <Grid item >
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon />
+                                </div>
+                                <InputBase
+                                    placeholder="Search…"
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                    inputProps={{ 'aria-label': 'search' }}
+                                />
+                            </div>
+                        </Grid>
+                        <Grid item>
+                            <UserMenu />
+                        </Grid>
+                    </Grid>
                 </Toolbar>
             </AppBar>
         </div>
