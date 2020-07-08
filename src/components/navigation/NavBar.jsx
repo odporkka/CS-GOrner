@@ -1,15 +1,15 @@
-import React  from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import InputBase from '@material-ui/core/InputBase';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
+import React  from 'react'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { fade, makeStyles } from '@material-ui/core/styles'
+import InputBase from '@material-ui/core/InputBase'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import Grid from '@material-ui/core/Grid'
+import SearchIcon from '@material-ui/icons/Search'
 
 import HomeButton from "./HomeButton"
-import Tabs from "@material-ui/core/Tabs"
-import Tab from "@material-ui/core/Tab"
-import Grid from "@material-ui/core/Grid"
 import UserMenu from "./UserMenu"
 
 const useStyles = makeStyles((theme) => ({

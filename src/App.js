@@ -1,9 +1,9 @@
 import React from 'react'
-import { BrowserRouter } from 'react-router-dom';
-import {ThemeProvider, createMuiTheme, makeStyles} from '@material-ui/core/styles'
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Container from '@material-ui/core/Container';
-import Grid from "@material-ui/core/Grid";
+import { BrowserRouter } from 'react-router-dom'
+import { ThemeProvider, makeStyles, unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles'
+import CssBaseline from "@material-ui/core/CssBaseline"
+import Container from '@material-ui/core/Container'
+import Grid from "@material-ui/core/Grid"
 
 import ContextAPIProvider from "./context/Context"
 import Footer from "./components/content/Footer"
@@ -70,7 +70,7 @@ function App() {
             display: 'inline',
         },
     }))
-    const classes = useStyles();
+    const classes = useStyles()
 
     return (
         <ThemeProvider theme={theme}>
@@ -100,7 +100,7 @@ function App() {
                 </ContextAPIProvider>
             </Container>
         </ThemeProvider>
-    );
+    )
 }
 
-export default App;
+export default App

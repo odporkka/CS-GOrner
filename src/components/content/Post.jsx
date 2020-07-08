@@ -1,13 +1,12 @@
 import React from 'react'
-import Paper from "@material-ui/core/Paper"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
-import Divider from '@material-ui/core/Divider';
-
+import Divider from '@material-ui/core/Divider'
+import Paper from "@material-ui/core/Paper"
+import Typography from "@material-ui/core/Typography"
 
 import PostBanner from "./PostBanner"
-import Typography from "@material-ui/core/Typography"
 
 const Post = ({data}) => {
     const useStyles = makeStyles({

@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import Button from "@material-ui/core/Button"
-import Menu from "@material-ui/core/Menu"
-import MenuItem from "@material-ui/core/MenuItem"
+
 import { makeStyles } from "@material-ui/core/styles"
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Button from "@material-ui/core/Button"
 import Divider from "@material-ui/core/Divider"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
 import Typography from "@material-ui/core/Typography"
 
 const UserMenu = () => {
