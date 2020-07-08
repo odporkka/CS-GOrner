@@ -19,14 +19,14 @@ const PostBanner = ({data}) => {
     const classes = useStyles();
 
     const now = new Date()
-    data.publishedAt = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
-    data.updatedAt = new Date().toDateString()
+    const publishedAt = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
+    const updatedAt = new Date().toDateString()
 
     return (
         <Grid container className={classes.root}>
             <Grid item xs={4}>
                 <Typography>
-                    {data.publishedAt}
+                    { publishedAt }
                 </Typography>
                 <Typography variant='body2'>
                     Bread > Crumb > Here
@@ -35,7 +35,7 @@ const PostBanner = ({data}) => {
                     by {data.author}
                 </Typography>
                 <Typography variant='body2' style={{fontSize: 10}}>
-                   last edit: {data.updatedAt}
+                   last edit: { updatedAt }
                 </Typography>
             </Grid>
             <Grid item xs={4}>
