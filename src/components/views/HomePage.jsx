@@ -1,23 +1,13 @@
-import React from 'react';
-import {makeStyles, useTheme} from "@material-ui/core/styles"
-import Paper from "@material-ui/core/Paper"
-import Typography from "@material-ui/core/Typography"
+import React, { useContext } from 'react'
 import Grid from "@material-ui/core/Grid"
-import Container from "@material-ui/core/Container"
 
 import OneLinerBanner from "../content/OneLinerBanner"
+import { Context } from "../../context/Context"
+import NewPosts from "../content/NewPosts"
 
 
 const HomePage = () => {
-    const theme = useTheme();
-    const useStyles = makeStyles({
-        root: {
-        },
-        contentPaper: {
-            backgroundColor: theme.palette.primary.light,
-        }
-    });
-    const classes = useStyles();
+    const { contentData } = useContext(Context)
 
     return (
         <Grid container spacing={2}>
@@ -26,17 +16,7 @@ const HomePage = () => {
             </Grid>
 
             <Grid item xs={12}>
-                <Paper className={classes.contentPaper} spacing={2}>
-                    <Container>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <Typography variant="h6" component="h6">
-                                    New posts
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Container>
-                </Paper>
+                <NewPosts posts={ contentData.posts }/>
             </Grid>
         </Grid>
     );

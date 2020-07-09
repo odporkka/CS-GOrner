@@ -3,21 +3,41 @@ import React, { createContext, useEffect, useState } from "react";
 import * as api from "../graphql/api"
 
 const initialValues = {
-    maps: []
+    maps: [],
+    posts: [],
+    setPosts: () => {}
 }
 
 export const Context = createContext(initialValues)
 
 const ContextAPIProvider = (props) => {
-    const [ contentData, setContentData ] = useState(initialValues)
+    /*
+     * Set up context state (and implement setter functions)
+     */
+    const setPosts = (posts) => {
+        setContentData({...contentData, posts: posts})
+    }
 
+    const initialState = {
+        ...initialValues,
+        setPosts: setPosts
+    }
+    const [ contentData, setContentData ] = useState(initialState)
+    console.log(contentData)
+
+    /*
+     * Stuff fetched at first page load
+     */
     useEffect( () => {
         async function fetchData() {
             const maps = await api.fetchMaps();
-            setContentData({ maps: maps })
+            const posts = await api.fetch10NewPosts()
+            setContentData(state => ({...state, maps: maps, posts: posts}))
         }
-        fetchData();
+        fetchData()
+            .catch((e) => console.log(e))
     }, [])
+
 
     return (
         <Context.Provider value={{ contentData, setContentData}}>
