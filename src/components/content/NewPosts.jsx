@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 
+import PostTeaser from "./PostTeaser"
+
 const NewPosts = ({posts}) => {
 
     return (
@@ -15,8 +17,8 @@ const NewPosts = ({posts}) => {
                     </Grid>
 
                     { posts.map((post) => (
-                            <Grid item key={post.id}>
-                                {post.title}
+                            <Grid item key={post.id} xs={12}>
+                                <PostTeaser data={post} />
                             </Grid>
                         )
                     )}

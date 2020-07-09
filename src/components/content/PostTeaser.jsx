@@ -6,12 +6,12 @@ import Paper from "@material-ui/core/Paper"
 
 import PostBanner from "./PostBanner"
 
-const Post = ({data}) => {
+const PostTeaser = ({data}) => {
     const useStyles = makeStyles({
         root: {
             color: 'black',
             marginBottom: '15px',
-            backgroundColor: 'white',
+            backgroundColor: 'white'
         },
         divider: {
             backgroundColor: 'black'
@@ -27,7 +27,7 @@ const Post = ({data}) => {
                         <PostBanner data={data}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <div dangerouslySetInnerHTML={{ __html: data.sanitizedHtml }} />
+                        {data.description}
                     </Grid>
                 </Grid>
             </Container>
@@ -35,4 +35,4 @@ const Post = ({data}) => {
     )
 }
 
-export default Post
+export default PostTeaser

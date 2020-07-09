@@ -23,7 +23,6 @@ const ContextAPIProvider = (props) => {
         setPosts: setPosts
     }
     const [ contentData, setContentData ] = useState(initialState)
-    console.log(contentData)
 
     /*
      * Stuff fetched at first page load

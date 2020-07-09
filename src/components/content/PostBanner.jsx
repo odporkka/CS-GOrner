@@ -2,49 +2,69 @@ import React from 'react'
 import { makeStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
+import Divider from "@material-ui/core/Divider"
 
 const PostBanner = ({data}) => {
     const useStyles = makeStyles({
         root: {
-            height: '100px',
-            maxHeight: '100px'
+            // height: '120px',
+            // maxHeight: '120px'
         },
         imageContainer: {
-            height: '100%'
+            height: '80px'
         },
         image: {
             height: '100%'
+        },
+        divider: {
+            // marginTop: '10px',
+            // marginBottom: '20px'
         }
     });
     const classes = useStyles();
 
     const now = new Date()
     const publishedAt = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
-    const updatedAt = new Date().toDateString()
 
     return (
-        <Grid container className={classes.root}>
-            <Grid item xs={4}>
-                <Typography>
-                    { publishedAt }
-                </Typography>
-                <Typography variant='body2'>
-                    Bread > Crumb > Here
-                </Typography>
-                <Typography variant='body1'>
-                    by {data.author}
-                </Typography>
-                <Typography variant='body2' style={{fontSize: 10}}>
-                   last edit: { updatedAt }
-                </Typography>
+        <Grid container className={classes.root} spacing={2}>
+            {/* Title column */}
+            <Grid item container xs={8}>
+                <Grid item xs={12}>
+                    <Typography variant='h5'>
+                        {data.title}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant='body1'>
+                        by {data.author}
+                    </Typography>
+                    <Typography variant='body2' style={{fontSize: 10}}>
+                        last edit: { data.updatedAt }
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant='body1'>
+                        Tags:
+                    </Typography>
+                </Grid>
             </Grid>
-            <Grid item xs={4}>
-                <Typography variant='body1'>
-                    Tags:
-                </Typography>
+
+            {/* Image column */}
+            <Grid item container xs={4} justify='flex-end' align='right'>
+                <Grid item xs={12}>
+                    <Typography variant='body1'>
+                        { publishedAt }
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} className={classes.imageContainer}>
+                    <img src='csgo-logo.png' alt='map' className={classes.image}/>
+                </Grid>
             </Grid>
-            <Grid item xs={4} className={classes.imageContainer}>
-                <img src='csgo-logo.png' alt='map' className={classes.image}/>
+
+            {/* Divider */}
+            <Grid item xs={12} className={classes.divider}>
+                <Divider />
             </Grid>
         </Grid>
     )

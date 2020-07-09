@@ -17,7 +17,10 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 0,
         width: '100%',
         marginTop: '10px',
-        marginBottom: '20px',
+        marginBottom: '40px',
+    },
+    appBar: {
+        backgroundColor: theme.palette.primary.dark
     },
     toolbar: {
         maxHeight: '80px'
@@ -87,7 +90,7 @@ const NavBar = () => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
                     <Grid container alignItems='center' justify='space-between'>
                         <Grid item >

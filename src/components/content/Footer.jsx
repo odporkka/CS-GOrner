@@ -13,9 +13,9 @@ const Footer = () => {
     const theme = useTheme();
     const useStyles = makeStyles({
         root: {
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: theme.palette.primary.dark,
             color: theme.palette.primary.contrastText,
-            marginTop: '30px',
+            marginTop: '50px',
             bottom: 0,
             // borderRadius: 0,
             // boxShadow: 'none'
