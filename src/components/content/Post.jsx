@@ -24,7 +24,7 @@ const Post = ({data}) => {
             <Container>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <PostBanner data={data}/>
+                        <PostBanner data={data} inTeaser={false}/>
                     </Grid>
                     <Grid item xs={12}>
                         <div dangerouslySetInnerHTML={{ __html: data.sanitizedHtml }} />

@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const TacticsPage = () => {
+const TacticsBrowsePage = () => {
     const classes = useStyles();
 
     const { contentData } = useContext(Context)
@@ -39,4 +39,4 @@ const TacticsPage = () => {
     );
 }
 
-export default TacticsPage
+export default TacticsBrowsePage

@@ -1,10 +1,12 @@
 import React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import { makeStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import Divider from "@material-ui/core/Divider"
+import Link from "@material-ui/core/Link"
 
-const PostBanner = ({data}) => {
+const PostBanner = ({data, inTeaser}) => {
     const useStyles = makeStyles({
         root: {
             // height: '120px',
@@ -32,7 +34,16 @@ const PostBanner = ({data}) => {
             <Grid item container xs={8}>
                 <Grid item xs={12}>
                     <Typography variant='h5'>
-                        {data.title}
+                        { inTeaser ?
+                            <Link component={RouterLink} to={`/tactics/${data.id}`} color='inherit' className={classes.link}>
+                                {data.title}
+                            </Link>
+                            :
+                            <>
+                                {data.title}
+                            </>
+                        }
+
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
