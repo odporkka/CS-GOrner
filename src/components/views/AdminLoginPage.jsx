@@ -1,5 +1,4 @@
-import React, {useContext, useEffect} from 'react'
-import {Auth} from "@aws-amplify/auth"
+import React, {useContext} from 'react'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import {makeStyles, useTheme} from "@material-ui/core/styles"
 import Paper from "@material-ui/core/Paper"
@@ -31,16 +30,7 @@ const AdminLoginPage = () => {
     });
     const classes = useStyles();
     // User in context if found
-    const { AWSCognitoUser, setAWSCognitoUser } = useContext(AWSCognitoUserContext)
-    useEffect( () => {
-        async function fetchUser() {
-            const user = await Auth.currentAuthenticatedUser()
-            setAWSCognitoUser(user)
-            console.log(user)
-        }
-        fetchUser()
-            .catch((e) => console.log(e))
-    }, [setAWSCognitoUser])
+    const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
 
     return (
         <Paper className={classes.contentPaper}>
