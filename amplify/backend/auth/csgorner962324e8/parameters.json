@@ -1,6 +1,6 @@
 {
     "identityPoolName": "csgorner962324e8_identitypool_962324e8",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "csgorn962324e8",
     "userPoolName": "csgorner962324e8_userpool_962324e8",
     "autoVerifiedAttributes": [

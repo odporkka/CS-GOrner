@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid"
 import { Context } from "../../context/Context"
 import * as api from '../../graphql/api'
 import Post from "../content/Post"
+import PostFormImageUpload from "./PostFormImageUpload"
 
 
 /**
@@ -83,55 +84,69 @@ const PostForm = (props) => {
     }
 
     return (
-        <>
+        <div id='post-form'>
             <form className={classes.form} noValidate autoComplete="off">
-                <label htmlFor='title' className={classes.label}>Title:</label>
-                <br />
-                <input type='text'
-                    id='title'
-                    name='title'
-                    className={classes.input}
-                    value={state.title}
-                    onChange={handleInputChange}/>
-                <br />
+                <Grid container spacing={2}>
 
-                <label htmlFor='author' className={classes.label}>Author:</label>
-                <br />
-                <input type='text'
-                    id='author'
-                    name='author'
-                    className={classes.input}
-                    value={state.author}
-                    onChange={handleInputChange}/>
-                <br />
+                    {/* Top left side */}
+                    <Grid container item xs={6}>
+                        <label htmlFor='title' className={classes.label}>Title:</label>
+                        <br />
+                        <input type='text'
+                            id='title'
+                            name='title'
+                            className={classes.input}
+                            value={state.title}
+                            onChange={handleInputChange}/>
+                        <br />
 
-                <label htmlFor='map'>Map:</label>
-                <select name='mapID' value={state.mapID} onChange={handleInputChange}>
-                    { contentData.maps.map((map) => (
-                            <option value={map.id} key={map.id}>{map.name}</option>
-                        )
-                    )}
-                </select>
-                <br />
+                        <label htmlFor='author' className={classes.label}>Author:</label>
+                        <br />
+                        <input type='text'
+                            id='author'
+                            name='author'
+                            className={classes.input}
+                            value={state.author}
+                            onChange={handleInputChange}/>
+                        <br />
 
-                <label htmlFor='description' className={classes.label}>Description:</label>
-                <br />
-                <textarea id='description'
-                    name='description'
-                    className={classes.description}
-                    value={state.description}
-                    onChange={handleInputChange}/>
-                <br />
+                        <label htmlFor='map'>Map:</label>
+                        <select name='mapID' value={state.mapID} onChange={handleInputChange}>
+                            { contentData.maps.map((map) => (
+                                    <option value={map.id} key={map.id}>{map.name}</option>
+                                )
+                            )}
+                        </select>
+                    </Grid>
 
-                <label htmlFor='description' className={classes.label}>Article in markdown:</label>
-                <br />
-                <textarea id='markdown'
-                    name='markdown'
-                    className={classes.markdown}
-                    value={state.markdown}
-                    onChange={handleInputChange}/>
-                <br />
+                    {/* Top right side */}
+                    <Grid container item xs={6}>
+                        <PostFormImageUpload />
+                    </Grid>
 
+                    {/* Text areas */}
+                    <Grid item xs={12} >
+                        <label htmlFor='description' className={classes.label}>Description:</label>
+                        <br />
+                        <textarea id='description'
+                            name='description'
+                            className={classes.description}
+                            value={state.description}
+                            onChange={handleInputChange}/>
+                        <br />
+
+                        <label htmlFor='description' className={classes.label}>Article in markdown:</label>
+                        <br />
+                        <textarea id='markdown'
+                            name='markdown'
+                            className={classes.markdown}
+                            value={state.markdown}
+                            onChange={handleInputChange}/>
+                        <br />
+                    </Grid>
+                </Grid>
+
+                {/* Buttons */}
                 <Grid container spacing={2}>
                     <Grid item>
                         <Button variant='contained' color="primary" onClick={calculatePreview} className={classes.button}>
@@ -154,10 +169,9 @@ const PostForm = (props) => {
                         </Button>
                     </Grid>
                 </Grid>
-
-
             </form>
 
+            {/* Preview */}
             { state.sanitizedHtml && (
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -170,7 +184,7 @@ const PostForm = (props) => {
                     </Grid>
                 </Grid>
             )}
-        </>
+        </div>
     )
 }
 
