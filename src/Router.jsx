@@ -8,6 +8,7 @@ import TacticsBrowsePage from "./components/views/TacticsBrowsePage"
 import TacticPage from "./components/views/TacticPage"
 import ErrorPage404 from "./components/views/ErrorPage404"
 import PostEditorPage from "./components/views/PostEditorPage"
+import AdminLoginPage from "./components/views/AdminLoginPage"
 
 /*
  * A <Switch> looks through its children <Route>s and
@@ -23,6 +24,7 @@ const Router = () => {
             <Route path="/forum" component={ForumPage} />
             <Route path="/about" component={AboutPage} />
             <Route path="/post-editor" component={PostEditorPage} />
+            <Route path="/admin" component={AdminLoginPage} />
             {/* Fallthrough if no route matches */}
             <Route path="*" component={ErrorPage404}/>
         </Switch>

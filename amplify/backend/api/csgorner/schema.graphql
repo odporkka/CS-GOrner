@@ -16,7 +16,7 @@ type Post @model @key(name: "byMap", fields: ["mapID"]) {
   map: Map @connection(fields: ["mapID"])
 }
 
-#
+# TBI
 #type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
 #  id: ID!
 #  postID: ID!

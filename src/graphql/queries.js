@@ -77,39 +77,3 @@ export const listPosts = /* GraphQL */ `
     }
   }
 `;
-export const queryPostsByMap = /* GraphQL */ `
-  query QueryPostsByMap(
-    $mapID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelPostFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    queryPostsByMap(
-      mapID: $mapID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        title
-        author
-        mapID
-        description
-        markdown
-        sanitizedHtml
-        map {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;

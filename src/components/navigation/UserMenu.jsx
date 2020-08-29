@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, {useContext, useState} from 'react'
 import { Link } from 'react-router-dom'
+import { AmplifySignOut } from '@aws-amplify/ui-react'
 
 import { makeStyles } from "@material-ui/core/styles"
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -7,7 +8,7 @@ import Button from "@material-ui/core/Button"
 import Divider from "@material-ui/core/Divider"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
-import Typography from "@material-ui/core/Typography"
+import {AWSCognitoUserContext} from "../../context/AWSCognitoUserContext"
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -26,6 +27,7 @@ const UserMenu = () => {
         },
     }));
     const classes = useStyles();
+    const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -57,12 +59,15 @@ const UserMenu = () => {
             >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleClose}>Log out</MenuItem>
 
-                <Divider />
-
-                <Typography variant='body2' className={classes.adminTitle}> Admin only</Typography>
-                <MenuItem onClick={handleClose} component={Link} to='post-editor' >Make new post</MenuItem>
+                {AWSCognitoUser && (
+                    <div id='AWS admin options'>
+                        <Divider />
+                        <MenuItem onClick={handleClose} component={Link} to='post-editor' >Make new post</MenuItem>
+                        <MenuItem onClick={handleClose}><AmplifySignOut /></MenuItem>
+                    </div>
+                )}
             </Menu>
         </div>
     )

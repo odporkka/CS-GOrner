@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider, makeStyles, unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from "@material-ui/core/CssBaseline"
@@ -10,6 +10,7 @@ import Footer from "./components/content/Footer"
 import NavBar from "./components/navigation/NavBar"
 import Router from "./Router"
 import ScrollToTopComponent from "./util/ScrollToTopComponent"
+import AWSCognitoUserContextAPIProvider from "./context/AWSCognitoUserContext"
 
 function App() {
     const theme = createMuiTheme({
@@ -73,11 +74,17 @@ function App() {
     }))
     const classes = useStyles()
 
+    // AWS user if logged in
+    const [AWSCognitoUser, setAWSCognitoUser] = useState(null)
+
     return (
         <ThemeProvider theme={theme}>
             <Container className={classes.rootContainer}>
                 <ContextAPIProvider>
-                    <CssBaseline />
+                    <AWSCognitoUserContextAPIProvider
+                        AWSCognitoUser={AWSCognitoUser}
+                        setAWSCognitoUser={setAWSCognitoUser}>
+                        <CssBaseline />
                         <BrowserRouter>
                             <ScrollToTopComponent />
 
@@ -89,15 +96,16 @@ function App() {
                                 </Grid>
 
                                 <Grid item className={classes.rightSideBanner}>
-                                    <p>
-                                        Sidebanner
-                                    </p>
+                                    <Container>
+                                        <p>Sidebanner</p>
+                                    </Container>
                                 </Grid>
 
                             </Grid>
 
                             <Footer />
                         </BrowserRouter>
+                    </AWSCognitoUserContextAPIProvider>
                 </ContextAPIProvider>
             </Container>
         </ThemeProvider>
