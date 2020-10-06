@@ -13,6 +13,12 @@ import ScrollToTopComponent from "./util/ScrollToTopComponent"
 import AWSCognitoUserContextAPIProvider from "./context/AWSCognitoUserContext"
 import {Auth} from "@aws-amplify/auth"
 
+/**
+ * Root component
+ *
+ * @return {JSX.Element}
+ * @constructor
+ */
 function App() {
     const theme = createMuiTheme({
         palette: {
@@ -76,7 +82,9 @@ function App() {
     const classes = useStyles()
 
     /*
-     * AWS Admin user state and setter
+     * AWS Admin user stuff:
+     * - Actual getter/setter for user (these are passed to context as props)
+     * - UseEffect for fetching user if page is first loaded and previous login is still valid
      */
     const [AWSCognitoUser, setAWSCognitoUser] = useState(null)
     useEffect( () => {
@@ -92,7 +100,9 @@ function App() {
         <ThemeProvider theme={theme}>
             <Container className={classes.rootContainer}>
                 <ContextAPIProvider>
-                    <AWSCognitoUserContextAPIProvider AWSCognitoUser={AWSCognitoUser}>
+                    <AWSCognitoUserContextAPIProvider
+                        AWSCognitoUser={AWSCognitoUser}
+                        setAWSCognitoUser={setAWSCognitoUser}>
                         <CssBaseline />
                         <BrowserRouter>
                             <ScrollToTopComponent />

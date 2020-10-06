@@ -1,8 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import { Link } from 'react-router-dom'
+import {AWSCognitoUserContext} from "../../context/AWSCognitoUserContext"
 import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
+import Button from "@material-ui/core/Button"
+import EditIcon from '@material-ui/icons/Edit';
 
 import PostBanner from "./PostBanner"
 
@@ -18,6 +22,7 @@ const Post = ({data}) => {
         }
     });
     const classes = useStyles();
+    const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
 
     return (
         <Paper xs={12} className={classes.root} >
@@ -29,6 +34,13 @@ const Post = ({data}) => {
                     <Grid item xs={12}>
                         <div dangerouslySetInnerHTML={{ __html: data.sanitizedHtml }} />
                     </Grid>
+                    { AWSCognitoUser && (
+                        <Grid item>
+                            <Button variant='contained' component={Link} to={`/post-editor?id=${data.id}`}>
+                                <EditIcon /> Edit
+                            </Button>
+                        </Grid>
+                    )}
                 </Grid>
             </Container>
         </Paper>

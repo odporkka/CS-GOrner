@@ -37,6 +37,10 @@ const UserMenu = () => {
         setAnchorEl(null);
     };
 
+    const logoutAWS = () => {
+        console.log('logged out')
+    }
+
     return (
         <div className={classes.userDiv}>
             <Button
@@ -65,7 +69,11 @@ const UserMenu = () => {
                     <div id='AWS admin options'>
                         <Divider />
                         <MenuItem onClick={handleClose} component={Link} to='post-editor' >Make new post</MenuItem>
-                        <MenuItem onClick={handleClose}><AmplifySignOut /></MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            <Button onClick={logoutAWS}>
+                                <AmplifySignOut />
+                            </Button>
+                        </MenuItem>
                     </div>
                 )}
             </Menu>
