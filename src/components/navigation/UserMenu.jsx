@@ -47,9 +47,12 @@ const UserMenu = () => {
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={handleClick}
-                endIcon={<AccountCircleIcon />} >
+                startIcon={<AccountCircleIcon />}
+                endIcon={AWSCognitoUser ?
+                    <img src='admin-crown.png'  alt='admin-icon' style={{height: '20px', width: '20px'}}/> : null}>
                 Log in
             </Button>
+
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
