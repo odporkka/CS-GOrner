@@ -32,6 +32,15 @@ export const fetchMaps = async () => {
     }
 }
 
+export const fetchPostWithId = async (id) => {
+    try {
+        const response = await API.graphql(graphqlOperation(queries.getPost, {id: id}))
+        return response.data.getPost
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
 export const fetch10NewPosts = async () => {
     try {
         const response = await API.graphql(graphqlOperation(queries.listPosts))

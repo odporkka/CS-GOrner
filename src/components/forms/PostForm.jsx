@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react'
+import React, {useContext} from 'react'
 import DOMPurify from 'dompurify'
 import marked from 'marked'
-import { makeStyles } from "@material-ui/core/styles"
+import {makeStyles} from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 
-import { Context } from "../../context/Context"
+import {Context} from "../../context/Context"
 import * as api from '../../graphql/api'
 import Post from "../content/Post"
 import PostFormImageUpload from "./PostFormImageUpload"
@@ -25,14 +25,7 @@ import PostFormImageUpload from "./PostFormImageUpload"
  * @constructor
  */
 const PostForm = (props) => {
-    const [state, setState] = useState({
-        title: '',
-        author: '',
-        mapID: '',
-        description: '',
-        markdown: '',
-        sanitizedHtml: ''
-    })
+    const {post, setPost} = props
     const useStyles = makeStyles({
         form: {
         },
@@ -59,15 +52,15 @@ const PostForm = (props) => {
     const handleInputChange = (event) => {
         const value = event.target.value;
         const name = event.target.name;
-        setState({...state, [name]: value});
+        setPost({...post, [name]: value});
     }
 
     const calculatePreview = () => {
-        setState({...state, sanitizedHtml: markdownToHtml(state.markdown) })
+        setPost({...post, sanitizedHtml: markdownToHtml(post.markdown) })
     }
 
     const saveArticle = async () => {
-        const input = state
+        const input = post
         input.sanitizedHtml = markdownToHtml(input.markdown)
         const response = await api.createPost(input)
         if (!response.error) {
@@ -79,8 +72,7 @@ const PostForm = (props) => {
 
     const markdownToHtml = (markdown) => {
         const dirtyHtml = marked(markdown)
-        const sanitizedHtml = DOMPurify.sanitize(dirtyHtml)
-        return sanitizedHtml
+        return DOMPurify.sanitize(dirtyHtml)
     }
 
     return (
@@ -96,7 +88,7 @@ const PostForm = (props) => {
                             id='title'
                             name='title'
                             className={classes.input}
-                            value={state.title}
+                            value={post.title}
                             onChange={handleInputChange}/>
                         <br />
 
@@ -106,12 +98,12 @@ const PostForm = (props) => {
                             id='author'
                             name='author'
                             className={classes.input}
-                            value={state.author}
+                            value={post.author}
                             onChange={handleInputChange}/>
                         <br />
 
                         <label htmlFor='map'>Map:</label>
-                        <select name='mapID' value={state.mapID} onChange={handleInputChange}>
+                        <select name='mapID' value={post.mapID} onChange={handleInputChange}>
                             { contentData.maps.map((map) => (
                                     <option value={map.id} key={map.id}>{map.name}</option>
                                 )
@@ -126,21 +118,21 @@ const PostForm = (props) => {
 
                     {/* Text areas */}
                     <Grid item xs={12} >
-                        <label htmlFor='description' className={classes.label}>Description:</label>
+                        <label htmlFor='description' className={classes.label}>Description (markdown):</label>
                         <br />
                         <textarea id='description'
                             name='description'
                             className={classes.description}
-                            value={state.description}
+                            value={post.description}
                             onChange={handleInputChange}/>
                         <br />
 
-                        <label htmlFor='description' className={classes.label}>Article in markdown:</label>
+                        <label htmlFor='description' className={classes.label}>Article (markdown):</label>
                         <br />
                         <textarea id='markdown'
                             name='markdown'
                             className={classes.markdown}
-                            value={state.markdown}
+                            value={post.markdown}
                             onChange={handleInputChange}/>
                         <br />
                     </Grid>
@@ -172,7 +164,7 @@ const PostForm = (props) => {
             </form>
 
             {/* Preview */}
-            { state.sanitizedHtml && (
+            { post.sanitizedHtml && (
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography variant="h6" component="h6">
@@ -180,7 +172,7 @@ const PostForm = (props) => {
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Post data={state} />
+                        <Post data={post} />
                     </Grid>
                 </Grid>
             )}
