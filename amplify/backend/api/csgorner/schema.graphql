@@ -1,19 +1,36 @@
 # https://docs.amplify.aws/cli/graphql-transformer/overview
 
-type Map @model {
-  id: ID!
-  name: String!
+type Map
+    @model
+    @auth(
+        rules: [
+            { allow: public, provider: apiKey, operations: [read]},
+            { allow: groups, provider: userPools, groups: ["Editors"]}
+        ]
+    )
+{
+    id: ID!
+    name: String!
 }
 
-type Post @model @key(name: "byMap", fields: ["mapID"]) {
-  id: ID!
-  title: String!
-  author: String!
-  mapID: ID!
-  description: String!
-  markdown: String!
-  sanitizedHtml: String!
-  map: Map @connection(fields: ["mapID"])
+type Post
+    @model
+    @key(name: "byMap", fields: ["mapID"])
+    @auth(
+        rules: [
+            { allow: public, provider: apiKey, operations: [read]},
+            { allow: groups, provider: userPools, groups: ["Editors"]}
+        ]
+    )
+{
+    id: ID!
+    title: String!
+    author: String!
+    mapID: ID!
+    description: String!
+    markdown: String!
+    sanitizedHtml: String!
+    map: Map @connection(fields: ["mapID"])
 }
 
 # TBI

@@ -53,3 +53,37 @@ Not needed to run manually. Use `amplify publish` to deploy (after checking out 
 
 If possible, avoid this!
 
+## Authentication/Security
+To update auth settings run `amplify update auth`  
+This will lead you through update process..
+
+There is multi-auth setup in this project.
+API_KEY is used as default and COGNITO_USER_POOLS for authenticated users.
+
+### GraphQL API
+
+#### Updating API access policies
+Access policies can be updated in `graphql.schema`.  
+Basic syntax to allow/restrict access is:
+```
+    @auth(
+        rules: [
+            { allow: public, provider: apiKey, operations: [read]},
+            { allow: groups, provider: userPools, groups: ["Editors"]}
+        ]
+    )
+```
+##### Public access
+Default AppSync auth method is API_KEY, this is used for public access on resources. API key is bundled with frontend
+automatically.  
+
+(There should be line `"aws_appsync_authenticationType": "API_KEY"` in `aws-exports.js`.)
+ 
+Public access include only READ access on: Maps, Posts, Comments etc.  
+
+##### Editor access
+Editor access is given for authenticated users in "Editors" group.
+
+These include READ/WRITE/UPDATE/DELETE on Posts. Editors can log in at `/admin` endpoint with their own AWS user.
+
+

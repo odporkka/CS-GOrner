@@ -41,14 +41,14 @@ export const onCreatePost = /* GraphQL */ `
       description
       markdown
       sanitizedHtml
+      createdAt
+      updatedAt
       map {
         id
         name
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -62,14 +62,14 @@ export const onUpdatePost = /* GraphQL */ `
       description
       markdown
       sanitizedHtml
+      createdAt
+      updatedAt
       map {
         id
         name
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -83,14 +83,14 @@ export const onDeletePost = /* GraphQL */ `
       description
       markdown
       sanitizedHtml
+      createdAt
+      updatedAt
       map {
         id
         name
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;

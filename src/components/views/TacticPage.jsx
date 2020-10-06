@@ -16,8 +16,6 @@ const TacticPage = (props) => {
     const { contentData } = useContext(Context)
     const [ post, setPost ] = useState(null)
 
-    console.log(post)
-
     useEffect(() => {
         const postData = contentData.posts.find((p) => (p.id === title))
         if (postData) {

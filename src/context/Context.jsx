@@ -29,8 +29,14 @@ const ContextAPIProvider = (props) => {
      */
     useEffect( () => {
         async function fetchData() {
-            const maps = await api.fetchMaps();
+            const maps = await api.fetchMaps()
             const posts = await api.fetch10NewPosts()
+            if (maps.error || posts.error) {
+                console.log('Error(s) while fetching data:')
+                if (maps.error) console.log('Maps error:', maps.errorMessage)
+                if (posts.error) console.log('Posts error:', posts.errorMessage)
+                return
+            }
             setContentData(state => ({...state, maps: maps, posts: posts}))
         }
         fetchData()

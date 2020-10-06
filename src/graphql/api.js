@@ -1,4 +1,5 @@
 import { API, graphqlOperation } from "aws-amplify"
+
 import * as queries from "./queries"
 import * as mutations from "./mutations"
 
@@ -16,7 +17,8 @@ const handleError = (e) => {
         })
         return { error: true, errorMessage: errorMessage}
     } else {
-        return { error: true, errorMessage: e.message}
+        return { error: true,
+            errorMessage: e.message ? e.message : e}
     }
 }
 
@@ -55,7 +57,11 @@ export const fetch10NewPosts = async () => {
  */
 export const createPost = async (data) => {
     try {
-        return await API.graphql(graphqlOperation(mutations.createPost, {input: data}))
+        return await API.graphql({
+            query: mutations.createPost,
+            variables: {input: data},
+            authMode: 'AMAZON_COGNITO_USER_POOLS'
+        })
     } catch (e) {
         return handleError(e)
     }

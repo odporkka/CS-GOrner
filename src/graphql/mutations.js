@@ -53,14 +53,14 @@ export const createPost = /* GraphQL */ `
       description
       markdown
       sanitizedHtml
+      createdAt
+      updatedAt
       map {
         id
         name
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -77,14 +77,14 @@ export const updatePost = /* GraphQL */ `
       description
       markdown
       sanitizedHtml
+      createdAt
+      updatedAt
       map {
         id
         name
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -101,14 +101,14 @@ export const deletePost = /* GraphQL */ `
       description
       markdown
       sanitizedHtml
+      createdAt
+      updatedAt
       map {
         id
         name
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;

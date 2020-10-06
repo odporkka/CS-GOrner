@@ -1,12 +1,12 @@
-import React, {useContext, useEffect} from 'react'
+import React, { useContext } from 'react'
 import { withAuthenticator } from '@aws-amplify/ui-react'
-import {makeStyles, useTheme} from "@material-ui/core/styles"
+import { makeStyles, useTheme } from "@material-ui/core/styles"
 import Paper from "@material-ui/core/Paper"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
-import {AWSCognitoUserContext} from "../../context/AWSCognitoUserContext"
-import {Auth} from "@aws-amplify/auth"
+import { AWSCognitoUserContext } from "../../context/AWSCognitoUserContext"
+import { Auth } from "@aws-amplify/auth"
 
 /**
  * /admin page used for logging in as AWS user.

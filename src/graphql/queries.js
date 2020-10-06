@@ -1,16 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getMap = /* GraphQL */ `
-  query GetMap($id: ID!) {
-    getMap(id: $id) {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const listMaps = /* GraphQL */ `
   query ListMaps(
     $filter: ModelMapFilterInput
@@ -28,6 +18,16 @@ export const listMaps = /* GraphQL */ `
     }
   }
 `;
+export const getMap = /* GraphQL */ `
+  query GetMap($id: ID!) {
+    getMap(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const getPost = /* GraphQL */ `
   query GetPost($id: ID!) {
     getPost(id: $id) {
@@ -38,14 +38,14 @@ export const getPost = /* GraphQL */ `
       description
       markdown
       sanitizedHtml
+      createdAt
+      updatedAt
       map {
         id
         name
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -64,14 +64,14 @@ export const listPosts = /* GraphQL */ `
         description
         markdown
         sanitizedHtml
+        createdAt
+        updatedAt
         map {
           id
           name
           createdAt
           updatedAt
         }
-        createdAt
-        updatedAt
       }
       nextToken
     }
