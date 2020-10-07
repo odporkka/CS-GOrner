@@ -54,14 +54,16 @@ export const fetch10NewPosts = async () => {
 
 /*
  * Mutations
+ * Use authMode: 'AMAZON_COGNITO_USER_POOLS' here to only allow authenticated users to modify content.
  */
 export const createPost = async (data) => {
     try {
-        return await API.graphql({
+        const response = await API.graphql({
             query: mutations.createPost,
             variables: {input: data},
             authMode: 'AMAZON_COGNITO_USER_POOLS'
         })
+        return response.data.createPost
     } catch (e) {
         return handleError(e)
     }
@@ -69,7 +71,25 @@ export const createPost = async (data) => {
 
 export const updatePost = async (data) => {
     try {
-        return await API.graphql(graphqlOperation(mutations.updatePost, { input: data }))
+        const response =  await API.graphql({
+            query: mutations.updatePost,
+            variables: {input: data},
+            authMode: 'AMAZON_COGNITO_USER_POOLS'
+        })
+        return response.data.updatePost
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
+export const deletePostById = async (id) => {
+    try {
+        const response = await API.graphql({
+            query: mutations.deletePost,
+            variables: {input: {id: id}},
+            authMode: 'AMAZON_COGNITO_USER_POOLS'
+        })
+        return response.data.deletePost
     } catch (e) {
         return handleError(e)
     }

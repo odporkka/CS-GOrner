@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
+import {useHistory} from "react-router-dom"
 import {makeStyles, useTheme} from "@material-ui/core/styles"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
@@ -23,14 +24,18 @@ const PostEditorPage = (props) => {
     });
     const classes = useStyles();
     const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
-    const [post, setPost] = useState({
+    const history = useHistory()
+    const initialPostState = {
+        id: undefined,
         title: '',
         author: '',
         mapID: '',
         description: '',
         markdown: '',
         sanitizedHtml: ''
-    })
+    }
+    const [post, setPost] = useState(initialPostState)
+
     /*
      * Fetch post if id was given in url parameters
      */
@@ -38,13 +43,23 @@ const PostEditorPage = (props) => {
         const searchParams = new URLSearchParams(window.location.search)
         const fetchPost = async (id) => {
             const post = await api.fetchPostWithId(id)
-            setPost(post)
+            if (post) {
+                setPost(post)
+            } else {
+                alert(`Post with id ${id} not found! It might been deleted recently!`)
+                history.push('/post-editor')
+            }
         }
         if (searchParams.has('id')) {
             fetchPost(searchParams.get('id'))
                 .catch((e) => console.log(e))
         }
-    }, [])
+    }, [history])
+
+    const resetPost = () => {
+        setPost(initialPostState)
+    }
+
 
     if (!AWSCognitoUser) {
         return (
@@ -73,7 +88,7 @@ const PostEditorPage = (props) => {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <PostForm post={post} setPost={setPost}/>
+                        <PostForm post={post} setPost={setPost} resetPost={resetPost}/>
                     </Grid>
                 </Grid>
             </Container>
