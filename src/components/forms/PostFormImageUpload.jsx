@@ -80,11 +80,11 @@ const PostFormImageUpload = (props) => {
             <input type="file" name="fileUpload" id='fileUpload' onChange={onChangeHandler}/>
             <br />
             {showState()}
-            {/*<ul>*/}
-            {/*    {props.post.images && props.post.images.map(image => (*/}
-            {/*        <li key={image.key}>{image.key}</li>*/}
-            {/*    ))}*/}
-            {/*</ul>*/}
+            <ul>
+                {props.post.images && props.post.images.map(image => (
+                    <li key={image.key}>{image.key}</li>
+                ))}
+            </ul>
         </div>
     )
 }

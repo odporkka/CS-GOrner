@@ -26,9 +26,12 @@ import PostFormImageUpload from "./PostFormImageUpload"
  * @constructor
  */
 const PostForm = (props) => {
-    const {post,
+    const {
+        post,
         setPost,
-        resetPost,
+        savePost,
+        deletePost,
+        calculatePreview,
         addImage
     } = props
     const useStyles = makeStyles({
@@ -53,7 +56,6 @@ const PostForm = (props) => {
     });
     const classes = useStyles();
     const { contentData } = useContext(Context)
-    const history = useHistory()
 
     const handleInputChange = (event) => {
         const value = event.target.value;
@@ -61,64 +63,6 @@ const PostForm = (props) => {
         setPost({...post, [name]: value});
     }
 
-    const calculatePreview = () => {
-        setPost({...post, sanitizedHtml: markdownToHtml(post.markdown) })
-    }
-
-    const savePost = async () => {
-        const input = post
-        input.sanitizedHtml = markdownToHtml(input.markdown)
-
-
-        let response
-        // If id is found, we are updating post. New posts dont have id yet
-        if (input.id) {
-            // CreatedAt and updatedAt are managed by AWS automatically
-            delete input.createdAt
-            delete input.updatedAt
-            // Linked properties need to be removed too
-            delete input.map
-            response = await api.updatePost(input)
-            if (!response.error) {
-                alert(`Post '${input.title}' saved successfully!`)
-                setPost(response)
-            } else {
-                alert(`Error(s) occurred while saving:\n${response.errorMessage}`)
-            }
-        // New posts, call create here
-        } else {
-            response = await api.createPost(input)
-            if (!response.error) {
-                alert(`Post '${input.title}' created successfully!`)
-                history.push(`/post-editor?id=${response.id}`)
-                setPost(response)
-            } else {
-                alert(`Error(s) occurred while trying to create post:\n${response.errorMessage}`)
-            }
-        }
-    }
-
-    const deletePost = async () => {
-        if (post.id) {
-            const response = await api.deletePostById(post.id)
-            if (response && !response.error) {
-                alert(`Post '${post.title}' deleted successfully from backend!`)
-                resetPost()
-                history.push(`/post-editor`)
-            } else {
-                if (response.error) {
-                    alert(`Error(s) occurred while deleting post:\n${response.errorMessage}`)
-                } else {
-                    alert(`Empty response from backend. Post not found with id: ${post.id}!`)
-                }
-            }
-        }
-    }
-
-    const markdownToHtml = (markdown) => {
-        const dirtyHtml = marked(markdown)
-        return DOMPurify.sanitize(dirtyHtml)
-    }
 
     return (
         <div id='post-form'>

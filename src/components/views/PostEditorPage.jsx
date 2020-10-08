@@ -10,6 +10,8 @@ import Container from "@material-ui/core/Container"
 import * as api from '../../graphql/api'
 import PostForm from "../forms/PostForm"
 import {AWSCognitoUserContext} from "../../context/AWSCognitoUserContext"
+import marked from "marked"
+import DOMPurify from "dompurify"
 
 const PostEditorPage = (props) => {
     const theme = useTheme();
@@ -50,6 +52,7 @@ const PostEditorPage = (props) => {
                 setPost(post)
             } else {
                 alert(`Post with id ${id} not found! It might been deleted recently!`)
+                setPost(initialPostState)
                 history.push('/post-editor')
             }
         }
@@ -59,13 +62,68 @@ const PostEditorPage = (props) => {
         }
     }, [history])
 
-    const resetPost = () => {
-        setPost(initialPostState)
+    const savePost = async () => {
+        const input = post
+        input.sanitizedHtml = markdownToHtml(input.markdown)
+
+
+        let response
+        // If id is found, we are updating post. New posts dont have id yet
+        if (input.id) {
+            // CreatedAt and updatedAt are managed by AWS automatically
+            delete input.createdAt
+            delete input.updatedAt
+            // Linked properties need to be removed too
+            delete input.map
+            response = await api.updatePost(input)
+            if (!response.error) {
+                alert(`Post '${input.title}' saved successfully!`)
+                setPost(response)
+            } else {
+                alert(`Error(s) occurred while saving:\n${response.errorMessage}`)
+            }
+            // New posts, call create here
+        } else {
+            response = await api.createPost(input)
+            if (!response.error) {
+                alert(`Post '${input.title}' created successfully!`)
+                history.push(`/post-editor?id=${response.id}`)
+                setPost(response)
+            } else {
+                alert(`Error(s) occurred while trying to create post:\n${response.errorMessage}`)
+            }
+        }
+    }
+
+    const deletePost = async () => {
+        if (post.id) {
+            const response = await api.deletePostById(post.id)
+            if (response && !response.error) {
+                alert(`Post '${post.title}' deleted successfully from backend!`)
+                setPost(initialPostState)
+                history.push(`/post-editor`)
+            } else {
+                if (response.error) {
+                    alert(`Error(s) occurred while deleting post:\n${response.errorMessage}`)
+                } else {
+                    alert(`Empty response from backend. Post not found with id: ${post.id}!`)
+                }
+            }
+        }
     }
 
     const addImage = (image) => {
         const newImageArray = post.images.concat(image)
         setPost({...post, images: newImageArray})
+    }
+
+    const calculatePreview = () => {
+        setPost({...post, sanitizedHtml: markdownToHtml(post.markdown) })
+    }
+
+    const markdownToHtml = (markdown) => {
+        const dirtyHtml = marked(markdown)
+        return DOMPurify.sanitize(dirtyHtml)
     }
 
 
@@ -99,7 +157,9 @@ const PostEditorPage = (props) => {
                         <PostForm
                             post={post}
                             setPost={setPost}
-                            resetPost={resetPost}
+                            savePost={savePost}
+                            deletePost={deletePost}
+                            calculatePreview={calculatePreview}
                             addImage={addImage}/>
                     </Grid>
                 </Grid>
