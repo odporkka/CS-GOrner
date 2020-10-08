@@ -1,25 +1,16 @@
 import React, {useContext} from 'react'
-import {useHistory} from "react-router-dom"
-import DOMPurify from 'dompurify'
-import marked from 'marked'
 import {makeStyles} from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 
 import {Context} from "../../context/Context"
-import * as api from '../../graphql/api'
 import Post from "../content/Post"
 import PostFormImageUpload from "./PostFormImageUpload"
 
 
 /**
- *      title
- *      author
- *      mapID
- *      description
- *      markdown
- *      sanitizedHtml
+ * Form for post editing. State is hosted on parent component.
  *
  * @param props
  * @return {*}
@@ -32,7 +23,8 @@ const PostForm = (props) => {
         savePost,
         deletePost,
         calculatePreview,
-        addImage
+        addImage,
+        removeImage
     } = props
     const useStyles = makeStyles({
         form: {
@@ -102,7 +94,11 @@ const PostForm = (props) => {
 
                     {/* Top right side */}
                     <Grid container item xs={6}>
-                        <PostFormImageUpload post={post} addImage={addImage}/>
+                        <PostFormImageUpload
+                            post={post}
+                            addImage={addImage}
+                            removeImage={removeImage}
+                            />
                     </Grid>
 
                     {/* Text areas */}
@@ -135,12 +131,12 @@ const PostForm = (props) => {
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Button variant='contained' onClick={savePost} className={classes.button}>
+                        <Button variant='contained' onClick={() => savePost(post)} className={classes.button}>
                             Save
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Button variant='contained' onClick={savePost} className={classes.button}>
+                        <Button variant='contained' onClick={() => savePost(post)} className={classes.button}>
                             Publish
                         </Button>
                     </Grid>

@@ -12,8 +12,11 @@ import PostForm from "../forms/PostForm"
 import {AWSCognitoUserContext} from "../../context/AWSCognitoUserContext"
 import marked from "marked"
 import DOMPurify from "dompurify"
+import {Storage} from "aws-amplify"
 
-const PostEditorPage = (props) => {
+
+
+const PostEditorPage = () => {
     const theme = useTheme();
     const useStyles = makeStyles({
         root: {
@@ -52,7 +55,6 @@ const PostEditorPage = (props) => {
                 setPost(post)
             } else {
                 alert(`Post with id ${id} not found! It might been deleted recently!`)
-                setPost(initialPostState)
                 history.push('/post-editor')
             }
         }
@@ -60,12 +62,18 @@ const PostEditorPage = (props) => {
             fetchPost(searchParams.get('id'))
                 .catch((e) => console.log(e))
         }
-    }, [history])
+    },[history])
 
-    const savePost = async () => {
-        const input = post
+
+    /**
+     * Save post to API.
+     * Updates state if save was successful.
+     *
+     * @param input Post object
+     * @return {Promise<void>}
+     */
+    const savePost = async (input) => {
         input.sanitizedHtml = markdownToHtml(input.markdown)
-
 
         let response
         // If id is found, we are updating post. New posts dont have id yet
@@ -95,13 +103,31 @@ const PostEditorPage = (props) => {
         }
     }
 
+    /**
+     * Delete current post, remove associated images from S3 and reset state.
+     *
+     * @return {Promise<void>}
+     */
     const deletePost = async () => {
         if (post.id) {
+
             const response = await api.deletePostById(post.id)
+
             if (response && !response.error) {
-                alert(`Post '${post.title}' deleted successfully from backend!`)
+                console.log(`Post '${response.title}' deleted successfully from backend!`)
+                console.log(`Removing ${response.images.length} associated files from S3..`)
+                try {
+                    for (const image in response.images) {
+                        await Storage.remove(image.key)
+                    }
+                } catch (e) {
+                    alert(`Something went wrong while removing files.. Restoring post..`)
+                    savePost(response).catch((e) => alert(e))
+                    return
+                }
+                alert(`Post '${response.title}' deleted successfully from backend!`)
+                history.push('/post-editor')
                 setPost(initialPostState)
-                history.push(`/post-editor`)
             } else {
                 if (response.error) {
                     alert(`Error(s) occurred while deleting post:\n${response.errorMessage}`)
@@ -112,9 +138,26 @@ const PostEditorPage = (props) => {
         }
     }
 
-    const addImage = (image) => {
-        const newImageArray = post.images.concat(image)
-        setPost({...post, images: newImageArray})
+    /**
+     * Concat new image object to post.images and save post to API.
+     *
+     * @param imageToAdd Image object to add. Must match graphql type Image.
+     */
+    const addImage = (imageToAdd) => {
+        const newImageArray = post.images.concat(imageToAdd)
+        const updatedPost = {...post, images: newImageArray}
+        savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
+    }
+
+    /**
+     * Remove image from post.images and save post to API.
+     *
+     * @param imageToRemove Image object to remove. Must match graphql type Image.
+     */
+    const removeImage = (imageToRemove) => {
+        const newImageArray = post.images.filter((image) =>(image !== imageToRemove))
+        const updatedPost = {...post, images: newImageArray}
+        savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
     }
 
     const calculatePreview = () => {
@@ -160,7 +203,8 @@ const PostEditorPage = (props) => {
                             savePost={savePost}
                             deletePost={deletePost}
                             calculatePreview={calculatePreview}
-                            addImage={addImage}/>
+                            addImage={addImage}
+                            removeImage={removeImage}/>
                     </Grid>
                 </Grid>
             </Container>
