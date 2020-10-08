@@ -47,12 +47,17 @@ export const createPost = /* GraphQL */ `
   ) {
     createPost(input: $input, condition: $condition) {
       id
+      s3id
       title
       author
       mapID
       description
       markdown
       sanitizedHtml
+      images {
+        key
+        url
+      }
       createdAt
       updatedAt
       map {
@@ -71,12 +76,17 @@ export const updatePost = /* GraphQL */ `
   ) {
     updatePost(input: $input, condition: $condition) {
       id
+      s3id
       title
       author
       mapID
       description
       markdown
       sanitizedHtml
+      images {
+        key
+        url
+      }
       createdAt
       updatedAt
       map {
@@ -95,12 +105,17 @@ export const deletePost = /* GraphQL */ `
   ) {
     deletePost(input: $input, condition: $condition) {
       id
+      s3id
       title
       author
       mapID
       description
       markdown
       sanitizedHtml
+      images {
+        key
+        url
+      }
       createdAt
       updatedAt
       map {

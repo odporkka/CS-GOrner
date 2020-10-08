@@ -35,12 +35,17 @@ export const onCreatePost = /* GraphQL */ `
   subscription OnCreatePost {
     onCreatePost {
       id
+      s3id
       title
       author
       mapID
       description
       markdown
       sanitizedHtml
+      images {
+        key
+        url
+      }
       createdAt
       updatedAt
       map {
@@ -56,12 +61,17 @@ export const onUpdatePost = /* GraphQL */ `
   subscription OnUpdatePost {
     onUpdatePost {
       id
+      s3id
       title
       author
       mapID
       description
       markdown
       sanitizedHtml
+      images {
+        key
+        url
+      }
       createdAt
       updatedAt
       map {
@@ -77,12 +87,17 @@ export const onDeletePost = /* GraphQL */ `
   subscription OnDeletePost {
     onDeletePost {
       id
+      s3id
       title
       author
       mapID
       description
       markdown
       sanitizedHtml
+      images {
+        key
+        url
+      }
       createdAt
       updatedAt
       map {

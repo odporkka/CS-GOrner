@@ -26,7 +26,11 @@ import PostFormImageUpload from "./PostFormImageUpload"
  * @constructor
  */
 const PostForm = (props) => {
-    const {post, setPost, resetPost} = props
+    const {post,
+        setPost,
+        resetPost,
+        addImage
+    } = props
     const useStyles = makeStyles({
         form: {
         },
@@ -65,7 +69,8 @@ const PostForm = (props) => {
         const input = post
         input.sanitizedHtml = markdownToHtml(input.markdown)
 
-        let response = null
+
+        let response
         // If id is found, we are updating post. New posts dont have id yet
         if (input.id) {
             // CreatedAt and updatedAt are managed by AWS automatically
@@ -153,7 +158,7 @@ const PostForm = (props) => {
 
                     {/* Top right side */}
                     <Grid container item xs={6}>
-                        <PostFormImageUpload />
+                        <PostFormImageUpload post={post} addImage={addImage}/>
                     </Grid>
 
                     {/* Text areas */}

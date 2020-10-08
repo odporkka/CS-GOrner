@@ -51,7 +51,23 @@
     "storage": {
         "csgorner": {
             "service": "S3",
-            "providerPlugin": "awscloudformation"
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "auth",
+                    "resourceName": "csgorner962324e8",
+                    "attributes": [
+                        "UserPoolId"
+                    ]
+                },
+                {
+                    "category": "auth",
+                    "resourceName": "userPoolGroups",
+                    "attributes": [
+                        "EditorsGroupRole"
+                    ]
+                }
+            ]
         }
     }
 }

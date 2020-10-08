@@ -1,5 +1,8 @@
 # https://docs.amplify.aws/cli/graphql-transformer/overview
 
+#########
+# TYPES #
+#########
 type Map
     @model
     @auth(
@@ -24,14 +27,38 @@ type Post
     )
 {
     id: ID!
+    s3id: String!
     title: String!
     author: String!
     mapID: ID!
     description: String!
     markdown: String!
     sanitizedHtml: String!
+    images: [Image]
     map: Map @connection(fields: ["mapID"])
 }
+
+type Image {
+    key: String!
+    url: String
+}
+
+#type Image
+#@model
+#@key(name: "byPost", fields: ["postID"])
+#@auth(
+#    rules: [
+#        { allow: public, provider: apiKey, operations: [read]},
+#        { allow: groups, provider: userPools, groups: ["Editors"]}
+#    ]
+#)
+#{
+#    id: ID!
+#    postID: ID!
+#    key: String!
+#    url: String
+#    post: Post @connection(fields: ["postID"])
+#}
 
 # TBI
 #type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
@@ -40,3 +67,12 @@ type Post
 #  post: Post @connection(fields: ["postID"])
 #  content: String!
 #}
+
+##########
+# INPUTS #
+##########
+
+input ImageInput {
+    key: String!
+    url: String
+}

@@ -32,12 +32,17 @@ export const getPost = /* GraphQL */ `
   query GetPost($id: ID!) {
     getPost(id: $id) {
       id
+      s3id
       title
       author
       mapID
       description
       markdown
       sanitizedHtml
+      images {
+        key
+        url
+      }
       createdAt
       updatedAt
       map {
@@ -58,12 +63,17 @@ export const listPosts = /* GraphQL */ `
     listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        s3id
         title
         author
         mapID
         description
         markdown
         sanitizedHtml
+        images {
+          key
+          url
+        }
         createdAt
         updatedAt
         map {

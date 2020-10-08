@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from "react-router-dom"
+import {v4 as uuidv4} from 'uuid'
 import {makeStyles, useTheme} from "@material-ui/core/styles"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
@@ -27,12 +28,14 @@ const PostEditorPage = (props) => {
     const history = useHistory()
     const initialPostState = {
         id: undefined,
+        s3id: uuidv4().split('-')[0],       // Random per post uuid for s3 files
         title: '',
         author: '',
         mapID: '',
         description: '',
         markdown: '',
-        sanitizedHtml: ''
+        sanitizedHtml: '',
+        images: []
     }
     const [post, setPost] = useState(initialPostState)
 
@@ -58,6 +61,11 @@ const PostEditorPage = (props) => {
 
     const resetPost = () => {
         setPost(initialPostState)
+    }
+
+    const addImage = (image) => {
+        const newImageArray = post.images.concat(image)
+        setPost({...post, images: newImageArray})
     }
 
 
@@ -88,7 +96,11 @@ const PostEditorPage = (props) => {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <PostForm post={post} setPost={setPost} resetPost={resetPost}/>
+                        <PostForm
+                            post={post}
+                            setPost={setPost}
+                            resetPost={resetPost}
+                            addImage={addImage}/>
                     </Grid>
                 </Grid>
             </Container>
