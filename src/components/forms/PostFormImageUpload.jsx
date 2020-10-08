@@ -4,6 +4,7 @@ import {makeStyles} from "@material-ui/core/styles"
 import {Typography} from "@material-ui/core"
 import BackspaceIcon from "@material-ui/icons/Backspace"
 import IconButton from "@material-ui/core/IconButton"
+import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined"
 
 
 /**
@@ -29,7 +30,6 @@ const PostFormImageUpload = (props) => {
         file: undefined,
         uploadProgress: undefined,
         uploadButtonDisabled: false,
-        removeInProgress: false
     }
     const [state, setState] = useState(initialState)
 
@@ -57,24 +57,62 @@ const PostFormImageUpload = (props) => {
         setState({...state, file: event.target.files[0]})
     }
 
-    // Add post specific s3 uuid
+    /**
+     * Post specific uuid that is used to group posts images under same path.
+     * "Folder" in S3. i.e. /public/<uuid>/fileName
+     *
+     * @param fileName
+     * @return {string}
+     */
     const resolveName = (fileName) => {
         return `${post.s3id}/${fileName}`
+    }
+
+    /**
+     * Construct public url to embed in markdown
+     *
+     * @param fileName
+     * @return {string}
+     */
+    const resolvePublicUrl = (fileName) => {
+        const s3Config = Storage.getPluggable('AWSS3')._config
+        const bucket = s3Config.bucket
+        const region = s3Config.region
+
+        return `https://${bucket}.s3-${region}.amazonaws.com/public/${fileName}`
+    }
+
+    const copyToClipboard = (url, fileName) => {
+        const markdownRefString = `<img src=${url} alt="${fileName}" height="200px"/>`
+
+        const copyText = document.createElement('textarea')
+        copyText.value = markdownRefString
+        document.body.append(copyText)
+        copyText.select()
+        document.execCommand('copy')
+        document.body.removeChild(copyText)
+
+        alert(`Copied the markdown ref: ${markdownRefString}`)
     }
 
     const uploadToS3 = async (event) => {
         event.preventDefault() // Need this, otherwise page reloads and does some strange shit
         setState({...state, uploadButtonDisabled: true})
 
+        const fileName = resolveName(state.file.name)
+        const publicUrl = resolvePublicUrl(fileName)
+
         // Push image to S3
         let result
         try {
-            result = await Storage.put(resolveName(state.file.name), state.file, {
+            result = await Storage.put(fileName, state.file, {
                 progressCallback(progress) {
                     const progressPercentage = (Math.round(progress.loaded / progress.total * 100))
                     setState({...state, uploadProgress: progressPercentage})
                 },
+                ACL: 'public-read'
             })
+            result.url = publicUrl
             addImage(result)
         } catch (e) {
             console.log(e)
@@ -99,28 +137,24 @@ const PostFormImageUpload = (props) => {
 
     return (
         <div>
-            { state.removeInProgress ?
-                <div>
-                    <p>Loading...</p>
-                </div>
-            :
-                <div>
-                    <label htmlFor='fileUpload' className={classes.label}>Upload images/videos/gifs..:</label>
-                    <input type="file" name="fileUpload" id='fileUpload' onChange={onChangeHandler}/>
-                    <br />
-                    {showState()}
-                    <ul>
-                        {post.images && post.images.map(image => (
-                            <li key={image.key}>
-                                {image.key}
-                                <IconButton aria-label='delete' style={{color:'red'}} onClick={() => removeFromS3(image)}>
-                                    <BackspaceIcon/>
-                                </IconButton>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            }
+            <label htmlFor='fileUpload' className={classes.label}>Upload images/videos/gifs..:</label>
+            <input type="file" name="fileUpload" id='fileUpload' onChange={onChangeHandler}/>
+            <br />
+            {showState()}
+            <ul>
+                {post.images && post.images.map(image => (
+                    <li key={image.key}>
+                        {image.key.split('/')[1]}
+                        <IconButton aria-label='copy' color='inherit'
+                            onClick={() => copyToClipboard(image.url, image.key)}>
+                            <FileCopyOutlinedIcon/>
+                        </IconButton>
+                        <IconButton aria-label='delete' style={{color:'red'}} onClick={() => removeFromS3(image)}>
+                            <BackspaceIcon/>
+                        </IconButton>
+                    </li>
+                ))}
+            </ul>
         </div>
     )
 }

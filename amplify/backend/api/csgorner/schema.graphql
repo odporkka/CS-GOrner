@@ -40,7 +40,7 @@ type Post
 
 type Image {
     key: String!
-    url: String
+    url: String!
 }
 
 #type Image
@@ -74,5 +74,5 @@ type Image {
 
 input ImageInput {
     key: String!
-    url: String
+    url: String!
 }
