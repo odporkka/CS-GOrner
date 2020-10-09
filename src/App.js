@@ -20,7 +20,7 @@ import {theme} from './theme'
  * @return {JSX.Element}
  * @constructor
  */
-function App() {
+const App = () => {
     const useStyles = makeStyles(() => ({
         rootContainer: {
             display: 'flex',
