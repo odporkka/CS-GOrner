@@ -48,7 +48,8 @@ const PostForm = (props) => {
         deletePost,
         calculatePreview,
         addImage,
-        removeImage
+        removeImage,
+        togglePublish
     } = props
     const classes = useStyles()
     const { contentData } = useContext(Context)
@@ -145,8 +146,8 @@ const PostForm = (props) => {
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Button variant='contained' onClick={() => savePost(post)} className={classes.button}>
-                            Publish
+                        <Button variant='contained' onClick={() => togglePublish()} className={classes.button}>
+                            {!post.published ? 'Publish' : 'Take post down'}
                         </Button>
                     </Grid>
                     <Grid item>

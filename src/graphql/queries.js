@@ -32,6 +32,8 @@ export const getPost = /* GraphQL */ `
   query GetPost($id: ID!) {
     getPost(id: $id) {
       id
+      published
+      deprecated
       s3id
       title
       author
@@ -63,6 +65,8 @@ export const listPosts = /* GraphQL */ `
     listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        published
+        deprecated
         s3id
         title
         author

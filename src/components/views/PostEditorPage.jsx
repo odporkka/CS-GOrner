@@ -42,7 +42,9 @@ const PostEditorPage = () => {
     const history = useHistory()
     const initialPostState = {
         id: undefined,
-        s3id: uuidv4().split('-')[0],       // Random per post uuid for s3 files
+        published: false,
+        deprecated: false,
+        s3id: uuidv4().split('-')[0],       // Random per post uuid used as s3 file prefix
         title: '',
         author: '',
         mapID: '',
@@ -169,6 +171,19 @@ const PostEditorPage = () => {
         savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
     }
 
+    /*
+     * Toggle publish parameter (with confirmation)
+     */
+    const togglePublish = () => {
+        const confirmationMessage = !post.published ?
+            'Are you sure you want to publish?' : 'Are you sure you want to take post down?'
+        const confirmed = window.confirm(confirmationMessage)
+        if (confirmed) {
+            const updatedPost = {...post, published: !post.published}
+            savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
+        }
+    }
+
     const calculatePreview = () => {
         setPost({...post, sanitizedHtml: markdownToHtml(post.markdown) })
     }
@@ -201,7 +216,7 @@ const PostEditorPage = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography variant="h6" component="h6">
-                            Post editor
+                            Post editor {post.published ? ` - ${post.title}` : '(Draft)'}
                         </Typography>
                     </Grid>
 
@@ -213,7 +228,8 @@ const PostEditorPage = () => {
                             deletePost={deletePost}
                             calculatePreview={calculatePreview}
                             addImage={addImage}
-                            removeImage={removeImage}/>
+                            removeImage={removeImage}
+                            togglePublish={togglePublish}/>
                     </Grid>
                 </Grid>
             </Container>

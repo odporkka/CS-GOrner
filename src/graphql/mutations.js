@@ -47,6 +47,8 @@ export const createPost = /* GraphQL */ `
   ) {
     createPost(input: $input, condition: $condition) {
       id
+      published
+      deprecated
       s3id
       title
       author
@@ -76,6 +78,8 @@ export const updatePost = /* GraphQL */ `
   ) {
     updatePost(input: $input, condition: $condition) {
       id
+      published
+      deprecated
       s3id
       title
       author
@@ -105,6 +109,8 @@ export const deletePost = /* GraphQL */ `
   ) {
     deletePost(input: $input, condition: $condition) {
       id
+      published
+      deprecated
       s3id
       title
       author
