@@ -1,28 +1,44 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import {AWSCognitoUserContext} from "../../context/AWSCognitoUserContext"
-import { makeStyles } from "@material-ui/core/styles"
-import Container from "@material-ui/core/Container"
-import Grid from "@material-ui/core/Grid"
-import Paper from "@material-ui/core/Paper"
-import Button from "@material-ui/core/Button"
-import EditIcon from '@material-ui/icons/Edit';
+import { makeStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import EditIcon from '@material-ui/icons/Edit'
 
-import PostBanner from "./PostBanner"
+// Own classes/components
+import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
+import PostBanner from './PostBanner'
 
-const Post = ({data}) => {
-    const useStyles = makeStyles({
-        root: {
-            color: 'black',
-            marginBottom: '15px',
-            backgroundColor: 'white',
-        },
-        divider: {
-            backgroundColor: 'black'
-        }
-    });
-    const classes = useStyles();
+// MUI styles
+const useStyles = makeStyles({
+    root: {
+        color: 'black',
+        marginBottom: '15px',
+        backgroundColor: 'white',
+    },
+    divider: {
+        backgroundColor: 'black'
+    }
+})
+
+
+
+/**
+ * Component to show single Post object.
+ *
+ * @return {JSX.Element}
+ * @constructor
+ * @param props
+ */
+const Post = (props) => {
+    const {
+        data
+    } = props
+    const classes = useStyles()
     const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
+
 
     return (
         <Paper xs={12} className={classes.root} >

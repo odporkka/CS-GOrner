@@ -1,12 +1,36 @@
-import React, {useContext} from 'react'
-import {makeStyles} from "@material-ui/core/styles"
-import Button from "@material-ui/core/Button"
-import Typography from "@material-ui/core/Typography"
-import Grid from "@material-ui/core/Grid"
+import React, { useContext } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 
-import {Context} from "../../context/Context"
-import Post from "../content/Post"
-import PostFormImageUpload from "./PostFormImageUpload"
+// Own classes/components
+import { Context } from '../../context/Context'
+import Post from '../content/Post'
+import PostFormImageUpload from './PostFormImageUpload'
+
+// MUI styles
+const useStyles = makeStyles({
+    form: {
+    },
+    label: {
+        paddingRight: '10px'
+    },
+    input: {
+        width: '400px'
+    },
+    description: {
+        width: '100%',
+        height: '100px'
+    },
+    markdown: {
+        width: '100%',
+        height: '400px'
+    },
+    button: {
+    }
+})
+
 
 
 /**
@@ -26,33 +50,13 @@ const PostForm = (props) => {
         addImage,
         removeImage
     } = props
-    const useStyles = makeStyles({
-        form: {
-        },
-        label: {
-            paddingRight: '10px'
-        },
-        input: {
-            width: '400px'
-        },
-        description: {
-            width: '100%',
-            height: '100px'
-        },
-        markdown: {
-            width: '100%',
-            height: '400px'
-        },
-        button: {
-        }
-    });
-    const classes = useStyles();
+    const classes = useStyles()
     const { contentData } = useContext(Context)
-
+    
     const handleInputChange = (event) => {
-        const value = event.target.value;
-        const name = event.target.name;
-        setPost({...post, [name]: value});
+        const value = event.target.value
+        const name = event.target.name
+        setPost({...post, [name]: value})
     }
 
 

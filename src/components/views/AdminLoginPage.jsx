@@ -1,35 +1,41 @@
 import React, { useContext } from 'react'
+import { Auth } from '@aws-amplify/auth'
 import { withAuthenticator } from '@aws-amplify/ui-react'
-import { makeStyles, useTheme } from "@material-ui/core/styles"
-import Paper from "@material-ui/core/Paper"
-import Container from "@material-ui/core/Container"
-import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
-import { AWSCognitoUserContext } from "../../context/AWSCognitoUserContext"
-import { Auth } from "@aws-amplify/auth"
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
+
+// Own classes/components
+import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
+
+// MUI styles
+const useStyles = makeStyles((theme) => ({
+    root: {
+    },
+    contentPaper: {
+        backgroundColor: theme.palette.primary.dark,
+    },
+    form: {
+
+    }
+}))
+
+
 
 /**
- * /admin page used for logging in as AWS user.
+ * "/admin" -page used for logging in as AWS IAM user (editors).
  *
- * Page is wrapped with "withAuthenticator" which forces aws login.
- * Because of that page is only rendered when user is logged in.
+ * OBS!! Page is wrapped with "withAuthenticator"!
+ * This shows embedded AWS login window if user is not already logged in.
+ * The actual component is only rendered if login is found.
  *
  * @return {JSX.Element}
  * @constructor
  */
 const AdminLoginPage = () => {
-    const theme = useTheme();
-    const useStyles = makeStyles({
-        root: {
-        },
-        contentPaper: {
-            backgroundColor: theme.palette.primary.dark,
-        },
-        form: {
-
-        }
-    });
-    const classes = useStyles();
+    const classes = useStyles()
     // Fetch AWS user if not found yet (right after login)
     const { AWSCognitoUser, setAWSCognitoUser } = useContext(AWSCognitoUserContext)
     if (!AWSCognitoUser) {
@@ -40,6 +46,7 @@ const AdminLoginPage = () => {
         fetchUser()
             .catch((e) => console.log(e))
     }
+
 
     return (
         <Paper className={classes.contentPaper}>

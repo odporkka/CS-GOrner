@@ -1,5 +1,13 @@
-import React from 'react';
+import React from 'react'
 
+
+
+/**
+ * "/about" -page.
+ *
+ * @return {JSX.Element}
+ * @constructor
+ */
 const AboutPage = () => {
 
     return (

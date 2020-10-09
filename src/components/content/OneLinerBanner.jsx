@@ -1,17 +1,28 @@
-import React from 'react';
-import {makeStyles, useTheme} from "@material-ui/core/styles"
-import Typography from "@material-ui/core/Typography"
-import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent"
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
 
+// MUI styles
+const useStyles = makeStyles((theme)=>({
+    root: {
+        backgroundColor: theme.palette.primary.light,
+    }
+}))
+
+
+
+/**
+ * On liners at top of home page.
+ * 
+ * 
+ * @return {JSX.Element}
+ * @constructor
+ */
 const OneLinerBanner = () => {
-    const theme = useTheme();
-    const useStyles = makeStyles({
-        root: {
-            backgroundColor: theme.palette.primary.light,
-        }
-    });
-    const classes = useStyles();
+    const classes = useStyles()
+
 
     return (
         <Card className={classes.root}>
@@ -24,7 +35,7 @@ const OneLinerBanner = () => {
                 </Typography>
             </CardContent>
         </Card>
-    );
+    )
 }
 
 export default OneLinerBanner

@@ -1,13 +1,27 @@
 import React from 'react'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 
-import PostTeaser from "./PostTeaser"
+// Own classes/components
+import PostTeaser from './PostTeaser'
 
-const NewPosts = ({posts}) => {
 
+
+/**
+ * Top X new posts component in home page.
+ *
+ * @return {JSX.Element}
+ * @constructor
+ * @param props
+ */
+const NewPosts = (props) => {
+    const {
+        posts
+    } = props
+    
+    
     return (
         <Paper>
             <Container>
@@ -18,7 +32,7 @@ const NewPosts = ({posts}) => {
 
                     { posts.map((post) => (
                             <Grid item key={post.id} xs={12}>
-                                <PostTeaser data={post} />
+                                <PostTeaser postData={post} />
                             </Grid>
                         )
                     )}

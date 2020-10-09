@@ -1,11 +1,19 @@
 import React, { useContext } from 'react'
-import Grid from "@material-ui/core/Grid"
+import Grid from '@material-ui/core/Grid'
 
-import OneLinerBanner from "../content/OneLinerBanner"
-import { Context } from "../../context/Context"
-import NewPosts from "../content/NewPosts"
+// Own classes/components
+import { Context } from '../../context/Context'
+import NewPosts from '../content/NewPosts'
+import OneLinerBanner from '../content/OneLinerBanner'
 
 
+
+/**
+ * Home page a.k.a landing page.
+ *
+ * @return {JSX.Element}
+ * @constructor
+ */
 const HomePage = () => {
     const { contentData } = useContext(Context)
 
@@ -19,7 +27,7 @@ const HomePage = () => {
                 <NewPosts posts={ contentData.posts }/>
             </Grid>
         </Grid>
-    );
+    )
 }
 
 export default HomePage

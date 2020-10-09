@@ -1,11 +1,13 @@
-import React, {createContext} from "react"
+import React, { createContext } from 'react'
 
+// Values that context should have
 const initialValues = {
     AWSCognitoUser: null,
     setAWSCognitoUser: () => {}
 }
-
 export const AWSCognitoUserContext = createContext(initialValues)
+
+
 
 /**
  * Context for AWS user (Users that can add/modify content)

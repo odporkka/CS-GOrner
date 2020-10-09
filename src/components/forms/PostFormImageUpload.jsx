@@ -1,10 +1,18 @@
-import React, {useState} from 'react'
-import {Storage} from 'aws-amplify'
-import {makeStyles} from "@material-ui/core/styles"
-import {Typography} from "@material-ui/core"
-import BackspaceIcon from "@material-ui/icons/Backspace"
-import IconButton from "@material-ui/core/IconButton"
-import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined"
+import React, { useState } from 'react'
+import { Storage } from 'aws-amplify'
+import { makeStyles } from '@material-ui/core/styles'
+import { Typography } from '@material-ui/core'
+import BackspaceIcon from '@material-ui/icons/Backspace'
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
+import IconButton from '@material-ui/core/IconButton'
+
+// MUI styles
+const useStyles = makeStyles({
+    label: {
+        paddingRight: '10px'
+    },
+})
+
 
 
 /**
@@ -20,12 +28,7 @@ const PostFormImageUpload = (props) => {
         addImage,
         removeImage
     } = props
-    const useStyles = makeStyles({
-        label: {
-            paddingRight: '10px'
-        },
-    });
-    const classes = useStyles();
+    const classes = useStyles()
     const initialState = {
         file: undefined,
         uploadProgress: undefined,
@@ -33,7 +36,7 @@ const PostFormImageUpload = (props) => {
     }
     const [state, setState] = useState(initialState)
 
-    /**
+    /*
      * State/submit component.
      *
      * @return {JSX.Element|null}
@@ -57,7 +60,7 @@ const PostFormImageUpload = (props) => {
         setState({...state, file: event.target.files[0]})
     }
 
-    /**
+    /*
      * Post specific uuid that is used to group posts images under same path.
      * "Folder" in S3. i.e. /public/<uuid>/fileName
      *
@@ -68,7 +71,7 @@ const PostFormImageUpload = (props) => {
         return `${post.s3id}/${fileName}`
     }
 
-    /**
+    /*
      * Construct public url to embed in markdown
      *
      * @param fileName

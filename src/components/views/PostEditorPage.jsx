@@ -1,34 +1,43 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {useHistory} from "react-router-dom"
-import {v4 as uuidv4} from 'uuid'
-import {makeStyles, useTheme} from "@material-ui/core/styles"
-import Paper from "@material-ui/core/Paper"
-import Typography from "@material-ui/core/Typography"
-import Grid from "@material-ui/core/Grid"
-import Container from "@material-ui/core/Container"
+import React, { useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Storage } from 'aws-amplify'
+import { v4 as uuidv4 } from 'uuid'
+import marked from 'marked'
+import DOMPurify from 'dompurify'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 
+// Own classes/components
+import {AWSCognitoUserContext} from '../../context/AWSCognitoUserContext'
 import * as api from '../../graphql/api'
-import PostForm from "../forms/PostForm"
-import {AWSCognitoUserContext} from "../../context/AWSCognitoUserContext"
-import marked from "marked"
-import DOMPurify from "dompurify"
-import {Storage} from "aws-amplify"
+import PostForm from '../forms/PostForm'
+
+// MUI styles
+const useStyles = makeStyles((theme) => ({
+    root: {
+    },
+    contentPaper: {
+        backgroundColor: theme.palette.primary.light,
+    },
+    form: {
+
+    }
+}))
 
 
 
+/**
+ * "/post-edit" -page.
+ * Editors can edit posts here.
+ * 
+ * @return {JSX.Element}
+ * @constructor
+ */
 const PostEditorPage = () => {
-    const theme = useTheme();
-    const useStyles = makeStyles({
-        root: {
-        },
-        contentPaper: {
-            backgroundColor: theme.palette.primary.light,
-        },
-        form: {
-
-        }
-    });
-    const classes = useStyles();
+    const classes = useStyles()
     const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
     const history = useHistory()
     const initialPostState = {
@@ -65,7 +74,7 @@ const PostEditorPage = () => {
     },[history])
 
 
-    /**
+    /*
      * Save post to API.
      * Updates state if save was successful.
      *
@@ -103,7 +112,7 @@ const PostEditorPage = () => {
         }
     }
 
-    /**
+    /*
      * Delete current post, remove associated images from S3 and reset state.
      *
      * @return {Promise<void>}
@@ -138,7 +147,7 @@ const PostEditorPage = () => {
         }
     }
 
-    /**
+    /*
      * Concat new image object to post.images and save post to API.
      *
      * @param imageToAdd Image object to add. Must match graphql type Image.
@@ -149,7 +158,7 @@ const PostEditorPage = () => {
         savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
     }
 
-    /**
+    /*
      * Remove image from post.images and save post to API.
      *
      * @param imageToRemove Image object to remove. Must match graphql type Image.

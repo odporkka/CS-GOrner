@@ -1,17 +1,30 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {Context} from "../../context/Context"
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 
+// Own classes/components
+import { Context } from "../../context/Context"
 import Post from "../content/Post"
 
+// MUI styles
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     }
-}));
+}))
 
+
+
+/**
+ * "tactics/<id>" -page.
+ * Show full single post.
+ *
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 const TacticPage = (props) => {
-    const classes = useStyles();
+    const classes = useStyles()
     const title = props.match.params.title
     const { contentData } = useContext(Context)
     const [ post, setPost ] = useState(null)
@@ -23,6 +36,7 @@ const TacticPage = (props) => {
         }
     }, [contentData, title])
 
+
     return (
         <div className={classes.root}>
             { post ?
@@ -31,8 +45,7 @@ const TacticPage = (props) => {
                 <div align='center'> loading...</div>
             }
         </div>
-
-    );
+    )
 }
 
 export default TacticPage

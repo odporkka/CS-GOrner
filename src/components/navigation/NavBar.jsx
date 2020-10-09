@@ -1,17 +1,19 @@
 import React  from 'react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { fade, makeStyles } from '@material-ui/core/styles'
-import InputBase from '@material-ui/core/InputBase'
 import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
 import Grid from '@material-ui/core/Grid'
+import InputBase from '@material-ui/core/InputBase'
 import SearchIcon from '@material-ui/icons/Search'
+import Tab from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
+import Toolbar from '@material-ui/core/Toolbar'
 
-import HomeButton from "./HomeButton"
-import UserMenu from "./UserMenu"
+// Own classes/components
+import HomeButton from './HomeButton'
+import UserMenu from './UserMenu'
 
+// MUI styles
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 0,
@@ -75,11 +77,19 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         float: 'right'
     }
-}));
+}))
 
+
+
+/**
+ * NavBar component at top of page.
+ *
+ * @return {JSX.Element}
+ * @constructor
+ */
 const NavBar = () => {
-    const classes = useStyles();
-    const location = useLocation();
+    const classes = useStyles()
+    const location = useLocation()
 
     const navBarPaths = ['/', '/tactics', '/forum', '/about']
 
@@ -128,7 +138,5 @@ const NavBar = () => {
         </div>
     );
 }
-
-
 
 export default NavBar

@@ -1,20 +1,32 @@
 import React, {useContext} from 'react'
-import {Context} from "../../context/Context"
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import MapCard from "../content/MapCard"
-import TacticsSearchPanel from "../navigation/TacticsSearchPanel"
+import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
 
-const useStyles = makeStyles((theme) => ({
+// Own classes/components
+import {Context} from '../../context/Context'
+import MapCard from '../content/MapCard'
+import TacticsSearchPanel from '../navigation/TacticsSearchPanel'
+
+// MUI styles
+const useStyles = makeStyles(() => ({
     root: {
         flexGrow: 1,
     }
-}));
+}))
 
+
+
+/**
+ * "/tactics" -page.
+ * Browse and search all posts.
+ *
+ * @return {JSX.Element}
+ * @constructor
+ */
 const TacticsBrowsePage = () => {
-    const classes = useStyles();
-
+    const classes = useStyles()
     const { contentData } = useContext(Context)
+
 
     return (
         <div className={classes.root}>
@@ -36,7 +48,7 @@ const TacticsBrowsePage = () => {
             </Grid>
         </div>
 
-    );
+    )
 }
 
 export default TacticsBrowsePage

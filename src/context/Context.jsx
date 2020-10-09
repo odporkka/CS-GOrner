@@ -1,15 +1,27 @@
 import React, { createContext, useEffect, useState } from "react";
 
+// Own classes/components
 import * as api from "../graphql/api"
 
+
+// Values that context should have
 const initialValues = {
     maps: [],
     posts: [],
     setPosts: () => {}
 }
-
 export const Context = createContext(initialValues)
 
+
+
+/**
+ * ContextProvider component.
+ * Store data fetched from API here.
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 const ContextAPIProvider = (props) => {
     /*
      * Set up context state (and implement setter functions)

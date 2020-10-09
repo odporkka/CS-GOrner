@@ -1,18 +1,45 @@
 import React, { useEffect, useState } from 'react'
-import { Auth } from "@aws-amplify/auth"
+import { Auth } from '@aws-amplify/auth'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
-import CssBaseline from "@material-ui/core/CssBaseline"
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
-import Grid from "@material-ui/core/Grid"
+import Grid from '@material-ui/core/Grid'
 
-import ContextAPIProvider from "./context/Context"
-import Footer from "./components/content/Footer"
-import NavBar from "./components/navigation/NavBar"
-import Router from "./Router"
-import ScrollToTopComponent from "./util/ScrollToTopComponent"
-import AWSCognitoUserContextAPIProvider from "./context/AWSCognitoUserContext"
-import {theme} from './theme'
+// Own classes/components
+import AWSCognitoUserContextAPIProvider from './context/AWSCognitoUserContext'
+import ContextAPIProvider from './context/Context'
+import Footer from './components/content/Footer'
+import NavBar from './components/navigation/NavBar'
+import Router from './Router'
+import ScrollToTopComponent from './util/ScrollToTopComponent'
+import { theme } from './theme'
+
+// MUI styles
+const useStyles = makeStyles(() => ({
+    rootContainer: {
+        display: 'flex',
+        minHeight: '100vh',
+        flexDirection: 'column'
+    },
+    mainGrid: {
+        flex: 1
+    },
+    mainContent: {
+        width: 'calc(100% - 320px)',
+        // border: '1px solid blue',
+        display: 'inline',
+    },
+    rightSideBanner: {
+        width: '300px',
+        marginLeft: '20px',
+        float: 'right',
+        border: '1px solid blue',
+        display: 'inline',
+    },
+}))
+
+
 
 /**
  * Root component
@@ -21,28 +48,6 @@ import {theme} from './theme'
  * @constructor
  */
 const App = () => {
-    const useStyles = makeStyles(() => ({
-        rootContainer: {
-            display: 'flex',
-            minHeight: '100vh',
-            flexDirection: 'column'
-        },
-        mainGrid: {
-            flex: 1
-        },
-        mainContent: {
-            width: 'calc(100% - 320px)',
-            // border: '1px solid blue',
-            display: 'inline',
-        },
-        rightSideBanner: {
-            width: '300px',
-            marginLeft: '20px',
-            float: 'right',
-            border: '1px solid blue',
-            display: 'inline',
-        },
-    }))
     const classes = useStyles()
 
     /*

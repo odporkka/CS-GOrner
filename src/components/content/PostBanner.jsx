@@ -1,32 +1,48 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { makeStyles } from "@material-ui/core/styles"
-import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
-import Divider from "@material-ui/core/Divider"
-import Link from "@material-ui/core/Link"
+import { makeStyles } from '@material-ui/core/styles'
+import Divider from '@material-ui/core/Divider'
+import Grid from '@material-ui/core/Grid'
+import Link from '@material-ui/core/Link'
+import Typography from '@material-ui/core/Typography'
 
-const PostBanner = ({data, inTeaser}) => {
-    const useStyles = makeStyles({
-        root: {
-            // height: '120px',
-            // maxHeight: '120px'
-        },
-        imageContainer: {
-            height: '80px'
-        },
-        image: {
-            height: '100%'
-        },
-        divider: {
-            // marginTop: '10px',
-            // marginBottom: '20px'
-        }
-    });
-    const classes = useStyles();
+// MUI styles
+const useStyles = makeStyles({
+    root: {
+        // height: '120px',
+        // maxHeight: '120px'
+    },
+    imageContainer: {
+        height: '80px'
+    },
+    image: {
+        height: '100%'
+    },
+    divider: {
+        // marginTop: '10px',
+        // marginBottom: '20px'
+    }
+})
+
+
+
+/**
+ * Header component of post object.
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
+const PostBanner = (props) => {
+    const {
+        data,
+        inTeaser
+    } = props
+    const classes = useStyles()
 
     const now = new Date()
     const publishedAt = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
+
 
     return (
         <Grid container className={classes.root} spacing={2}>
