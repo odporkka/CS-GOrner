@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 
 // Own classes/components
-import * as api from "../graphql/api"
+import * as api from "../backend/api"
 
 
 // Values that context should have
@@ -42,7 +42,7 @@ const ContextAPIProvider = (props) => {
     useEffect( () => {
         async function fetchData() {
             const maps = await api.fetchMaps()
-            const posts = await api.fetch10NewPosts()
+            const posts = await api.fetch10Posts()
             if (maps.error || posts.error) {
                 console.log('Error(s) while fetching data:')
                 if (maps.error) console.log('Maps error:', maps.errorMessage)

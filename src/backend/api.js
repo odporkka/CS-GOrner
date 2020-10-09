@@ -43,7 +43,7 @@ export const fetchPostWithId = async (id) => {
     }
 }
 
-export const fetch10NewPosts = async () => {
+export const fetch10Posts = async () => {
     try {
         const response = await API.graphql(graphqlOperation(queries.listPosts))
         return response.data.listPosts.items

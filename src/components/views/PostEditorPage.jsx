@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
 import {AWSCognitoUserContext} from '../../context/AWSCognitoUserContext'
-import * as api from '../../graphql/api'
+import * as api from '../../backend/api'
 import PostForm from '../forms/PostForm'
 
 // MUI styles
