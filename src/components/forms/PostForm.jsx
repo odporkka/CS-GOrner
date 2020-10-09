@@ -59,6 +59,11 @@ const PostForm = (props) => {
         setPost({...post, [name]: value})
     }
 
+    const findGeneralMapId = () => {
+        const general = contentData.maps.find((m) => (m.name === 'general'))
+        return general ? general.id : undefined
+    }
+
 
     return (
         <div id='post-form'>
@@ -88,7 +93,7 @@ const PostForm = (props) => {
                         <br />
 
                         <label htmlFor='map'>Map:</label>
-                        <select name='mapID' value={post.mapID} onChange={handleInputChange}>
+                        <select name='mapID' value={findGeneralMapId()} onChange={handleInputChange}>
                             { contentData.maps.map((map) => (
                                     <option value={map.id} key={map.id}>{map.name}</option>
                                 )
