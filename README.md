@@ -5,6 +5,9 @@
 Project consists of React frontend and AWS Amplify Api -backend (graphql).
 Only two branches, dev and master, are in use for now (Amplify creates backends per branch).
 
+Amplify documentation:
+https://docs.amplify.aws/lib/q/platform/js
+
 ### Workflow
 1. Checkout dev branch `git checkout dev`. (Amplify adjusts API environment based on this.)
 2. Run locally `npm start` and view on localhost:3000

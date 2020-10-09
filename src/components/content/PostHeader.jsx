@@ -33,15 +33,12 @@ const useStyles = makeStyles({
  * @return {JSX.Element}
  * @constructor
  */
-const PostBanner = (props) => {
+const PostHeader = (props) => {
     const {
         data,
         inTeaser
     } = props
     const classes = useStyles()
-
-    const now = new Date()
-    const publishedAt = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
 
 
     return (
@@ -81,7 +78,7 @@ const PostBanner = (props) => {
             <Grid item container xs={4} justify='flex-end' align='right'>
                 <Grid item xs={12}>
                     <Typography variant='body1'>
-                        { publishedAt }
+                        { data.publishDate }
                     </Typography>
                 </Grid>
                 <Grid item xs={12} className={classes.imageContainer}>
@@ -97,4 +94,4 @@ const PostBanner = (props) => {
     )
 }
 
-export default PostBanner
+export default PostHeader

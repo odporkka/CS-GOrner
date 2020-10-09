@@ -43,8 +43,11 @@ const PostEditorPage = () => {
     const initialPostState = {
         id: undefined,
         published: false,
+        // AWSDateTime, set at first publish
+        publishDate: undefined,
         deprecated: false,
-        s3id: uuidv4().split('-')[0],       // Random per post uuid used as s3 file prefix
+        // Random per post uuid used as s3 file prefix
+        s3id: uuidv4().split('-')[0],
         title: '',
         author: '',
         mapID: '',
@@ -179,7 +182,16 @@ const PostEditorPage = () => {
             'Are you sure you want to publish?' : 'Are you sure you want to take post down?'
         const confirmed = window.confirm(confirmationMessage)
         if (confirmed) {
-            const updatedPost = {...post, published: !post.published}
+            let firstPublishDate
+            // Calculate publishDate if first publish
+            if (!post.publishDate && !post.published) {
+                firstPublishDate = new Date().toISOString()
+            }
+            const updatedPost = {
+                ...post,
+                published: !post.published,
+                publishDate: post.publishDate ? post.publishDate : firstPublishDate
+            }
             savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
         }
     }

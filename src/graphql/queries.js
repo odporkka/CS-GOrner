@@ -33,6 +33,7 @@ export const getPost = /* GraphQL */ `
     getPost(id: $id) {
       id
       published
+      publishDate
       deprecated
       s3id
       title
@@ -66,6 +67,7 @@ export const listPosts = /* GraphQL */ `
       items {
         id
         published
+        publishDate
         deprecated
         s3id
         title

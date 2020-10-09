@@ -36,6 +36,7 @@ export const onCreatePost = /* GraphQL */ `
     onCreatePost {
       id
       published
+      publishDate
       deprecated
       s3id
       title
@@ -64,6 +65,7 @@ export const onUpdatePost = /* GraphQL */ `
     onUpdatePost {
       id
       published
+      publishDate
       deprecated
       s3id
       title
@@ -92,6 +94,7 @@ export const onDeletePost = /* GraphQL */ `
     onDeletePost {
       id
       published
+      publishDate
       deprecated
       s3id
       title

@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 
 // Own classes/components
-import PostBanner from './PostBanner'
+import PostHeader from './PostHeader'
 
 // MUI styles
 const useStyles = makeStyles({
@@ -40,7 +40,7 @@ const Post = (props) => {
             <Container>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <PostBanner data={data} inTeaser={false}/>
+                        <PostHeader data={data} inTeaser={false}/>
                     </Grid>
                     <Grid item xs={12}>
                         <div dangerouslySetInnerHTML={{ __html: data.sanitizedHtml }} />
