@@ -45,8 +45,15 @@ export const fetchPostWithId = async (id) => {
 
 export const fetch10Posts = async () => {
     try {
-        const response = await API.graphql(graphqlOperation(queries.listPosts))
-        return response.data.listPosts.items
+        const response = await API.graphql(graphqlOperation(queries.searchPosts, {
+            filter: { published: { eq: true }},
+            sort: {
+                field: 'publishDate',
+                direction: 'desc'
+            },
+            limit: 10
+        }))
+        return response.data.searchPosts.items
     } catch (e) {
         return handleError(e)
     }

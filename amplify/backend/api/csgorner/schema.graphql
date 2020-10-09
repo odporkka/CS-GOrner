@@ -18,7 +18,7 @@ type Map
 
 type Post
     @model
-    @key(name: "byMap", fields: ["mapID"])
+    @searchable
     @auth(
         rules: [
             { allow: public, provider: apiKey, operations: [read]},
