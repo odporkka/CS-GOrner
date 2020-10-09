@@ -1,14 +1,14 @@
 # In AWS AppSync -> Run a query
 
 # Seed maps
-mutation SeedContent {
+mutation CreateMaps {
   map0: createMap(input: {name: "general"}) {
     id
   }
-  map1: createMap(input: {name: "de_cache"}) {
+  map2: createMap(input: {name: "de_dust2"}) {
     id
   }
-  map2: createMap(input: {name: "de_dust2"}) {
+  map1: createMap(input: {name: "de_cache"}) {
     id
   }
   map3: createMap(input: {name: "de_inferno"}) {
@@ -33,7 +33,7 @@ mutation SeedContent {
 
 # Delete map
 mutation Deletemap {
-  deleteMap(input: {id: "3f6c1cea-3924-47b7-9d35-946284456717"}) {
+  deleteMap(input: {id: ""}) {
     id
   }
 }
