@@ -61,7 +61,7 @@ const UserMenu = () => {
                 onClick={handleClick}
                 startIcon={<AccountCircleIcon />}
                 endIcon={AWSCognitoUser ?
-                    <img src='admin-crown.png'  alt='admin-icon' style={{height: '20px', width: '20px'}}/> : null}>
+                    <img src='images/admin-crown.png'  alt='admin-icon' style={{height: '20px', width: '20px'}}/> : null}>
                 Log in
             </Button>
 

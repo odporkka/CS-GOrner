@@ -47,7 +47,7 @@ const OneLinerBanner = () => {
             </CardContent>
 
             <CardMedia>
-                <img className={classes.image} src='chicken.png' alt='chickkkken'/>
+                <img className={classes.image} src='images/chicken.png' alt='chickkkken'/>
             </CardMedia>
         </Card>
     )

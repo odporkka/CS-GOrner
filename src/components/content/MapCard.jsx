@@ -49,6 +49,10 @@ const MapCard = (props) => {
     } = props
     const classes = useStyles()
 
+    const getMapImagePath = (mapName) => {
+
+    }
+
 
     return (
         <Card className={classes.card} elevation={3}>
@@ -64,7 +68,7 @@ const MapCard = (props) => {
 
                 <CardMedia
                     className={classes.image}
-                    image="map.png"
+                    image={`images/maps/height420/${map.name}_h420.jpg`}
                     title="Map"
                 />
                 

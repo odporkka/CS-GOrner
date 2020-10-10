@@ -31,7 +31,7 @@ const HomeButton = (props) => {
 
     return (
         <RouterLink className={classes.link} to={homePath}>
-            <img className={classes.logo} src="csgorner-logo-white-red.png" alt="csgorner logo" style={style}/>
+            <img className={classes.logo} src="images/csgorner-logo-white-red.png" alt="csgorner logo" style={style}/>
         </RouterLink>
     )
 }
