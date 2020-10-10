@@ -8,7 +8,7 @@ import PostTeaser from './PostTeaser'
 
 
 /**
- * Top X new posts component in home page.
+ * Search results of TacticsBrosePage.
  *
  * @return {JSX.Element}
  * @constructor
@@ -19,20 +19,12 @@ const PostSearchResults = (props) => {
         results,
         searchCriteria
     } = props
-    console.log(searchCriteria.map?.name)
 
-    if (results.total === 0) {
-        return (
-            <Grid item xs={12}>
-                <Typography variant='h6'>No results!</Typography>
-            </Grid>
-        )
-    }
 
     return (
         <>
             <Grid item xs={12}>
-                <Typography variant='h5'>Results ({results.total}):</Typography>
+                <Typography variant='h6'>Results ({results.total})</Typography>
                 { searchCriteria.map && (
                     <Typography variant='body1'>Map: {searchCriteria.map.name}</Typography>
                 )}

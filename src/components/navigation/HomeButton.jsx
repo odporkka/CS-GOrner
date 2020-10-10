@@ -1,4 +1,16 @@
 import React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
+import {makeStyles} from "@material-ui/core/styles"
+
+// MUI styles
+const useStyles = makeStyles(() => ({
+    link: {
+        height: '100%'
+    },
+    logo: {
+        maxHeight: '60px'
+    }
+}))
 
 
 /**
@@ -7,14 +19,20 @@ import React from 'react'
  * @return {JSX.Element}
  * @constructor
  */
-const HomeButton = () => {
+const HomeButton = (props) => {
+    const {
+        homePath
+    } = props
+    const classes = useStyles()
+
     const style = {
-        maxHeight: '80px'
     }
 
 
     return (
-        <img src="home-logo-placeholder.png" alt="CS:GOrner-logo" style={style}/>
+        <RouterLink className={classes.link} to={homePath}>
+            <img className={classes.logo} src="csgorner-logo-white-red.png" alt="csgorner logo" style={style}/>
+        </RouterLink>
     )
 }
 

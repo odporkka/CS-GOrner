@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.dark
     },
     toolbar: {
-        maxHeight: '80px'
+        height: '80px'
     },
     tab: {
         minWidth: '100px',
@@ -104,7 +104,7 @@ const NavBar = () => {
                 <Toolbar className={classes.toolbar}>
                     <Grid container alignItems='center' justify='space-between'>
                         <Grid item >
-                            <HomeButton />
+                            <HomeButton homePath={navBarPaths[0]}/>
                         </Grid>
                         <Grid item >
                             <Tabs value={resolveTabValue()} centered className={classes.tabs}>

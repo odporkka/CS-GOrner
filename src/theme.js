@@ -4,6 +4,9 @@ import { createMuiTheme } from "@material-ui/core/styles"
  * Default theme to use across the site.
  * These values are merged to
  *
+ * LOGO red: #f44336
+ * LOGO white: #ffffff
+ *
  * @type {Theme}
  */
 export const theme = createMuiTheme({
