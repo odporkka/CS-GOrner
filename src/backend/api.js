@@ -43,7 +43,7 @@ export const fetchPostWithId = async (id) => {
     }
 }
 
-export const fetch10Posts = async () => {
+export const fetch10NewestPosts = async () => {
     try {
         const response = await API.graphql(graphqlOperation(queries.searchPosts, {
             filter: { published: { eq: true }},
@@ -52,6 +52,23 @@ export const fetch10Posts = async () => {
                 direction: 'desc'
             },
             limit: 10
+        }))
+        return response.data.searchPosts.items
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
+export const elasticSearch = async (filter, nextToken=undefined) => {
+    try {
+        const response = await API.graphql(graphqlOperation(queries.searchPosts, {
+            filter: filter,
+            sort: {
+                field: 'publishDate',
+                direction: 'desc'
+            },
+            limit: 10,
+            nextToken: nextToken
         }))
         return response.data.searchPosts.items
     } catch (e) {

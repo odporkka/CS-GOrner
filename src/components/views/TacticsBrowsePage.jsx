@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 
 // Own classes/components
+import LoadingSpinner from '../content/LoadingSpinner'
+import PostSearchResults from '../content/PostSearchResults'
 import TacticsMapPanel from '../navigation/TacticsMapPanel'
 import TacticsSearchPanel from '../navigation/TacticsSearchPanel'
-import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
-import PostTeaser from "../content/PostTeaser"
+import * as chicken from '../../util/PostFetchingChicken'
 
 // MUI styles
 const useStyles = makeStyles(() => ({
@@ -34,22 +35,22 @@ const useStyles = makeStyles(() => ({
  */
 const TacticsBrowsePage = () => {
     const classes = useStyles()
-    const initialSeachOptions = {
-        map: 'Nuke',
+    const initialSearchOptions = {
+        map: undefined,
         tags: [],
-        author: 'Helarius Hiiri'
+        author: undefined
     }
-    const [searchOptions, setSeachOptions] = useState(initialSeachOptions)
+    const [searchOptions, setSearchOptions] = useState(initialSearchOptions)
+    const [resultsLoading, setResultsLoading] = useState(false)
+    const [results, setResults] = useState([])
 
-    const titleString = () => {
-        let string = "Posts "
-        if (searchOptions.map) string += `on map ${searchOptions.map} `
-        if (searchOptions.author) string += `by ${searchOptions.author} `
-        return string
-    }
-
-    const searchByMap = (map) => {
-        setSeachOptions({...searchOptions, map: map.name})
+    const searchByMap = async (map) => {
+        setResultsLoading(true)
+        const newSearchOptions = { ...initialSearchOptions, map: map}
+        const results = await chicken.fetch(newSearchOptions)
+        setSearchOptions(newSearchOptions)
+        setResults(results)
+        setResultsLoading(false)
     }
 
 
@@ -58,7 +59,6 @@ const TacticsBrowsePage = () => {
 
             <Grid className={classes.searchMenus} item xs={12}>
                 <TacticsSearchPanel />
-
                 <TacticsMapPanel searchByMap={searchByMap}/>
             </Grid>
 
@@ -66,16 +66,19 @@ const TacticsBrowsePage = () => {
                 <Paper>
                     <Container>
                         <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <Typography variant='h5'>{titleString()}</Typography>
-                            </Grid>
+
+                            { resultsLoading ?
+                                <LoadingSpinner xsItemSize={12}/>
+                            :
+                                <PostSearchResults posts={results} searchCriteria={searchOptions}/>
+                            }
+
                         </Grid>
                     </Container>
                 </Paper>
             </Grid>
 
         </Grid>
-
     )
 }
 

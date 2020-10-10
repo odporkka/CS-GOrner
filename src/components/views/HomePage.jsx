@@ -24,7 +24,7 @@ const HomePage = () => {
             </Grid>
 
             <Grid item xs={12}>
-                <NewPosts posts={ contentData.posts }/>
+                <NewPosts posts={ contentData.newPosts }/>
             </Grid>
         </Grid>
     )

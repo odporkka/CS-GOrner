@@ -1,10 +1,10 @@
-import React, {useContext} from 'react'
+import React, { useContext, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import Grid from '@material-ui/core/Grid'
-import SearchIcon from '@material-ui/icons/Search'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography'
 
 // Own classes/compontets
@@ -39,13 +39,22 @@ const TacticsMapPanel = (props) => {
     } = props
     const classes = useStyles()
     const { contentData } = useContext(Context)
+    const [ expanded, setExpanded ] = useState(true)
 
+    const toggleExpand = () => {
+        setExpanded(!expanded)
+    }
+
+    const toggleSearch = (map) => {
+        setExpanded(false)
+        searchByMap(map)
+    }
 
     return (
         <div className={classes.root}>
-            <Accordion className={classes.panel}>
+            <Accordion className={classes.panel} expanded={expanded} onClick={() => toggleExpand()}>
                 <AccordionSummary
-                    expandIcon={<SearchIcon />}
+                    expandIcon={<ExpandMoreIcon fontSize='large'/>}
                     aria-controls="search settings"
                     id="panel1a-header"
                 >
@@ -56,7 +65,7 @@ const TacticsMapPanel = (props) => {
                     <Grid container spacing={2} >
                         { contentData.maps.map((map) => (
                                 <Grid item key={map.id} xs={12}>
-                                    <MapCard map={map} key={map.id} searchByMap={searchByMap}/>
+                                    <MapCard map={map} key={map.id} toggleSearch={toggleSearch}/>
                                 </Grid>
                             )
                         )}

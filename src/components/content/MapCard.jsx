@@ -46,14 +46,14 @@ const useStyles = makeStyles((theme)=>({
 const MapCard = (props) => {
     const {
         map,
-        searchByMap
+        toggleSearch
     } = props
     const classes = useStyles()
 
 
     return (
         <Card className={classes.card} elevation={3}>
-            <CardActionArea className={classes.actionArea} onClick={() => searchByMap(map)}>
+            <CardActionArea className={classes.actionArea} onClick={() => toggleSearch(map)}>
                 <CardContent className={classes.content}>
                     <Typography variant="h5" component="h3">
                         {map.name}

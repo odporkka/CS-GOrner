@@ -30,13 +30,14 @@ const useStyles = makeStyles((theme) => ({
  */
 const TacticPage = (props) => {
     const classes = useStyles()
+    // Actually id for now. TODO: rename in Router?
     const title = props.match.params.title
     const { contentData } = useContext(Context)
     const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
     const [ post, setPost ] = useState(null)
 
     useEffect(() => {
-        const postData = contentData.posts.find((p) => (p.id === title))
+        const postData = contentData.newPosts.find((p) => (p.id === title))
         if (postData) {
             setPost(postData)
         }
