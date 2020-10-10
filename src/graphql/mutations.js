@@ -9,6 +9,7 @@ export const createMap = /* GraphQL */ `
     createMap(input: $input, condition: $condition) {
       id
       name
+      canonicalName
       createdAt
       updatedAt
     }
@@ -22,6 +23,7 @@ export const updateMap = /* GraphQL */ `
     updateMap(input: $input, condition: $condition) {
       id
       name
+      canonicalName
       createdAt
       updatedAt
     }
@@ -35,6 +37,7 @@ export const deleteMap = /* GraphQL */ `
     deleteMap(input: $input, condition: $condition) {
       id
       name
+      canonicalName
       createdAt
       updatedAt
     }
@@ -66,6 +69,7 @@ export const createPost = /* GraphQL */ `
       map {
         id
         name
+        canonicalName
         createdAt
         updatedAt
       }
@@ -98,6 +102,7 @@ export const updatePost = /* GraphQL */ `
       map {
         id
         name
+        canonicalName
         createdAt
         updatedAt
       }
@@ -130,6 +135,7 @@ export const deletePost = /* GraphQL */ `
       map {
         id
         name
+        canonicalName
         createdAt
         updatedAt
       }

@@ -1,32 +1,37 @@
 # In AWS AppSync -> Run a query
 
+2ad74248-2087-4390-aa8f-56f4bd26123f
+
+b0d8d6bd-5819-474f-b098-593dec2735fd
+94a5b045-2b9c-404c-b4b3-78ce356edd3c
+
 # Seed maps
-mutation CreateMaps {
-  map0: createMap(input: {name: "general"}) {
+mutation CreateAllMaps {
+  map0: createMap(input: {name: "general", canonicalName: "General"}) {
     id
   }
-  map2: createMap(input: {name: "de_dust2"}) {
+  map1: createMap(input: {name: "de_dust2", canonicalName: "Dust II"}) {
     id
   }
-  map1: createMap(input: {name: "de_cache"}) {
+  map2: createMap(input: {name: "de_cache", canonicalName: "Cache"}) {
     id
   }
-  map3: createMap(input: {name: "de_inferno"}) {
+  map3: createMap(input: {name: "de_inferno", canonicalName: "Inferno"}) {
     id
   }
-  map4: createMap(input: {name: "de_mirage"}) {
+  map4: createMap(input: {name: "de_mirage", canonicalName: "Mirage"}) {
     id
   }
-  map5: createMap(input: {name: "de_nuke"}) {
+  map5: createMap(input: {name: "de_nuke", canonicalName: "Nuke"}) {
     id
   }
-  map6: createMap(input: {name: "de_overpass"}) {
+  map6: createMap(input: {name: "de_overpass", canonicalName: "Overpass"}) {
     id
   }
-  map7: createMap(input: {name: "de_train"}) {
+  map7: createMap(input: {name: "de_train", canonicalName: "Train"}) {
     id
   }
-  map8: createMap(input: {name: "de_vertigo"}) {
+  map8: createMap(input: {name: "de_vertigo", canonicalName: "Vertigo"}) {
     id
   }
 }

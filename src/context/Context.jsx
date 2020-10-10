@@ -11,6 +11,20 @@ const initialValues = {
 }
 export const Context = createContext(initialValues)
 
+/*
+ * Sort maps based on canonical name, but put "General" first
+ */
+const sortMaps = (unsorted) => {
+    // Pick "general" map
+    const general = unsorted.find((m) => (m.name === 'general'))
+    // Filter general out of unsorted
+    unsorted = unsorted.filter((m) => (m.name !== 'general'))
+    // Sort based on canonical (display) name
+    const sorted = unsorted.sort((m1, m2) => (m1.canonicalName > m2.canonicalName) ? 1 : -1)
+    // Return general in front of list
+    sorted.unshift(general)
+    return sorted
+}
 
 
 /**
@@ -43,7 +57,7 @@ const ContextAPIProvider = (props) => {
                 if (posts.error) console.log('Posts error:', posts.errorMessage)
                 return
             }
-            setContentData(state => ({...state, maps: maps, newPosts: posts}))
+            setContentData(state => ({...state, maps: sortMaps(maps), newPosts: posts}))
         }
         fetchData()
             .catch((e) => console.log(e))

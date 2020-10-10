@@ -6,6 +6,7 @@ export const onCreateMap = /* GraphQL */ `
     onCreateMap {
       id
       name
+      canonicalName
       createdAt
       updatedAt
     }
@@ -16,6 +17,7 @@ export const onUpdateMap = /* GraphQL */ `
     onUpdateMap {
       id
       name
+      canonicalName
       createdAt
       updatedAt
     }
@@ -26,6 +28,7 @@ export const onDeleteMap = /* GraphQL */ `
     onDeleteMap {
       id
       name
+      canonicalName
       createdAt
       updatedAt
     }
@@ -54,6 +57,7 @@ export const onCreatePost = /* GraphQL */ `
       map {
         id
         name
+        canonicalName
         createdAt
         updatedAt
       }
@@ -83,6 +87,7 @@ export const onUpdatePost = /* GraphQL */ `
       map {
         id
         name
+        canonicalName
         createdAt
         updatedAt
       }
@@ -112,6 +117,7 @@ export const onDeletePost = /* GraphQL */ `
       map {
         id
         name
+        canonicalName
         createdAt
         updatedAt
       }

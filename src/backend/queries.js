@@ -17,6 +17,7 @@ export const listMaps = /* GraphQL */ `
       items {
         id
         name
+        canonicalName
         createdAt
         updatedAt
       }
@@ -50,6 +51,7 @@ export const getPost = /* GraphQL */ `
       updatedAt
       map {
         name
+        canonicalName
       }
     }
   }
@@ -81,6 +83,7 @@ export const listPosts = /* GraphQL */ `
         updatedAt
         map {
           name
+          canonicalName
         }
       }
       nextToken
@@ -120,6 +123,7 @@ export const searchPosts = /* GraphQL */ `
         updatedAt
         map {
           name
+          canonicalName
         }
       }
       nextToken

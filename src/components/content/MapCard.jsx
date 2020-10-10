@@ -59,7 +59,7 @@ const MapCard = (props) => {
             <CardActionArea className={classes.actionArea} onClick={() => toggleSearch(map)}>
                 <CardContent className={classes.content}>
                     <Typography variant="h5" component="h3">
-                        {map.name}
+                        {map.canonicalName}
                     </Typography>
                     <Typography variant="body2" component="p">
                         Browse {map.name} tactics

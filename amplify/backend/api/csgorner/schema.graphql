@@ -14,6 +14,7 @@ type Map
 {
     id: ID!
     name: String!
+    canonicalName: String!
 }
 
 type Post
