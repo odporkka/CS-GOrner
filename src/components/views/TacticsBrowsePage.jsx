@@ -35,20 +35,31 @@ const useStyles = makeStyles(() => ({
  */
 const TacticsBrowsePage = () => {
     const classes = useStyles()
-    const initialSearchOptions = {
+    const initialSearchCriteria = {
         map: undefined,
         tags: [],
         author: undefined
     }
-    const [searchOptions, setSearchOptions] = useState(initialSearchOptions)
+    const initialResults = {
+        items: [],
+        total: 0
+    }
+    const [searchCriteria, setSearchCriteria] = useState(initialSearchCriteria)
     const [resultsLoading, setResultsLoading] = useState(false)
-    const [results, setResults] = useState([])
+    const [results, setResults] = useState(initialResults)
 
+    /*
+     * Elastic search all posts by map.
+     * (TODO: Consider limit if amount of posts is big?)
+     *
+     * @param map
+     * @return {Promise<void>}
+     */
     const searchByMap = async (map) => {
         setResultsLoading(true)
-        const newSearchOptions = { ...initialSearchOptions, map: map}
+        const newSearchOptions = { ...initialSearchCriteria, map: map}
         const results = await chicken.fetch(newSearchOptions)
-        setSearchOptions(newSearchOptions)
+        setSearchCriteria(newSearchOptions)
         setResults(results)
         setResultsLoading(false)
     }
@@ -70,7 +81,7 @@ const TacticsBrowsePage = () => {
                             { resultsLoading ?
                                 <LoadingSpinner xsItemSize={12}/>
                             :
-                                <PostSearchResults posts={results} searchCriteria={searchOptions}/>
+                                <PostSearchResults results={results} searchCriteria={searchCriteria}/>
                             }
 
                         </Grid>

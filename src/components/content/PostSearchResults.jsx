@@ -16,12 +16,12 @@ import PostTeaser from './PostTeaser'
  */
 const PostSearchResults = (props) => {
     const {
-        posts,
+        results,
         searchCriteria
     } = props
     console.log(searchCriteria.map?.name)
 
-    if (posts.length === 0) {
+    if (results.total === 0) {
         return (
             <Grid item xs={12}>
                 <Typography variant='h6'>No results!</Typography>
@@ -32,13 +32,13 @@ const PostSearchResults = (props) => {
     return (
         <>
             <Grid item xs={12}>
-                <Typography variant='h5'>Results</Typography>
+                <Typography variant='h5'>Results ({results.total}):</Typography>
                 { searchCriteria.map && (
                     <Typography variant='body1'>Map: {searchCriteria.map.name}</Typography>
                 )}
             </Grid>
 
-            { posts.map((post) => (
+            { results.items.map((post) => (
                     <Grid item key={post.id} xs={12}>
                         <PostTeaser postData={post} />
                     </Grid>

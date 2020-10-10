@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
+import { ChevronRight } from '@material-ui/icons'
 import Typography from '@material-ui/core/Typography'
 
 // MUI styles
@@ -13,8 +14,6 @@ const useStyles = makeStyles((theme)=>({
         display: 'flex',
         backgroundColor: 'white',
         color: 'black',
-        // borderRadius: 0,
-        // boxShadow: "none"
     },
     actionArea: {
         display: 'flex',
@@ -25,11 +24,11 @@ const useStyles = makeStyles((theme)=>({
         height: '100%'
     },
     image: {
-        width: '70%',
+        width: '60%',
         height: '100%'
     },
     content: {
-        // height: 60,
+        width: '30%'
     }
 
 }))
@@ -68,6 +67,8 @@ const MapCard = (props) => {
                     image="map.png"
                     title="Map"
                 />
+                
+                <ChevronRight fontSize='large'/>
 
             </CardActionArea>
             {/*<CardActions>*/}

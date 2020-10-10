@@ -70,7 +70,7 @@ export const elasticSearch = async (filter, nextToken=undefined) => {
             limit: 10,
             nextToken: nextToken
         }))
-        return response.data.searchPosts.items
+        return response.data.searchPosts
     } catch (e) {
         return handleError(e)
     }
