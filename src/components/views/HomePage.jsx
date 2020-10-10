@@ -18,8 +18,8 @@ const HomePage = () => {
     const { contentData } = useContext(Context)
 
     return (
-        <Grid container spacing={4}>
-            <Grid item xs={12}>
+        <Grid container spacing={4} justify='flex-end'>
+            <Grid item>
                 <OneLinerBanner />
             </Grid>
 
