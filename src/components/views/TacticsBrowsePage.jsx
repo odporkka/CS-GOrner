@@ -1,16 +1,25 @@
-import React, {useContext} from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
+import Container from '@material-ui/core/Container'
+import Paper from '@material-ui/core/Paper'
 
 // Own classes/components
-import {Context} from '../../context/Context'
-import MapCard from '../content/MapCard'
+import TacticsMapPanel from '../navigation/TacticsMapPanel'
 import TacticsSearchPanel from '../navigation/TacticsSearchPanel'
+import Grid from "@material-ui/core/Grid"
+import Typography from "@material-ui/core/Typography"
+import PostTeaser from "../content/PostTeaser"
 
 // MUI styles
 const useStyles = makeStyles(() => ({
     root: {
         flexGrow: 1,
+    },
+    searchMenus: {
+
+    },
+    results: {
+
     }
 }))
 
@@ -25,28 +34,47 @@ const useStyles = makeStyles(() => ({
  */
 const TacticsBrowsePage = () => {
     const classes = useStyles()
-    const { contentData } = useContext(Context)
+    const initialSeachOptions = {
+        map: 'Nuke',
+        tags: [],
+        author: 'Helarius Hiiri'
+    }
+    const [searchOptions, setSeachOptions] = useState(initialSeachOptions)
+
+    const titleString = () => {
+        let string = "Posts "
+        if (searchOptions.map) string += `on map ${searchOptions.map} `
+        if (searchOptions.author) string += `by ${searchOptions.author} `
+        return string
+    }
+
+    const searchByMap = (map) => {
+        setSeachOptions({...searchOptions, map: map.name})
+    }
 
 
     return (
-        <div className={classes.root}>
+        <Grid className={classes.root} container spacing={2}>
 
-            <TacticsSearchPanel />
+            <Grid className={classes.searchMenus} item xs={12}>
+                <TacticsSearchPanel />
 
-
-            <Grid container spacing={5}
-                direction="row"
-                justify="center"
-                alignItems="center">
-
-                { contentData.maps.map((map) => (
-                    <Grid item key={map.id}>
-                        <MapCard map={map} key={map.id} />
-                    </Grid>
-                    )
-                )}
+                <TacticsMapPanel searchByMap={searchByMap}/>
             </Grid>
-        </div>
+
+            <Grid className={classes.results} item xs={12}>
+                <Paper>
+                    <Container>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography variant='h5'>{titleString()}</Typography>
+                            </Grid>
+                        </Grid>
+                    </Container>
+                </Paper>
+            </Grid>
+
+        </Grid>
 
     )
 }

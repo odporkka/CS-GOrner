@@ -1,8 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
@@ -11,21 +9,27 @@ import Typography from '@material-ui/core/Typography'
 // MUI styles
 const useStyles = makeStyles((theme)=>({
     card: {
-        height: 250,
-        width: 200,
-        maxWidth: 200,
-        maxHeight: 250,
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.primary.contrastText,
+        height: 70,
+        display: 'flex',
+        backgroundColor: 'white',
+        color: 'black',
         // borderRadius: 0,
         // boxShadow: "none"
     },
+    actionArea: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    media: {
+        width: 150,
+        height: '100%'
+    },
     image: {
-        height: 150,
-        // width: 150,
+        width: '70%',
+        height: '100%'
     },
     content: {
-        height: 60,
+        // height: 60,
     }
 
 }))
@@ -41,19 +45,15 @@ const useStyles = makeStyles((theme)=>({
  */
 const MapCard = (props) => {
     const {
-        map
+        map,
+        searchByMap
     } = props
     const classes = useStyles()
 
 
     return (
         <Card className={classes.card} elevation={3}>
-            <CardActionArea>
-                <CardMedia
-                    className={classes.image}
-                    image="map.png"
-                    title="Map"
-                />
+            <CardActionArea className={classes.actionArea} onClick={() => searchByMap(map)}>
                 <CardContent className={classes.content}>
                     <Typography variant="h5" component="h3">
                         {map.name}
@@ -62,15 +62,22 @@ const MapCard = (props) => {
                         Browse {map.name} tactics
                     </Typography>
                 </CardContent>
+
+                <CardMedia
+                    className={classes.image}
+                    image="map.png"
+                    title="Map"
+                />
+
             </CardActionArea>
-            <CardActions>
-                <Button size="small" color="primary">
-                    Forums
-                </Button>
-                <Button size="small" color="primary">
-                    Share
-                </Button>
-            </CardActions>
+            {/*<CardActions>*/}
+            {/*    <Button size="small" color="primary">*/}
+            {/*        Forums*/}
+            {/*    </Button>*/}
+            {/*    <Button size="small" color="primary">*/}
+            {/*        Share*/}
+            {/*    </Button>*/}
+            {/*</CardActions>*/}
         </Card>
     );
 

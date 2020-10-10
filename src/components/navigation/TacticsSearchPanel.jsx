@@ -39,7 +39,7 @@ const TacticsSearchPanel = () => {
                     aria-controls="search settings"
                     id="panel1a-header"
                 >
-                    <Typography className={classes.heading}>Filter posts...</Typography>
+                    <Typography className={classes.heading}>Advanced filtering...</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
