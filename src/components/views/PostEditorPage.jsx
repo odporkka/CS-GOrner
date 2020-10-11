@@ -16,6 +16,7 @@ import DraftPicker from '../forms/postFormSections/DraftPicker'
 import PostForm from '../forms/PostForm'
 import * as api from '../../backend/api'
 import * as chicken from '../../util/postFetchingChicken'
+import { initialPostState } from "../../backend/models/post"
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
@@ -42,53 +43,76 @@ const PostEditorPage = () => {
     const classes = useStyles()
     const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
     const history = useHistory()
-    const initialPostState = {
-        id: undefined,
-        published: false,
-        // AWSDateTime, set at first publish
-        publishDate: undefined,
-        deprecated: false,
-        // Random per post uuid used as s3 file prefix
-        s3id: uuidv4().split('-')[0],
-        title: '',
-        author: '',
-        mapID: '',
-        description: '',
-        markdown: '',
-        sanitizedHtml: '',
-        images: []
-    }
-    const [post, setPost] = useState(initialPostState)
     const [draftList, setDraftList] = useState([])
+    const [post, setPost] = useState(initialPostState)
 
     /*
-     * Fetch post if id was given in url parameters
+     * Fetch post if id was given in url parameters.
+     * Loads post after url changes with history.listener.
+     *
+     * This effect should launch on first render only.
+     * Listener handles calling fetchPost after that.
      */
     useEffect(() => {
-        const searchParams = new URLSearchParams(window.location.search)
-        const fetchPost = async (id) => {
-            const post = await api.fetchPostWithId(id)
-            if (post) {
-                setPost(post)
+        let mounted = true
+
+        console.log('useEffect called')
+
+        const fetch = async () => {
+            const searchParams = new URLSearchParams(window.location.search)
+            if (searchParams.has('id')) {
+                const id = searchParams.get('id')
+                const post = await api.fetchPostWithId(id)
+                if (mounted) {
+                    if (post) {
+                        setPost(post)
+                    } else {
+                        alert(`Post with id ${id} not found! It might been deleted recently!`)
+                        history.push('/post-editor')
+                    }
+                }
             } else {
-                alert(`Post with id ${id} not found! It might been deleted recently!`)
-                history.push('/post-editor')
+                setPost(initialPostState)
             }
         }
-        if (searchParams.has('id')) {
-            fetchPost(searchParams.get('id'))
-                .catch((e) => console.log(e))
-        }
-    },[history])
+        fetch().catch((e) => console.log(e))
 
+        return () => { mounted = false }
+
+        // // Set up history listener. Returns unmount function.
+        // const unmountHistoryListener = history.listen(() => fetchPost(history, mounted, setPost, initialPostState))
+        // // First render, so need to call manually here
+        // fetchPost(history, mounted, setPost, initialPostState).catch((e) => console.log(e))
+        //
+        // /*
+        //  * Cleanup function
+        //  * - Set mounted to false to avoid useless setPosts
+        //  * - Call unmount function for history listener to avoid multiple listeners after new render
+        //  */
+        // return () => {
+        //     mounted = false
+        //     unmountHistoryListener()
+        // }
+    },[window.location.search, initialPostState])
+
+
+    /*
+     * Fetch list of drafts.
+     */
     useEffect(() => {
+        let mounted = true
         const fetchDrafts = async () => {
             const drafts = await chicken.fetchDraftTitlesAndIds()
-            setDraftList(drafts)
+            if (mounted) setDraftList(drafts)
         }
         fetchDrafts().catch((e) => console.log(e))
+
+        return () => { mounted = false }
     }, [])
 
+    const calculateS3uuid = () => {
+        return uuidv4().split('-')[0]
+    }
 
     /*
      * Save post to API.
@@ -121,7 +145,6 @@ const PostEditorPage = () => {
             if (!response.error) {
                 alert(`Post '${input.title}' created successfully!`)
                 history.push(`/post-editor?id=${response.id}`)
-                setPost(response)
             } else {
                 alert(`Error(s) occurred while trying to create post:\n${response.errorMessage}`)
             }
@@ -152,7 +175,6 @@ const PostEditorPage = () => {
                 }
                 alert(`Post '${response.title}' deleted successfully from backend!`)
                 history.push('/post-editor')
-                setPost(initialPostState)
             } else {
                 if (response.error) {
                     alert(`Error(s) occurred while deleting post:\n${response.errorMessage}`)
