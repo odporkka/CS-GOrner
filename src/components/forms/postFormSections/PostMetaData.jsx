@@ -33,7 +33,7 @@ const PostMetaData = (props) => {
     } = props
     const classes = useStyles()
     const { contentData } = useContext(Context)
-    const firstMapId = contentData.maps?.[0]?.id ? contentData.maps[0].id : null
+    const firstMapId = contentData.maps?.[0]?.id ? contentData.maps[0].id : ''
 
 
     return (

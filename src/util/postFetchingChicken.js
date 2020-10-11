@@ -22,3 +22,18 @@ export const fetch = async (searchCriteria) => {
 
     return response
 }
+
+export const fetchDraftTitlesAndIds = async (author=undefined) =>{
+    console.log('Chicken is fetching drafts!')
+
+    const filter = { published: { eq: false }}
+
+    const response = await api.elasticSearchIdsAndTitles(filter)
+    console.log('Chicken got response from backend: ', response)
+
+    if (!response.items || response.error) {
+        return []
+    }
+
+    return response.items
+}

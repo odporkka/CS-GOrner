@@ -12,8 +12,10 @@ import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
 import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
+import DraftPicker from '../forms/postFormSections/DraftPicker'
 import PostForm from '../forms/PostForm'
 import * as api from '../../backend/api'
+import * as chicken from '../../util/postFetchingChicken'
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +59,7 @@ const PostEditorPage = () => {
         images: []
     }
     const [post, setPost] = useState(initialPostState)
+    const [draftList, setDraftList] = useState([])
 
     /*
      * Fetch post if id was given in url parameters
@@ -77,6 +80,14 @@ const PostEditorPage = () => {
                 .catch((e) => console.log(e))
         }
     },[history])
+
+    useEffect(() => {
+        const fetchDrafts = async () => {
+            const drafts = await chicken.fetchDraftTitlesAndIds()
+            setDraftList(drafts)
+        }
+        fetchDrafts().catch((e) => console.log(e))
+    }, [])
 
 
     /*
@@ -226,10 +237,14 @@ const PostEditorPage = () => {
         <Paper className={classes.contentPaper}>
             <Container xs={12}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                         <Typography variant="h6" component="h6">
                             Post editor {post.published ? ` - ${post.title}` : '(Draft)'}
                         </Typography>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <DraftPicker history={history} drafts={draftList} />
                     </Grid>
 
                     <Grid item xs={12}>

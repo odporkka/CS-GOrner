@@ -76,6 +76,21 @@ export const elasticSearch = async (filter, nextToken=undefined) => {
     }
 }
 
+export const elasticSearchIdsAndTitles =  async (filter) => {
+    try {
+        const response = await API.graphql(graphqlOperation(queries.searchPostTitlesAndIds, {
+            filter: filter,
+            sort: {
+                field: 'title',
+                direction: 'desc'
+            },
+        }))
+        return response.data.searchPosts
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
 /*
  * Mutations
  * Use authMode: 'AMAZON_COGNITO_USER_POOLS' here to only allow authenticated users to modify content.

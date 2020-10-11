@@ -131,3 +131,19 @@ export const searchPosts = /* GraphQL */ `
     }
   }
 `;
+export const searchPostTitlesAndIds = /* GraphQL */ `
+  query searchPostTitlesAndIds(
+    $filter: SearchablePostFilterInput
+    $sort: SearchablePostSortInput
+  ) {
+    searchPosts(
+      filter: $filter
+      sort: $sort
+    ) {
+      items {
+        id
+        title
+      }
+    }
+  }
+`;

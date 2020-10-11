@@ -9,7 +9,7 @@ import LoadingSpinner from '../content/LoadingSpinner'
 import PostSearchResults from '../content/PostSearchResults'
 import TacticsMapPanel from '../navigation/TacticsMapPanel'
 import TacticsSearchPanel from '../navigation/TacticsSearchPanel'
-import * as chicken from '../../util/PostFetchingChicken'
+import * as chicken from '../../util/postFetchingChicken'
 
 // MUI styles
 const useStyles = makeStyles(() => ({
