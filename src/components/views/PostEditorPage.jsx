@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Storage } from 'aws-amplify'
 import { v4 as uuidv4 } from 'uuid'
-import marked from 'marked'
-import DOMPurify from 'dompurify'
+import { Storage } from 'aws-amplify'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
@@ -12,11 +10,12 @@ import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
 import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
+import { initialPostState } from "../../backend/models/post"
 import DraftPicker from '../forms/postFormSections/DraftPicker'
 import PostForm from '../forms/PostForm'
 import * as api from '../../backend/api'
 import * as chicken from '../../util/postFetchingChicken'
-import { initialPostState } from "../../backend/models/post"
+import * as markdownUtils from '../../util/markdownUtils'
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +44,7 @@ const PostEditorPage = () => {
     const history = useHistory()
     const [draftList, setDraftList] = useState([])
     const [post, setPost] = useState(initialPostState)
+    const [uploadProgress, setUploadProgress] = useState(undefined)
 
     /*
      * Fetch post if id was given in url parameters.
@@ -56,10 +56,8 @@ const PostEditorPage = () => {
     useEffect(() => {
         let mounted = true
 
-        console.log('useEffect called')
-
         const fetch = async () => {
-            const searchParams = new URLSearchParams(window.location.search)
+            const searchParams = new URLSearchParams(history.location.search)
             if (searchParams.has('id')) {
                 const id = searchParams.get('id')
                 const post = await api.fetchPostWithId(id)
@@ -79,22 +77,7 @@ const PostEditorPage = () => {
 
         return () => { mounted = false }
 
-        // // Set up history listener. Returns unmount function.
-        // const unmountHistoryListener = history.listen(() => fetchPost(history, mounted, setPost, initialPostState))
-        // // First render, so need to call manually here
-        // fetchPost(history, mounted, setPost, initialPostState).catch((e) => console.log(e))
-        //
-        // /*
-        //  * Cleanup function
-        //  * - Set mounted to false to avoid useless setPosts
-        //  * - Call unmount function for history listener to avoid multiple listeners after new render
-        //  */
-        // return () => {
-        //     mounted = false
-        //     unmountHistoryListener()
-        // }
-    },[window.location.search, initialPostState])
-
+    },[history, history.location.search])
 
     /*
      * Fetch list of drafts.
@@ -110,9 +93,6 @@ const PostEditorPage = () => {
         return () => { mounted = false }
     }, [])
 
-    const calculateS3uuid = () => {
-        return uuidv4().split('-')[0]
-    }
 
     /*
      * Save post to API.
@@ -122,7 +102,7 @@ const PostEditorPage = () => {
      * @return {Promise<void>}
      */
     const savePost = async (input) => {
-        input.sanitizedHtml = markdownToHtml(input.markdown)
+        input.sanitizedHtml = markdownUtils.markdownToHtml(input.markdown)
 
         let response
         // If id is found, we are updating post. New posts dont have id yet
@@ -186,25 +166,81 @@ const PostEditorPage = () => {
     }
 
     /*
-     * Concat new image object to post.images and save post to API.
-     *
-     * @param imageToAdd Image object to add. Must match graphql type Image.
-     */
-    const addImage = (imageToAdd) => {
-        const newImageArray = post.images.concat(imageToAdd)
-        const updatedPost = {...post, images: newImageArray}
-        savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
+    * Post specific uuid that is used to group posts images under same path.
+    * "Folder" in S3. i.e. /public/<uuid>/fileName
+    *
+    * @param fileName
+    * @return {string}
+    */
+    const resolveName = (fileName) => {
+        const s3id = post.s3id ?
+            post.s3id : uuidv4().split('-')[0]
+        return `${s3id}/${fileName}`
     }
 
     /*
-     * Remove image from post.images and save post to API.
+     * Construct public url to embed in markdown
      *
-     * @param imageToRemove Image object to remove. Must match graphql type Image.
+     * @param fileName
+     * @return {string}
      */
-    const removeImage = (imageToRemove) => {
-        const newImageArray = post.images.filter((image) =>(image !== imageToRemove))
-        const updatedPost = {...post, images: newImageArray}
-        savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
+    const resolvePublicUrl = (fileName) => {
+        const s3Config = Storage.getPluggable('AWSS3')._config
+        const bucket = s3Config.bucket
+        const region = s3Config.region
+        return `https://${bucket}.s3-${region}.amazonaws.com/public/${fileName}`
+    }
+
+    /*
+     * Upload image file to S3 and update post.images
+     */
+    const uploadToS3 = async (file) => {
+        const fileName = resolveName(file.name)
+        const publicUrl = resolvePublicUrl(fileName)
+
+        // Push image to S3 & update metadata on post
+        let result
+        try {
+            result = await Storage.put(fileName, file, {
+                progressCallback(progress) {
+                    const progressPercentage = (Math.round(progress.loaded / progress.total * 100))
+                    setUploadProgress(progressPercentage)
+                },
+                ACL: 'public-read'
+            })
+
+            if (result && result.key) {
+                result.url = publicUrl
+                const newImageArray = post.images.concat(result)
+                const updatedPost = {...post, images: newImageArray}
+                savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
+            }
+
+            setUploadProgress(undefined)
+        } catch (e) {
+            console.log(e)
+            alert(e)
+        }
+    }
+
+    /*
+     * Remove image from S3 and post.images
+     */
+    const removeFromS3 = async (image) => {
+        console.log(`Removing image ${image.key} from S3..`)
+        try {
+            const result = await Storage.remove(image.key)
+            // Just a simple check. IDK what should really be checked and docs aren't helping either.
+            if (result) {
+                console.log(`Removing image data from post object..`)
+                // Filter removed image out of post.images
+                const newImageArray = post.images.filter((i) =>(i !== image))
+                const updatedPost = {...post, images: newImageArray}
+                savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
+            }
+        } catch (e) {
+            alert(`Something went wrong when removing image:\n ${e}`)
+        }
     }
 
     /*
@@ -229,13 +265,14 @@ const PostEditorPage = () => {
         }
     }
 
+    /*
+     * Set HTML calculated from markdown.
+     */
     const calculatePreview = () => {
-        setPost({...post, sanitizedHtml: markdownToHtml(post.markdown) })
-    }
-
-    const markdownToHtml = (markdown) => {
-        const dirtyHtml = marked(markdown)
-        return DOMPurify.sanitize(dirtyHtml)
+        setPost({
+            ...post,
+            sanitizedHtml: markdownUtils.markdownToHtml(post.markdown)
+        })
     }
 
 
@@ -273,12 +310,16 @@ const PostEditorPage = () => {
                         <PostForm
                             post={post}
                             setPost={setPost}
-                            savePost={savePost}
-                            deletePost={deletePost}
+
+                            uploadToS3={uploadToS3}
+                            uploadProgress={uploadProgress}
+                            removeFromS3={removeFromS3}
+
                             calculatePreview={calculatePreview}
-                            addImage={addImage}
-                            removeImage={removeImage}
-                            togglePublish={togglePublish}/>
+                            savePost={savePost}
+                            togglePublish={togglePublish}
+                            deletePost={deletePost}
+                        />
                     </Grid>
                 </Grid>
             </Container>

@@ -41,12 +41,15 @@ const PostForm = (props) => {
     const {
         post,
         setPost,
-        savePost,
-        deletePost,
+        // S3 & files stuff
+        uploadToS3,
+        uploadProgress,
+        removeFromS3,
+        // Form button functions
         calculatePreview,
-        addImage,
-        removeImage,
-        togglePublish
+        savePost,
+        togglePublish,
+        deletePost
     } = props
     const classes = useStyles()
 
@@ -74,8 +77,9 @@ const PostForm = (props) => {
                     <Grid item xs={6}>
                         <PostFormImageUpload
                             post={post}
-                            addImage={addImage}
-                            removeImage={removeImage}
+                            uploadToS3={uploadToS3}
+                            uploadProgress={uploadProgress}
+                            removeFromS3={removeFromS3}
                             />
                     </Grid>
 

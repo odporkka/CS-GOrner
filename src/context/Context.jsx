@@ -42,7 +42,7 @@ const ContextAPIProvider = (props) => {
     const initialState = {
         ...initialValues
     }
-    const [ contentData, setContentData ] = useState(initialState)
+    const [contentData, setContentData] = useState(initialState)
 
     /*
      * Stuff fetched at first page load
