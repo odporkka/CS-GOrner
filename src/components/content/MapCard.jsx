@@ -49,10 +49,6 @@ const MapCard = (props) => {
     } = props
     const classes = useStyles()
 
-    const getMapImagePath = (mapName) => {
-
-    }
-
 
     return (
         <Card className={classes.card} elevation={3}>
@@ -75,14 +71,6 @@ const MapCard = (props) => {
                 <ChevronRight fontSize='large'/>
 
             </CardActionArea>
-            {/*<CardActions>*/}
-            {/*    <Button size="small" color="primary">*/}
-            {/*        Forums*/}
-            {/*    </Button>*/}
-            {/*    <Button size="small" color="primary">*/}
-            {/*        Share*/}
-            {/*    </Button>*/}
-            {/*</CardActions>*/}
         </Card>
     );
 

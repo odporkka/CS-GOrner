@@ -11,9 +11,9 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
-import {AWSCognitoUserContext} from '../../context/AWSCognitoUserContext'
-import * as api from '../../backend/api'
+import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
 import PostForm from '../forms/PostForm'
+import * as api from '../../backend/api'
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({

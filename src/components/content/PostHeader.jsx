@@ -82,7 +82,7 @@ const PostHeader = (props) => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} className={classes.imageContainer}>
-                    <img src='images/csgo-placeholder-logo.png' alt='map image' className={classes.image}/>
+                    <img src='images/csgo-placeholder-logo.png' alt='map' className={classes.image}/>
                 </Grid>
             </Grid>
 

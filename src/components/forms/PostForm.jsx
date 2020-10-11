@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
-import { Context } from '../../context/Context'
 import Post from '../content/Post'
-import PostFormImageUpload from './PostFormImageUpload'
+import PostFormImageUpload from './postFormSections/PostFormImageUpload'
+import PostMetaData from "./postFormSections/PostMetaData"
 
 // MUI styles
 const useStyles = makeStyles({
@@ -15,9 +15,6 @@ const useStyles = makeStyles({
     },
     label: {
         paddingRight: '10px'
-    },
-    input: {
-        width: '400px'
     },
     description: {
         width: '100%',
@@ -52,17 +49,11 @@ const PostForm = (props) => {
         togglePublish
     } = props
     const classes = useStyles()
-    const { contentData } = useContext(Context)
-    
+
     const handleInputChange = (event) => {
         const value = event.target.value
         const name = event.target.name
         setPost({...post, [name]: value})
-    }
-
-    const findGeneralMapId = () => {
-        const general = contentData.maps.find((m) => (m.name === 'general'))
-        return general ? general.id : undefined
     }
 
 
@@ -72,38 +63,15 @@ const PostForm = (props) => {
                 <Grid container spacing={2}>
 
                     {/* Top left side */}
-                    <Grid container item xs={6}>
-                        <label htmlFor='title' className={classes.label}>Title:</label>
-                        <br />
-                        <input type='text'
-                            id='title'
-                            name='title'
-                            className={classes.input}
-                            value={post.title}
-                            onChange={handleInputChange}/>
-                        <br />
-
-                        <label htmlFor='author' className={classes.label}>Author:</label>
-                        <br />
-                        <input type='text'
-                            id='author'
-                            name='author'
-                            className={classes.input}
-                            value={post.author}
-                            onChange={handleInputChange}/>
-                        <br />
-
-                        <label htmlFor='map'>Map:</label>
-                        <select name='mapID' value={findGeneralMapId()} onChange={handleInputChange}>
-                            { contentData.maps.map((map) => (
-                                    <option value={map.id} key={map.id}>{map.name}</option>
-                                )
-                            )}
-                        </select>
+                    <Grid item xs={6}>
+                        <PostMetaData
+                            post={post}
+                            handleInputChange={handleInputChange}
+                        />
                     </Grid>
 
                     {/* Top right side */}
-                    <Grid container item xs={6}>
+                    <Grid item xs={6}>
                         <PostFormImageUpload
                             post={post}
                             addImage={addImage}
