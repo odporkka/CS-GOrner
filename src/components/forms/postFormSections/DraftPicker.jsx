@@ -1,5 +1,6 @@
 import React from 'react'
 import Typography from "@material-ui/core/Typography"
+import { useHistory } from "react-router-dom"
 
 
 
@@ -13,12 +14,13 @@ import Typography from "@material-ui/core/Typography"
 const DraftPicker = (props) => {
     const {
         drafts,
-        history
     } = props
+    const history = useHistory()
+
 
     const onChange = (event) => {
         const id = event.target.value
-        history.push(`/post-editor/${id}`)
+        history.push(`/post-editor?id=${id}`)
     }
 
 
