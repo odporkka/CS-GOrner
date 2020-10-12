@@ -12,6 +12,9 @@ const useStyles = makeStyles({
         // height: '120px',
         // maxHeight: '120px'
     },
+    link: {
+        color: 'blue'
+    },
     imageContainer: {
         height: '80px'
     },
@@ -48,10 +51,17 @@ const PostHeader = (props) => {
                 <Grid item xs={12}>
                     <Typography variant='h5'>
                         { inTeaser ?
-                            <Link component={RouterLink} to={`/tactics/${data.id}`} color='inherit' className={classes.link}>
-                                {data.title}
-                            </Link>
+                                <Link
+                                    className={classes.link}
+                                    component={RouterLink}
+                                    color='inherit'
+                                    to={`/tactics/${data.id}`}
+                                >
+                                    {data.title}
+                                </Link>
+
                             :
+
                             <>
                                 {data.title}
                             </>
