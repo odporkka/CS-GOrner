@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid'
 
 // Own classes/components
 import { Context } from '../../../context/Context'
+import { postTags, tagToString } from '../../../backend/models/post'
+
 
 // MUI styles
 const useStyles = makeStyles({
@@ -30,6 +32,7 @@ const PostMetaData = (props) => {
     const {
         post,
         handleInputChange,
+        handleTagChange
     } = props
     const classes = useStyles()
     const { contentData } = useContext(Context)
@@ -38,6 +41,7 @@ const PostMetaData = (props) => {
 
     return (
         <Grid container spacing={1}>
+            {/* Title */}
             <Grid item xs={12}>
                 <label htmlFor='title' className={classes.label}>Title:</label>
                 <input type='text'
@@ -48,6 +52,7 @@ const PostMetaData = (props) => {
                     onChange={handleInputChange}/>
             </Grid>
 
+            {/* Author */}
             <Grid item xs={12}>
                 <label htmlFor='author' className={classes.label}>Author:</label>
                 <input type='text'
@@ -58,6 +63,7 @@ const PostMetaData = (props) => {
                     onChange={handleInputChange}/>
             </Grid>
 
+            {/* Map pick */}
             <Grid item xs={12}>
                 <label htmlFor='map'>Map:</label>
                 <select name='mapID' value={firstMapId} onChange={handleInputChange}>
@@ -66,6 +72,22 @@ const PostMetaData = (props) => {
                         )
                     )}
                 </select>
+            </Grid>
+
+            {/* Tags */}
+            <Grid item xs={12}>
+                <label htmlFor='tags'>Tags: </label>
+                {Object.entries(postTags).map(([key,value]) => (
+                    <div key={key}>
+                        <input
+                            type='checkbox'
+                            name={value}
+                            id={key}
+                            checked={post.tags.includes(postTags[value])}
+                            onChange={handleTagChange}/>
+                        <label htmlFor={key}> {tagToString(value)} </label>
+                    </div>
+                ))}
             </Grid>
         </Grid>
     )

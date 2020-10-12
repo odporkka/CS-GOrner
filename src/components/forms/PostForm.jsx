@@ -59,6 +59,18 @@ const PostForm = (props) => {
         setPost({...post, [name]: value})
     }
 
+    const handleTagChange = (event) => {
+        const tagName = event.target.name
+        let newTagArray
+        if (event.target.checked) {
+            newTagArray = post.tags.concat(tagName)
+            setPost({...post, tags: newTagArray})
+        } else {
+            newTagArray = post.tags.filter((tag) => (tag !== tagName))
+            setPost({...post, tags: newTagArray})
+        }
+    }
+
 
     return (
         <div id='post-form'>
@@ -70,6 +82,7 @@ const PostForm = (props) => {
                         <PostMetaData
                             post={post}
                             handleInputChange={handleInputChange}
+                            handleTagChange={handleTagChange}
                         />
                     </Grid>
 

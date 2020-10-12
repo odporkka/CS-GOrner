@@ -297,8 +297,8 @@ const PostEditorPage = () => {
             <Container xs={12}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <Typography variant="h6" component="h6">
-                            Post editor {post.published ? ` - ${post.title}` : '(Draft)'}
+                        <Typography variant="h5" component="h5">
+                            Post editor - {post.title} {post.published ? '' : '(Draft)'}
                         </Typography>
                     </Grid>
 
