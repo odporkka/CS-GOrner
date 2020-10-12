@@ -6,6 +6,10 @@ import Grid from '@material-ui/core/Grid'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 
+
+import { tagToString } from "../../backend/models/post"
+
+
 // MUI styles
 const useStyles = makeStyles({
     root: {
@@ -79,7 +83,7 @@ const PostHeader = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='body1'>
-                        Tags:
+                        Tags:{data.tags.map((t) => (` ${tagToString(t)}`))}
                     </Typography>
                 </Grid>
             </Grid>

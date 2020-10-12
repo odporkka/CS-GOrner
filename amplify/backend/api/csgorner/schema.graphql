@@ -35,6 +35,7 @@ type Post
     title: String!
     author: String!
     mapID: ID!
+    tags: [PostCategoryTag]!
     description: String!
     markdown: String!
     sanitizedHtml: String!
@@ -75,8 +76,23 @@ type Image {
 ##########
 # INPUTS #
 ##########
-
 input ImageInput {
     key: String!
     url: String!
+}
+
+#########
+# ENUMS #
+#########
+enum PostCategoryTag {
+    AIM,
+    MOVEMENT,
+    UTILITY,
+    ECONOMY,
+    TEAMWORK,
+    SOLO,
+    SOUNDS,
+    CLUTCH,
+    SUPPORT,
+    SETTINGS
 }

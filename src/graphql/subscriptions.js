@@ -45,6 +45,7 @@ export const onCreatePost = /* GraphQL */ `
       title
       author
       mapID
+      tags
       description
       markdown
       sanitizedHtml
@@ -75,6 +76,7 @@ export const onUpdatePost = /* GraphQL */ `
       title
       author
       mapID
+      tags
       description
       markdown
       sanitizedHtml
@@ -105,6 +107,7 @@ export const onDeletePost = /* GraphQL */ `
       title
       author
       mapID
+      tags
       description
       markdown
       sanitizedHtml

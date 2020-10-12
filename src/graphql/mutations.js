@@ -57,6 +57,7 @@ export const createPost = /* GraphQL */ `
       title
       author
       mapID
+      tags
       description
       markdown
       sanitizedHtml
@@ -90,6 +91,7 @@ export const updatePost = /* GraphQL */ `
       title
       author
       mapID
+      tags
       description
       markdown
       sanitizedHtml
@@ -123,6 +125,7 @@ export const deletePost = /* GraphQL */ `
       title
       author
       mapID
+      tags
       description
       markdown
       sanitizedHtml

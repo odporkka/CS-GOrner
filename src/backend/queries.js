@@ -40,6 +40,7 @@ export const getPost = /* GraphQL */ `
       title
       author
       mapID
+      tags
       description
       markdown
       sanitizedHtml
@@ -72,6 +73,7 @@ export const listPosts = /* GraphQL */ `
         title
         author
         mapID
+        tags
         description
         markdown
         sanitizedHtml
@@ -112,6 +114,7 @@ export const searchPosts = /* GraphQL */ `
         title
         author
         mapID
+        tags
         description
         markdown
         sanitizedHtml
