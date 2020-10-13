@@ -1,8 +1,13 @@
 import React from 'react'
-import Typography from "@material-ui/core/Typography"
 import { useHistory } from "react-router-dom"
+import { makeStyles } from "@material-ui/core/styles"
 
-
+// MUI styles
+const useStyles = makeStyles({
+    label: {
+        paddingRight: '10px'
+    },
+})
 
 /**
  * Pick drafts to edit from dropdown.
@@ -12,11 +17,11 @@ import { useHistory } from "react-router-dom"
  * @constructor
  */
 const DraftPicker = (props) => {
+    const classes = useStyles()
     const {
         drafts,
     } = props
     const history = useHistory()
-
 
     const onChange = (event) => {
         const id = event.target.value
@@ -25,16 +30,18 @@ const DraftPicker = (props) => {
 
 
     return (
-        <Typography variant="subtitle1" component="h6">
-            Browse drafts ({drafts.length}):
-            <select name='draft' value='' onChange={onChange}>
-                <option value='' key=''> </option>
-                { drafts.map((draft) => (
-                        <option value={draft.id} key={draft.id}>{draft.title}</option>
-                    )
-                )}
+        <div>
+            <label htmlFor='drafts' className={classes.label}>Your drafts:</label>
+
+            <select name='drafts' value='' onChange={onChange}>
+                    <option value='' key=''> </option>
+                    { drafts.map((draft) => (
+                            <option value={draft.id} key={draft.id}>{draft.title}</option>
+                        )
+                    )}
             </select>
-        </Typography>
+        </div>
+
     )
 }
 

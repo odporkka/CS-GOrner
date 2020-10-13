@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Storage } from 'aws-amplify'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -23,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     },
     contentPaper: {
         backgroundColor: theme.palette.primary.light,
+    },
+    divider: {
+        // color: theme.palette.secondary
     },
     form: {
 
@@ -296,15 +300,18 @@ const PostEditorPage = () => {
         <Paper className={classes.contentPaper}>
             <Container xs={12}>
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
+                        <DraftPicker history={history} drafts={draftList} />
+                    </Grid>
+
+                    <Grid item xs={12}>
                         <Typography variant="h5" component="h5">
                             Post editor - {post.title} {post.published ? '' : '(Draft)'}
                         </Typography>
+                        <Divider className={classes.divider}/>
                     </Grid>
 
-                    <Grid item xs={6}>
-                        <DraftPicker history={history} drafts={draftList} />
-                    </Grid>
+
 
                     <Grid item xs={12}>
                         <PostForm
