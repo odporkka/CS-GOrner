@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid'
 
 // Own classes/components
 import { Context } from '../../../context/Context'
-import { postTags, tagToString } from '../../../backend/models/post'
+import TagCheckbox from './TagCheckbox'
 
 
 // MUI styles
@@ -76,18 +76,7 @@ const PostMetaData = (props) => {
 
             {/* Tags */}
             <Grid item xs={12}>
-                <label htmlFor='tags'>Tags: </label>
-                {Object.entries(postTags).map(([key,value]) => (
-                    <div key={key}>
-                        <input
-                            type='checkbox'
-                            name={value}
-                            id={key}
-                            checked={post.tags.includes(postTags[value])}
-                            onChange={handleTagChange}/>
-                        <label htmlFor={key}> {tagToString(value)} </label>
-                    </div>
-                ))}
+                <TagCheckbox checkedList={post.tags} handleTagChange={handleTagChange}/>
             </Grid>
         </Grid>
     )
