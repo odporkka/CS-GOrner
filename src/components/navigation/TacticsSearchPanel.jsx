@@ -5,6 +5,14 @@ import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import Typography from '@material-ui/core/Typography'
 import SearchIcon from '@material-ui/icons/Search'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import Divider from '@material-ui/core/Divider'
+
+// Own classes/components
+import AuthorSelect from '../forms/postFormSections/AuthorSelect'
+import MapCheckbox from '../forms/postFormSections/MapCheckbox'
+import TagCheckbox from '../forms/postFormSections/TagCheckbox'
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
@@ -13,8 +21,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: '20px'
     },
     panel: {
-        // fontSize: theme.typography.pxToRem(15),
-        // fontWeight: theme.typography.fontWeightRegular,
         backgroundColor: theme.palette.primary.light,
     },
 }))
@@ -42,9 +48,52 @@ const TacticsSearchPanel = () => {
                     <Typography className={classes.heading}>Advanced filtering...</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography>
-                        TBI!
-                    </Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Divider />
+                        </Grid>
+
+                        <Grid item xs={12} container spacing={2}>
+                            <Grid item xs={6}>
+                                <AuthorSelect />
+                            </Grid>
+                        </Grid>
+
+                        <Grid item xs={6} container spacing={2}>
+                            <Grid item xs={12}>
+                                <MapCheckbox checkedList={[]} handleMapChange={(map) => console.log(map.name)} />
+                            </Grid>
+                        </Grid>
+
+                        <Grid item xs={6}>
+                            <TagCheckbox checkedList={[]} handleTagChange={(tag) => console.log(tag)} />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Divider />
+                        </Grid>
+
+                        <Grid item xs={12} container spacing={2}>
+                            <Grid item>
+                                <Button
+                                    variant='contained'
+                                    onClick={() => console.log('search')}
+                                    className={classes.button}>
+
+                                    Search
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button
+                                    variant='contained'
+                                    onClick={() => console.log('reset')}
+                                    className={classes.button}>
+
+                                    Reset all
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </AccordionDetails>
             </Accordion>
         </div>

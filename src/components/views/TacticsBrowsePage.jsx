@@ -70,6 +70,7 @@ const TacticsBrowsePage = () => {
 
             <Grid className={classes.searchMenus} item xs={12}>
                 <TacticsSearchPanel />
+
                 <TacticsMapPanel searchByMap={searchByMap}/>
             </Grid>
 

@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles"
+import { unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles'
 
 /**
  * Default theme to use across the site.
@@ -6,8 +6,6 @@ import { createMuiTheme } from "@material-ui/core/styles"
  *
  * LOGO red: #f44336
  * LOGO white: #ffffff
- *
- * @type {Theme}
  */
 export const theme = createMuiTheme({
     palette: {
