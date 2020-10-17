@@ -7,6 +7,7 @@ import * as api from "../backend/api"
 
 /**
  * Fetch posts based on given search criteria
+ * TODO: Adjust so that only description is fetched? Do full post fetch only when fetching with single post id?
  *
  * @param searchCriteria
  * @return {Promise<{errorMessage: *, error: boolean}|{errorMessage: string, error: boolean}|undefined>}
@@ -28,18 +29,18 @@ export const fetch = async (searchCriteria) => {
         filter = buildMapFilter(filter, searchCriteria.maps)
     }
 
-    // Set tags if defined
-    // if (searchCriteria.tags && Array.isArray(searchCriteria.tags)) {
-    //     filter = buildTagFilter(filter, searchCriteria.tags)
-    // }
-
     console.log('Chicken made a filter: ', filter)
 
-    const response = await api.elasticSearch(filter)
+    let response = await api.elasticSearch(filter)
     if (!response.total) {
         response.total = 0
     }
     console.log('Chicken got response from backend: ', response)
+
+    // Have to do filtering here since elastic search doesn't allow operations on array field
+    if (searchCriteria.tags && Array.isArray(searchCriteria.tags)) {
+        response = filterByTags(response, searchCriteria.tags)
+    }
 
     return response
 }
@@ -85,20 +86,13 @@ const buildMapFilter = (filter, maps) => {
 }
 
 /**
- * Add tag filter to filter if one or more tags are present.
+ * Pick only posts where tags have any of tags in search criteria
  *
- * @param filter
+ * @param response
  * @param tags
  * @return {*}
  */
-const buildTagFilter = (filter, tags) => {
-    const tagList = []
-    while (tags.length > 0) {
-        const tag = tags.shift()
-        tagList.push({ tag: {eq: tag}})
-    }
-    if (tagList.length > 0) {
-        filter = {...filter, or: tagList}
-    }
-    return filter
+const filterByTags = (response, tags) => {
+    console.log('TODO: filter response by tags', tags)
+    return response
 }

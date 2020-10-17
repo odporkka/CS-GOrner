@@ -18,9 +18,6 @@ const useStyles = makeStyles({
  * @constructor
  */
 const AuthorSelect = (props) => {
-    const {
-        onChange
-    } = props
     const classes = useStyles()
 
     const authors = [

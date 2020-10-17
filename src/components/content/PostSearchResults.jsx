@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
 import PostTeaser from './PostTeaser'
+import { tagToString } from '../../backend/models/post'
 
 
 
@@ -20,13 +21,18 @@ const PostSearchResults = (props) => {
         searchCriteria
     } = props
 
+    const showMapCriteria = (searchCriteria.maps && searchCriteria.maps.length > 0)
+    const showTagCriteria = (searchCriteria.tags && searchCriteria.tags.length > 0)
 
     return (
         <>
             <Grid item xs={12}>
                 <Typography variant='h6'>Results ({results.total})</Typography>
-                { searchCriteria.map && (
-                    <Typography variant='body1'>Map: {searchCriteria.map.name}</Typography>
+                { showMapCriteria && (
+                    <Typography variant='body1'>Maps:{searchCriteria.maps.map(m => ` ${m.canonicalName}`)}</Typography>
+                )}
+                { showTagCriteria && (
+                    <Typography variant='body1'>Maps: {searchCriteria.tags.map(t => ` ${tagToString(t)}`)}</Typography>
                 )}
             </Grid>
 
