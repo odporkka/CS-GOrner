@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
@@ -35,24 +35,24 @@ const useStyles = makeStyles((theme) => ({
  */
 const TacticsMapPanel = (props) => {
     const {
-        searchByMap
+        searchByMap,
+        panelExpanded,
+        setPanelExpanded
     } = props
     const classes = useStyles()
     const { contentData } = useContext(Context)
-    const [ expanded, setExpanded ] = useState(true)
 
     const toggleExpand = () => {
-        setExpanded(!expanded)
+        setPanelExpanded(!panelExpanded)
     }
 
     const toggleSearch = (map) => {
-        setExpanded(false)
         searchByMap(map)
     }
 
     return (
         <div className={classes.root}>
-            <Accordion className={classes.panel} expanded={expanded} onClick={() => toggleExpand()}>
+            <Accordion className={classes.panel} expanded={panelExpanded} onClick={() => toggleExpand()}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon fontSize='large'/>}
                     aria-controls="search settings"

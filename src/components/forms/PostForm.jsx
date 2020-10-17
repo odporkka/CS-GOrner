@@ -53,22 +53,28 @@ const PostForm = (props) => {
     } = props
     const classes = useStyles()
 
+    /*
+     * Change post state as form changes
+     */
     const handleInputChange = (event) => {
         const value = event.target.value
         const name = event.target.name
         setPost({...post, [name]: value})
     }
 
+    /*
+     * Change post state if tag is added/removed
+     */
     const handleTagChange = (event) => {
         const tagName = event.target.name
         let newTagArray
         if (event.target.checked) {
             newTagArray = post.tags.concat(tagName)
-            setPost({...post, tags: newTagArray})
         } else {
             newTagArray = post.tags.filter((tag) => (tag !== tagName))
-            setPost({...post, tags: newTagArray})
         }
+        setPost({...post, tags: newTagArray})
+
     }
 
 

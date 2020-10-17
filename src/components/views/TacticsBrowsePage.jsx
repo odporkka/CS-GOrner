@@ -35,8 +35,12 @@ const useStyles = makeStyles(() => ({
  */
 const TacticsBrowsePage = () => {
     const classes = useStyles()
+    const initialPanelState = {
+        searchPanelExpanded: false,
+        mapPanelExpanded: true
+    }
     const initialSearchCriteria = {
-        map: undefined,
+        maps: [],
         tags: [],
         author: undefined
     }
@@ -46,6 +50,7 @@ const TacticsBrowsePage = () => {
     }
     const [searchCriteria, setSearchCriteria] = useState(initialSearchCriteria)
     const [resultsLoading, setResultsLoading] = useState(false)
+    const [panelState, setPanelState] = useState(initialPanelState)
     const [results, setResults] = useState(initialResults)
 
     /*
@@ -56,12 +61,42 @@ const TacticsBrowsePage = () => {
      * @return {Promise<void>}
      */
     const searchByMap = async (map) => {
+        setPanelState({searchPanelExpanded: false, mapPanelExpanded: false})
         setResultsLoading(true)
-        const newSearchOptions = { ...initialSearchCriteria, map: map}
+        const newSearchOptions = { ...initialSearchCriteria, maps: [map]}
         const results = await chicken.fetch(newSearchOptions)
         setSearchCriteria(newSearchOptions)
         setResults(results)
         setResultsLoading(false)
+    }
+
+    /*
+     * Elastic search by criteria.
+     * (TODO: Consider limit if amount of posts is big?)
+     *
+     * @param map
+     * @return {Promise<void>}
+     */
+    const search = async () => {
+        setPanelState({searchPanelExpanded: false, mapPanelExpanded: false})
+        setResultsLoading(true)
+        const results = await chicken.fetch(searchCriteria)
+        setResults(results)
+        setResultsLoading(false)
+    }
+
+    /*
+     * Reset criteria
+     */
+    const resetSearchCriteria = () => {
+        setSearchCriteria(initialSearchCriteria)
+    }
+
+    const setSearchPanelExpanded = (isExpanded) => {
+        setPanelState({...panelState, searchPanelExpanded: isExpanded})
+    }
+    const setMapPanelExpanded = (isExpanded) => {
+        setPanelState({...panelState, mapPanelExpanded: isExpanded})
     }
 
 
@@ -69,9 +104,19 @@ const TacticsBrowsePage = () => {
         <Grid className={classes.root} container spacing={2}>
 
             <Grid className={classes.searchMenus} item xs={12}>
-                <TacticsSearchPanel />
-
-                <TacticsMapPanel searchByMap={searchByMap}/>
+                {/* Advanced filtering panel */}
+                <TacticsSearchPanel
+                    panelExpanded={panelState.searchPanelExpanded}
+                    setPanelExpanded={setSearchPanelExpanded}
+                    search={search}
+                    searchCriteria={searchCriteria}
+                    setSearchCriteria={setSearchCriteria}
+                    resetSearchCriteria={resetSearchCriteria}/>
+                {/* Map select component */}
+                <TacticsMapPanel
+                    panelExpanded={panelState.mapPanelExpanded}
+                    setPanelExpanded={setMapPanelExpanded}
+                    searchByMap={searchByMap}/>
             </Grid>
 
             <Grid className={classes.results} item xs={12}>

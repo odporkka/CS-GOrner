@@ -33,20 +33,61 @@ const useStyles = makeStyles((theme) => ({
  * @return {JSX.Element}
  * @constructor
  */
-const TacticsSearchPanel = () => {
+const TacticsSearchPanel = (props) => {
+    const {
+        search,
+        searchCriteria,
+        setSearchCriteria,
+        resetSearchCriteria,
+        panelExpanded,
+        setPanelExpanded
+    } = props
     const classes = useStyles()
+
+    const toggleExpand = () => {
+        setPanelExpanded(!panelExpanded)
+    }
+
+    /*
+     * Change searchCriteria if map is added/removed
+     */
+    const handleMapChange = (checkedMap) => {
+        let mapArray = searchCriteria.maps
+        if (!mapArray.includes(checkedMap)) {
+            mapArray.push(checkedMap)
+        } else {
+            mapArray = mapArray.filter((map) => map !== checkedMap)
+        }
+        setSearchCriteria({...searchCriteria, maps: mapArray})
+    }
+
+    /*
+     * Change searchCriteria if tag is added/removed
+     */
+    const handleTagChange = (event) => {
+        const tagName = event.target.name
+        let tagArray = searchCriteria.tags
+        if (event.target.checked) {
+            tagArray.push(tagName)
+        } else {
+            tagArray = tagArray.filter((tag) => (tag !== tagName))
+        }
+        setSearchCriteria({...searchCriteria, tags: tagArray})
+    }
 
 
     return (
         <div className={classes.root}>
-            <Accordion className={classes.panel}>
+            <Accordion className={classes.panel} expanded={panelExpanded}>
                 <AccordionSummary
                     expandIcon={<SearchIcon />}
                     aria-controls="search settings"
                     id="panel1a-header"
+                    onClick={() => toggleExpand()}
                 >
                     <Typography className={classes.heading}>Advanced filtering...</Typography>
                 </AccordionSummary>
+
                 <AccordionDetails>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -61,12 +102,12 @@ const TacticsSearchPanel = () => {
 
                         <Grid item xs={6} container spacing={2}>
                             <Grid item xs={12}>
-                                <MapCheckbox checkedList={[]} handleMapChange={(map) => console.log(map.name)} />
+                                <MapCheckbox checkedList={searchCriteria.maps} handleMapChange={handleMapChange} />
                             </Grid>
                         </Grid>
 
                         <Grid item xs={6}>
-                            <TagCheckbox checkedList={[]} handleTagChange={(tag) => console.log(tag)} />
+                            <TagCheckbox checkedList={searchCriteria.tags} handleTagChange={handleTagChange} />
                         </Grid>
 
                         <Grid item xs={12}>
@@ -77,24 +118,23 @@ const TacticsSearchPanel = () => {
                             <Grid item>
                                 <Button
                                     variant='contained'
-                                    onClick={() => console.log('search')}
+                                    onClick={() => search()}
                                     className={classes.button}>
-
                                     Search
                                 </Button>
                             </Grid>
                             <Grid item>
                                 <Button
                                     variant='contained'
-                                    onClick={() => console.log('reset')}
+                                    onClick={() => resetSearchCriteria()}
                                     className={classes.button}>
-
                                     Reset all
                                 </Button>
                             </Grid>
                         </Grid>
                     </Grid>
                 </AccordionDetails>
+
             </Accordion>
         </div>
     );

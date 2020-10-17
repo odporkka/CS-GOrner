@@ -1,8 +1,16 @@
 import React from 'react'
+
+// Own classes/components
 import { postTags, tagToString } from "../../../backend/models/post"
 
 
-
+/**
+ * Checkbox component for post tags
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
 const TagCheckbox = (props) => {
     const {
         handleTagChange,
