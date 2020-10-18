@@ -91,19 +91,30 @@ export const elasticSearchIdsAndTitles =  async (filter) => {
     }
 }
 
+const getAuthorID = async () => {
+    const currentUser = await Auth.currentUserInfo()
+    const ownerSub = currentUser?.attributes?.sub
+    if (!ownerSub) {
+        return null
+    }
+    return ownerSub
+}
+
 /*
  * Mutations
  * Use authMode: 'AMAZON_COGNITO_USER_POOLS' here to only allow authenticated users to modify content.
  */
 export const createPost = async (data) => {
-    // const currentUser = await Auth.currentUserInfo()
-    // const ownerSub = currentUser?.attributes?.sub
-    // if (!ownerSub) {
-    //     alert('Could not find owner information for post!')
-    //     return
-    // }
-    // data.authorID = ownerSub
     try {
+        if (!data.authorID) {
+            const authorID = await getAuthorID()
+            if (authorID) {
+                data.authorID = authorID
+            } else {
+                return handleError({message: 'Could not resolve authorID!'})
+            }
+        }
+        console.log('Saving: ', data)
         const response = await API.graphql({
             query: mutations.createPost,
             variables: {input: data},

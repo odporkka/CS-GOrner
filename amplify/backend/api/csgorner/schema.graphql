@@ -8,7 +8,8 @@ type Map
     @auth(
         rules: [
             { allow: public, provider: apiKey, operations: [read]},
-            { allow: groups, provider: userPools, groups: ["Administrators"]}
+            { allow: groups, provider: userPools, groups: ["Editors"], operations: [read]}
+            { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
         ]
     )
 {
@@ -39,6 +40,7 @@ type Post
     deprecated: Boolean!
     s3id: String!
     title: String!
+    authorID: String!
     mapID: ID!
     tags: [PostCategoryTag]!
     description: String!
@@ -52,31 +54,6 @@ type Image {
     key: String!
     url: String!
 }
-
-#type Image
-#@model
-#@key(name: "byPost", fields: ["postID"])
-#@auth(
-#    rules: [
-#        { allow: public, provider: apiKey, operations: [read]},
-#        { allow: groups, provider: userPools, groups: ["Editors"]}
-#    ]
-#)
-#{
-#    id: ID!
-#    postID: ID!
-#    key: String!
-#    url: String
-#    post: Post @connection(fields: ["postID"])
-#}
-
-# TBI
-#type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
-#  id: ID!
-#  postID: ID!
-#  post: Post @connection(fields: ["postID"])
-#  content: String!
-#}
 
 ##########
 # INPUTS #
