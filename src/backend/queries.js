@@ -38,6 +38,7 @@ export const getPost = /* GraphQL */ `
       deprecated
       s3id
       title
+      owner
       author
       mapID
       tags
@@ -71,6 +72,7 @@ export const listPosts = /* GraphQL */ `
         deprecated
         s3id
         title
+        owner
         author
         mapID
         tags
@@ -112,6 +114,7 @@ export const searchPosts = /* GraphQL */ `
         deprecated
         s3id
         title
+        owner
         author
         mapID
         tags

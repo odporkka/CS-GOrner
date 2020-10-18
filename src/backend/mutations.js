@@ -16,6 +16,7 @@ export const createPost = /* GraphQL */ `
       deprecated
       s3id
       title
+      owner
       author
       mapID
       tags
@@ -46,6 +47,7 @@ export const updatePost = /* GraphQL */ `
       deprecated
       s3id
       title
+      owner
       author
       mapID
       tags
@@ -76,6 +78,7 @@ export const deletePost = /* GraphQL */ `
       deprecated
       s3id
       title
+      owner
       author
       mapID
       tags

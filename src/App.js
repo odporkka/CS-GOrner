@@ -59,6 +59,9 @@ const App = () => {
     useEffect( () => {
         async function fetchUser() {
             const user = await Auth.currentAuthenticatedUser()
+            // const user2 = await Auth.currentUserInfo()
+            console.log(user)
+            // console.log(user2)
             setAWSCognitoUser(user)
         }
         fetchUser()

@@ -57,6 +57,7 @@ const ContextAPIProvider = (props) => {
                 if (posts.error) console.log('Posts error:', posts.errorMessage)
                 return
             }
+            console.log(posts)
             setContentData(state => ({...state, maps: sortMaps(maps), newPosts: posts}))
         }
         fetchData()

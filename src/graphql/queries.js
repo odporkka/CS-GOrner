@@ -58,6 +58,7 @@ export const getPost = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      owner
     }
   }
 `;
@@ -94,6 +95,7 @@ export const listPosts = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        owner
       }
       nextToken
     }
@@ -138,6 +140,7 @@ export const searchPosts = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        owner
       }
       nextToken
       total

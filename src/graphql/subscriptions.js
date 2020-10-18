@@ -35,8 +35,8 @@ export const onDeleteMap = /* GraphQL */ `
   }
 `;
 export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost {
-    onCreatePost {
+  subscription OnCreatePost($owner: String) {
+    onCreatePost(owner: $owner) {
       id
       published
       publishDate
@@ -62,12 +62,13 @@ export const onCreatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      owner
     }
   }
 `;
 export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost {
-    onUpdatePost {
+  subscription OnUpdatePost($owner: String) {
+    onUpdatePost(owner: $owner) {
       id
       published
       publishDate
@@ -93,12 +94,13 @@ export const onUpdatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      owner
     }
   }
 `;
 export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost {
-    onDeletePost {
+  subscription OnDeletePost($owner: String) {
+    onDeletePost(owner: $owner) {
       id
       published
       publishDate
@@ -124,6 +126,7 @@ export const onDeletePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      owner
     }
   }
 `;

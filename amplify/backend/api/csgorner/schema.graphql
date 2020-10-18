@@ -8,7 +8,7 @@ type Map
     @auth(
         rules: [
             { allow: public, provider: apiKey, operations: [read]},
-            { allow: groups, provider: userPools, groups: ["Editors"]}
+            { allow: groups, provider: userPools, groups: ["Administrators"]}
         ]
     )
 {
@@ -22,8 +22,14 @@ type Post
     @searchable
     @auth(
         rules: [
+            # All can read
             { allow: public, provider: apiKey, operations: [read]},
-            { allow: groups, provider: userPools, groups: ["Editors"]}
+            # Owner of the post can obviously delete/edit, restrict creation to editors/admins
+            { allow: owner, operations: [read, update, delete]}
+            # Editors can create posts
+            { allow: groups, provider: userPools, groups: ["Editors"], operations: [create]}
+            # Admins can do anything
+            { allow: groups, provider: userPools, groups: ["Administrators"]}
         ]
     )
 {

@@ -1,4 +1,4 @@
-import { API, graphqlOperation } from "aws-amplify"
+import { API, Auth, graphqlOperation } from "aws-amplify"
 
 import * as queries from "./queries"
 import * as mutations from "./mutations"
@@ -96,6 +96,8 @@ export const elasticSearchIdsAndTitles =  async (filter) => {
  * Use authMode: 'AMAZON_COGNITO_USER_POOLS' here to only allow authenticated users to modify content.
  */
 export const createPost = async (data) => {
+    // const owner = Auth.currentUserInfo()
+    // console.log(owner)
     try {
         const response = await API.graphql({
             query: mutations.createPost,

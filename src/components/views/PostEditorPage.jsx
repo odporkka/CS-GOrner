@@ -280,21 +280,21 @@ const PostEditorPage = () => {
     }
 
 
-    if (!AWSCognitoUser) {
-        return (
-            <Paper className={classes.contentPaper}>
-                <Container xs={12}>
-                    <Grid container spacing={2} justify='center'>
-                        <Grid item>
-                            <Typography variant="h6" component="h6">
-                                You must be logged in as admin to edit and create posts.
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Paper>
-            )
-    }
+    // if (!AWSCognitoUser) {
+    //     return (
+    //         <Paper className={classes.contentPaper}>
+    //             <Container xs={12}>
+    //                 <Grid container spacing={2} justify='center'>
+    //                     <Grid item>
+    //                         <Typography variant="h6" component="h6">
+    //                             You must be logged in as admin to edit and create posts.
+    //                         </Typography>
+    //                     </Grid>
+    //                 </Grid>
+    //             </Container>
+    //         </Paper>
+    //         )
+    // }
 
     return (
         <Paper className={classes.contentPaper}>
