@@ -35,15 +35,15 @@ export const onDeleteMap = /* GraphQL */ `
   }
 `;
 export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost($owner: String) {
-    onCreatePost(owner: $owner) {
+  subscription OnCreatePost($authorID: String) {
+    onCreatePost(authorID: $authorID) {
       id
       published
       publishDate
       deprecated
       s3id
       title
-      author
+      authorID
       mapID
       tags
       description
@@ -62,20 +62,19 @@ export const onCreatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      owner
     }
   }
 `;
 export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost($owner: String) {
-    onUpdatePost(owner: $owner) {
+  subscription OnUpdatePost($authorID: String) {
+    onUpdatePost(authorID: $authorID) {
       id
       published
       publishDate
       deprecated
       s3id
       title
-      author
+      authorID
       mapID
       tags
       description
@@ -94,20 +93,19 @@ export const onUpdatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      owner
     }
   }
 `;
 export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost($owner: String) {
-    onDeletePost(owner: $owner) {
+  subscription OnDeletePost($authorID: String) {
+    onDeletePost(authorID: $authorID) {
       id
       published
       publishDate
       deprecated
       s3id
       title
-      author
+      authorID
       mapID
       tags
       description
@@ -126,7 +124,6 @@ export const onDeletePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      owner
     }
   }
 `;

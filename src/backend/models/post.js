@@ -14,7 +14,8 @@ export const initialPostState = {
     // Random per post uuid used as s3 file prefix. Calculated on image upload.
     s3id: '',
     title: '',
-    author: '',
+    // Cognito user sub
+    authorID: undefined,
     mapID: '',
     tags: [],
     description: '',

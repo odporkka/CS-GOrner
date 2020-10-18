@@ -16,8 +16,8 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "description": "AppSync API key",
-              "apiKeyExpirationDays": "365"
+              "apiKeyExpirationDays": 365,
+              "description": "AppSync API Key"
             }
           }
         }

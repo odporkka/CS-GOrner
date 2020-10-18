@@ -96,8 +96,13 @@ export const elasticSearchIdsAndTitles =  async (filter) => {
  * Use authMode: 'AMAZON_COGNITO_USER_POOLS' here to only allow authenticated users to modify content.
  */
 export const createPost = async (data) => {
-    // const owner = Auth.currentUserInfo()
-    // console.log(owner)
+    // const currentUser = await Auth.currentUserInfo()
+    // const ownerSub = currentUser?.attributes?.sub
+    // if (!ownerSub) {
+    //     alert('Could not find owner information for post!')
+    //     return
+    // }
+    // data.authorID = ownerSub
     try {
         const response = await API.graphql({
             query: mutations.createPost,

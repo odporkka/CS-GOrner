@@ -55,7 +55,7 @@ export const createPost = /* GraphQL */ `
       deprecated
       s3id
       title
-      author
+      authorID
       mapID
       tags
       description
@@ -74,7 +74,6 @@ export const createPost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      owner
     }
   }
 `;
@@ -90,7 +89,7 @@ export const updatePost = /* GraphQL */ `
       deprecated
       s3id
       title
-      author
+      authorID
       mapID
       tags
       description
@@ -109,7 +108,6 @@ export const updatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      owner
     }
   }
 `;
@@ -125,7 +123,7 @@ export const deletePost = /* GraphQL */ `
       deprecated
       s3id
       title
-      author
+      authorID
       mapID
       tags
       description
@@ -144,7 +142,6 @@ export const deletePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      owner
     }
   }
 `;

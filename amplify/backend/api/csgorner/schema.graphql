@@ -24,12 +24,12 @@ type Post
         rules: [
             # All can read
             { allow: public, provider: apiKey, operations: [read]},
-            # Owner of the post can obviously delete/edit, restrict creation to editors/admins
-            { allow: owner, operations: [read, update, delete]}
             # Editors can create posts
             { allow: groups, provider: userPools, groups: ["Editors"], operations: [create]}
+            # Owner of the post can delete/edit, restrict creation to editors/admins
+            { allow: owner, ownerField: "authorID", operations: [read, update, delete], identityClaim: "sub"}
             # Admins can do anything
-            { allow: groups, provider: userPools, groups: ["Administrators"]}
+            { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
         ]
     )
 {
@@ -39,7 +39,6 @@ type Post
     deprecated: Boolean!
     s3id: String!
     title: String!
-    author: String!
     mapID: ID!
     tags: [PostCategoryTag]!
     description: String!

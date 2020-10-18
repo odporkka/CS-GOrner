@@ -53,15 +53,15 @@ const PostMetaData = (props) => {
             </Grid>
 
             {/* Author */}
-            <Grid item xs={12}>
-                <label htmlFor='author' className={classes.label}>Author:</label>
-                <input type='text'
-                    id='author'
-                    name='author'
-                    className={classes.input}
-                    value={post.author}
-                    onChange={handleInputChange}/>
-            </Grid>
+            {/*<Grid item xs={12}>*/}
+            {/*    <label htmlFor='author' className={classes.label}>Author:</label>*/}
+            {/*    <input type='text'*/}
+            {/*        id='author'*/}
+            {/*        name='author'*/}
+            {/*        className={classes.input}*/}
+            {/*        value={post.author}*/}
+            {/*        onChange={handleInputChange}/>*/}
+            {/*</Grid>*/}
 
             {/* Map pick */}
             <Grid item xs={12}>
