@@ -8,10 +8,9 @@ import { CardMedia } from '@material-ui/core'
 // MUI styles
 const useStyles = makeStyles((theme)=>({
     root: {
-        backgroundColor: theme.palette.primary.light,
         display: 'flex',
         justifyContent: 'center',
-        height: '100%'
+        height: '100%',
     },
     message: {
         display: 'flex',

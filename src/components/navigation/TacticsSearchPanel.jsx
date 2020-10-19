@@ -19,10 +19,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         marginBottom: '20px'
-    },
-    panel: {
-        backgroundColor: theme.palette.primary.light,
-    },
+    }
 }))
 
 
@@ -78,7 +75,7 @@ const TacticsSearchPanel = (props) => {
 
     return (
         <div className={classes.root}>
-            <Accordion className={classes.panel} expanded={panelExpanded}>
+            <Accordion expanded={panelExpanded}>
                 <AccordionSummary
                     expandIcon={<SearchIcon />}
                     aria-controls="search settings"

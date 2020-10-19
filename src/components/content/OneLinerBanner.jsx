@@ -8,7 +8,6 @@ import { CardMedia } from '@material-ui/core'
 // MUI styles
 const useStyles = makeStyles((theme)=>({
     root: {
-        backgroundColor: theme.palette.primary.light,
         display: 'flex',
         justifyContent: 'center',
     },
@@ -19,16 +18,8 @@ const useStyles = makeStyles((theme)=>({
     },
     cardMedia: {
         height: '100%',
-        whiteSpace: 'nowrap',
-        textAlign: 'center'
-    },
-    imageAlign: {
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        height: '100%',
     },
     image: {
-        verticalAlign: 'middle',
         width: 'auto',
         height: 100,
     }
@@ -62,7 +53,6 @@ const OneLinerBanner = () => {
             </CardContent>
 
             <CardMedia className={classes.cardMedia}>
-                <span className={classes.imageAlign} />
                 <img className={classes.image} src='images/chicken.png' alt='chickkkken'/>
             </CardMedia>
         </Card>

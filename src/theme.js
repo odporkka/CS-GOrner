@@ -42,7 +42,9 @@ export const theme = createMuiTheme({
         },
         MuiPaper: {
             root: {
-                backgroundColor: '#62727b',
+                // Default paper background, alfa 75%
+                backgroundColor: 'rgba(55,71,79,.75)',
+
             }
         }
     }
