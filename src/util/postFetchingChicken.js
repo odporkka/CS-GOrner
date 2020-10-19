@@ -48,15 +48,12 @@ export const fetch = async (searchCriteria) => {
 /**
  * Fetch only ids and titles
  *
- * @param author
  * @return {Promise<*[]|*>}
  */
-export const fetchDraftTitlesAndIds = async (author=undefined) =>{
-    console.log('Chicken is fetching drafts!')
+export const fetchCurrentUsersPosts = async () =>{
+    console.log('Chicken is fetching your posts!')
 
-    const filter = { published: { eq: false }}
-
-    const response = await api.elasticSearchIdsAndTitles(filter)
+    const response = await api.elasticSearchCurrentUsersPosts()
     console.log('Chicken got response from backend: ', response)
 
     if (!response.items || response.error) {

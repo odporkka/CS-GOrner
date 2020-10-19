@@ -146,6 +146,7 @@ export const searchPostTitlesAndIds = /* GraphQL */ `
       items {
         id
         title
+        published
       }
     }
   }

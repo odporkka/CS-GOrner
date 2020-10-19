@@ -4,9 +4,14 @@ import { makeStyles } from "@material-ui/core/styles"
 
 // MUI styles
 const useStyles = makeStyles({
-    label: {
-        paddingRight: '10px'
+    root: {
     },
+    label: {
+        paddingRight: '10px',
+    },
+    select: {
+        width: '100px'
+    }
 })
 
 
@@ -18,10 +23,12 @@ const useStyles = makeStyles({
  * @return {JSX.Element}
  * @constructor
  */
-const DraftPicker = (props) => {
+const PostSelect = (props) => {
     const classes = useStyles()
     const {
-        drafts,
+        posts,
+        name,
+        label
     } = props
     const history = useHistory()
 
@@ -32,13 +39,13 @@ const DraftPicker = (props) => {
 
 
     return (
-        <div>
-            <label htmlFor='drafts' className={classes.label}>Your drafts:</label>
+        <div className={classes.root}>
+            <label htmlFor={name} className={classes.label}>{label}:</label>
 
-            <select name='drafts' value='' onChange={onChange}>
+            <select className={classes.select} name={name} value='' onChange={onChange}>
                     <option value='' key=''> </option>
-                    { drafts.map((draft) => (
-                            <option value={draft.id} key={draft.id}>{draft.title}</option>
+                    { posts.map((post) => (
+                            <option value={post.id} key={post.id}>{post.title}</option>
                         )
                     )}
             </select>
@@ -47,4 +54,4 @@ const DraftPicker = (props) => {
     )
 }
 
-export default DraftPicker
+export default PostSelect

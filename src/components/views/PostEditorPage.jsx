@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { Storage } from 'aws-amplify'
 import { makeStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
@@ -12,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 // Own classes/components
 import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
 import { initialPostState } from "../../backend/models/post"
-import DraftPicker from '../forms/postFormSections/DraftPicker'
+import PostSelect from '../forms/postFormSections/PostSelect'
 import PostForm from '../forms/PostForm'
 import * as api from '../../backend/api'
 import * as chicken from '../../util/postFetchingChicken'
@@ -46,7 +47,7 @@ const PostEditorPage = () => {
     const classes = useStyles()
     const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
     const history = useHistory()
-    const [draftList, setDraftList] = useState([])
+    const [usersPosts, setUsersPosts] = useState([])
     const [post, setPost] = useState(initialPostState)
     const [uploadProgress, setUploadProgress] = useState(undefined)
 
@@ -84,15 +85,15 @@ const PostEditorPage = () => {
     },[history, history.location.search])
 
     /*
-     * Fetch list of drafts.
+     * Fetch current users posts.
      */
     useEffect(() => {
         let mounted = true
-        const fetchDrafts = async () => {
-            const drafts = await chicken.fetchDraftTitlesAndIds()
-            if (mounted) setDraftList(drafts)
+        const fetchUsersPosts = async () => {
+            const posts = await chicken.fetchCurrentUsersPosts()
+            if (mounted) setUsersPosts(posts)
         }
-        fetchDrafts().catch((e) => console.log(e))
+        fetchUsersPosts().catch((e) => console.log(e))
 
         return () => { mounted = false }
     }, [])
@@ -280,28 +281,48 @@ const PostEditorPage = () => {
     }
 
 
-    // if (!AWSCognitoUser) {
-    //     return (
-    //         <Paper className={classes.contentPaper}>
-    //             <Container xs={12}>
-    //                 <Grid container spacing={2} justify='center'>
-    //                     <Grid item>
-    //                         <Typography variant="h6" component="h6">
-    //                             You must be logged in as admin to edit and create posts.
-    //                         </Typography>
-    //                     </Grid>
-    //                 </Grid>
-    //             </Container>
-    //         </Paper>
-    //         )
-    // }
+    if (!AWSCognitoUser) {
+        return (
+            <Paper className={classes.contentPaper}>
+                <Container xs={12}>
+                    <Grid container spacing={2} justify='center'>
+                        <Grid item>
+                            <Typography variant="h6" component="h6">
+                                You must be logged in as admin to edit and create posts.
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Container>
+            </Paper>
+            )
+    }
 
     return (
         <Paper className={classes.contentPaper}>
             <Container xs={12}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <DraftPicker history={history} drafts={draftList} />
+                    <Grid container item xs={12} spacing={2} justify='flex-end'>
+                        <Grid item>
+                            <PostSelect
+                                name='drafts'
+                                label='Your drafts'
+                                history={history}
+                                posts={usersPosts.filter((p) => (p.published === false))} />
+                        </Grid>
+                        <Grid item>
+                            <PostSelect
+                                name='posts'
+                                label='Your posts'
+                                history={history}
+                                posts={usersPosts.filter((p) => (p.published === true))} />
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                className={classes.button} variant='contained' color="primary"
+                                onClick={() => history.push('/post-editor')} >
+                                New post
+                            </Button>
+                        </Grid>
                     </Grid>
 
                     <Grid item xs={12}>

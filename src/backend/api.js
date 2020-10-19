@@ -76,13 +76,17 @@ export const elasticSearch = async (filter, nextToken=undefined) => {
     }
 }
 
-export const elasticSearchIdsAndTitles =  async (filter) => {
+export const elasticSearchCurrentUsersPosts =  async () => {
+    const currentUserID = await getAuthorID()
+    if (!currentUserID) {
+        return handleError({message: 'Could not resolve current users authorID!'})
+    }
     try {
         const response = await API.graphql(graphqlOperation(queries.searchPostTitlesAndIds, {
-            filter: filter,
+            filter: { authorID: {eq: currentUserID}},
             sort: {
                 field: 'title',
-                direction: 'desc'
+                direction: 'asc'
             },
         }))
         return response.data.searchPosts
@@ -111,7 +115,7 @@ export const createPost = async (data) => {
             if (authorID) {
                 data.authorID = authorID
             } else {
-                return handleError({message: 'Could not resolve authorID!'})
+                return handleError({message: 'Could not resolve current users authorID!'})
             }
         }
         console.log('Saving: ', data)
