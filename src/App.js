@@ -81,16 +81,16 @@ const App = () => {
 
                             <NavBar />
 
-                            <Grid container className={classes.mainGrid}>
+                            <Grid container className={classes.mainGrid} justify='center'>
                                 <Grid item className={classes.mainContent}>
                                     <Router />
                                 </Grid>
 
-                                <Grid item className={classes.rightSideBanner}>
-                                    <Container>
-                                        <p>Sidebanner</p>
-                                    </Container>
-                                </Grid>
+                                {/*<Grid item className={classes.rightSideBanner}>*/}
+                                {/*    <Container>*/}
+                                {/*        /!*<p>Sidebanner</p>*!/*/}
+                                {/*    </Container>*/}
+                                {/*</Grid>*/}
 
                             </Grid>
 

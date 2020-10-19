@@ -10,15 +10,27 @@ const useStyles = makeStyles((theme)=>({
     root: {
         backgroundColor: theme.palette.primary.light,
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     quote: {
         display: 'flex',
         flexDirection: 'column',
+        width: '100%'
+    },
+    cardMedia: {
+        height: '100%',
+        whiteSpace: 'nowrap',
+        textAlign: 'center'
+    },
+    imageAlign: {
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        height: '100%',
     },
     image: {
-        width: 100,
-        height: 'auto',
+        verticalAlign: 'middle',
+        width: 'auto',
+        height: 100,
     }
 }))
 
@@ -38,15 +50,19 @@ const OneLinerBanner = () => {
     return (
         <Card className={classes.root}>
             <CardContent className={classes.quote}>
-                <Typography variant='h5' component='h5' display='inline'>
+                <Typography variant='subtitle1' display='inline'>
+                    BOT Chikken says:
+                </Typography>
+                <Typography variant='h5' display='inline' align='center'>
                     Git gud kid!
                 </Typography>
-                <Typography variant='subtitle1' display='inline' align='center'>
-                    - Unknown CS god
+                <Typography variant='subtitle1' display='inline' align='right'>
+                    (Unknown CS god)
                 </Typography>
             </CardContent>
 
-            <CardMedia>
+            <CardMedia className={classes.cardMedia}>
+                <span className={classes.imageAlign} />
                 <img className={classes.image} src='images/chicken.png' alt='chickkkken'/>
             </CardMedia>
         </Card>

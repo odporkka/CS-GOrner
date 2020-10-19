@@ -25,6 +25,12 @@ const useStyles = makeStyles(() => ({
     adminTitle: {
         paddingLeft: '20px'
     },
+    adminMenuLabelContainer: {
+        width: '100%'
+    },
+    adminMenuLabelIcon: {
+        float: 'right'
+    }
 }))
 
 
@@ -52,6 +58,18 @@ const UserMenu = () => {
         console.log('logged out')
     }
 
+    const adminIcon = (width, height) => {
+        return <img src='images/admin-crown.png' alt='admin-icon' style={{height: height, width: width, float: 'right'}}/>
+    }
+
+    const adminMenuItemLabel = (label) => {
+        return (
+            <div className={classes.adminMenuLabelContainer}>
+                {label}
+                <div className={classes.adminMenuLabelIcon}>{adminIcon(20, 20)}</div>
+            </div>
+        )
+    }
 
     return (
         <div className={classes.userDiv}>
@@ -60,8 +78,7 @@ const UserMenu = () => {
                 aria-haspopup="true"
                 onClick={handleClick}
                 startIcon={<AccountCircleIcon />}
-                endIcon={AWSCognitoUser ?
-                    <img src='images/admin-crown.png'  alt='admin-icon' style={{height: '20px', width: '20px'}}/> : null}>
+                endIcon={AWSCognitoUser ? adminIcon(20, 20) : null}>
                 Log in
             </Button>
 
@@ -83,7 +100,9 @@ const UserMenu = () => {
                 {AWSCognitoUser && (
                     <div id='AWS admin options'>
                         <Divider />
-                        <MenuItem onClick={handleClose} component={Link} to='post-editor' >Make new post</MenuItem>
+                        <MenuItem onClick={handleClose} component={Link} to='post-editor'>
+                            {adminMenuItemLabel('Post editor')}
+                        </MenuItem>
                         <MenuItem onClick={handleClose}>
                             <Button onClick={logoutAWS}>
                                 <AmplifySignOut />

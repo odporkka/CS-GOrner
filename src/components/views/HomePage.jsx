@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import { Context } from '../../context/Context'
 import NewPosts from '../content/NewPosts'
 import OneLinerBanner from '../content/OneLinerBanner'
+import WelcomeMessage from '../content/WelcomeMessage'
 
 
 
@@ -19,7 +20,10 @@ const HomePage = () => {
 
     return (
         <Grid container spacing={4} justify='flex-end'>
-            <Grid item>
+            <Grid item xs={7}>
+                <WelcomeMessage />
+            </Grid>
+            <Grid item xs={5}>
                 <OneLinerBanner />
             </Grid>
 
