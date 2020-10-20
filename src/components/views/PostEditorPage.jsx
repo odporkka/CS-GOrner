@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.light,
     },
     divider: {
-        // color: theme.palette.secondary
     },
     form: {
 
@@ -112,11 +111,6 @@ const PostEditorPage = () => {
         let response
         // If id is found, we are updating post. New posts dont have id yet
         if (input.id) {
-            // CreatedAt and updatedAt are managed by AWS automatically
-            delete input.createdAt
-            delete input.updatedAt
-            // Linked properties need to be removed too
-            delete input.map
             response = await api.updatePost(input)
             if (!response.error) {
                 alert(`Post '${input.title}' saved successfully!`)

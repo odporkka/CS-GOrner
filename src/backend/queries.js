@@ -54,6 +54,14 @@ export const getPost = /* GraphQL */ `
         name
         canonicalName
       }
+      author {
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+      }
     }
   }
 `;
@@ -86,6 +94,14 @@ export const listPosts = /* GraphQL */ `
         map {
           name
           canonicalName
+        }
+        author {
+          cognitoUserSud
+          username
+          profilePic {
+            key
+            url
+          }
         }
       }
       nextToken
@@ -128,6 +144,14 @@ export const searchPosts = /* GraphQL */ `
           name
           canonicalName
         }
+        author {
+          cognitoUserSud
+          username
+          profilePic {
+            key
+            url
+          }
+        }
       }
       nextToken
       total
@@ -148,6 +172,26 @@ export const searchPostTitlesAndIds = /* GraphQL */ `
         title
         published
       }
+    }
+  }
+`;
+
+/*
+ * AUTHORS
+ */
+export const getAuthor = /* GraphQL */ `
+  query GetAuthor($cognitoUserSud: String!) {
+    getAuthor(cognitoUserSud: $cognitoUserSud) {
+      id
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
+      }
+      bio
+      createdAt
+      updatedAt
     }
   }
 `;

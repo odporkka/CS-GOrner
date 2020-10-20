@@ -31,6 +31,14 @@ export const createPost = /* GraphQL */ `
       map {
         name
       }
+      author {
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+      }
     }
   }
 `;
@@ -61,6 +69,14 @@ export const updatePost = /* GraphQL */ `
       map {
         name
       }
+      author {
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+      }
     }
   }
 `;
@@ -71,26 +87,25 @@ export const deletePost = /* GraphQL */ `
   ) {
     deletePost(input: $input, condition: $condition) {
       id
-      published
-      publishDate
-      deprecated
-      s3id
-      title
-      authorID
-      mapID
-      tags
-      description
-      markdown
-      sanitizedHtml
-      images {
+    }
+  }
+`;
+export const createAuthor = /* GraphQL */ `
+  mutation CreateAuthor(
+    $input: CreateAuthorInput!
+    $condition: ModelAuthorConditionInput
+  ) {
+    createAuthor(input: $input, condition: $condition) {
+      id
+      cognitoUserSud
+      username
+      profilePic {
         key
         url
       }
+      bio
       createdAt
       updatedAt
-      map {
-        name
-      }
     }
   }
 `;

@@ -1,7 +1,14 @@
-import { API, Auth, graphqlOperation } from "aws-amplify"
+import { API, Auth, graphqlOperation } from 'aws-amplify'
 
-import * as queries from "./queries"
-import * as mutations from "./mutations"
+import { validatePostObject, stripExtraProperties } from './models/post'
+import * as queries from './queries'
+import * as mutations from './mutations'
+
+
+const userNotFound = 'Current user not found!'
+const userSudError = 'Could not resolve current users sud!'
+const authorCouldNotBeCreatedError = 'Could not create author for sud!'
+
 
 /**
  * Gathers graphql errors to one message if found.
@@ -77,10 +84,9 @@ export const elasticSearch = async (filter, nextToken=undefined) => {
 }
 
 export const elasticSearchCurrentUsersPosts =  async () => {
-    const currentUserID = await getAuthorID()
-    if (!currentUserID) {
-        return handleError({message: 'Could not resolve current users authorID!'})
-    }
+    const currentUserID = await getUserSud()
+    if (!currentUserID) return handleError({message: userSudError})
+
     try {
         const response = await API.graphql(graphqlOperation(queries.searchPostTitlesAndIds, {
             filter: { authorID: {eq: currentUserID}},
@@ -95,13 +101,14 @@ export const elasticSearchCurrentUsersPosts =  async () => {
     }
 }
 
-const getAuthorID = async () => {
-    const currentUser = await Auth.currentUserInfo()
-    const ownerSub = currentUser?.attributes?.sub
-    if (!ownerSub) {
-        return null
+export const fetchAuthorWithSud = async (sud) => {
+    try {
+        const response = await API.graphql(graphqlOperation(queries.getAuthor,
+            { cognitoUserSud: sud }))
+        return response.data.getAuthor
+    } catch (e) {
+        return handleError(e)
     }
-    return ownerSub
 }
 
 /*
@@ -110,18 +117,33 @@ const getAuthorID = async () => {
  */
 export const createPost = async (data) => {
     try {
+        // Set authorID if not present
+        // (Can be present i.e. if validation failed but author was already created)
         if (!data.authorID) {
-            const authorID = await getAuthorID()
-            if (authorID) {
-                data.authorID = authorID
-            } else {
-                return handleError({message: 'Could not resolve current users authorID!'})
+            const currentUser = await Auth.currentUserInfo()
+            const sud = await getUserSud(currentUser)
+            if (!sud || sud.error) {
+                return handleError({ message: userSudError})
             }
+
+            // Check if author object is made
+            let author = await fetchAuthorWithSud(sud)
+            if (!author || author.error) {
+                console.log(`Author is not yet made for sud ${sud}!`)
+                author = await createAuthor(currentUser, sud)
+                if (author.error) return handleError({ message: authorCouldNotBeCreatedError})
+            } else {
+                console.log(`Author ${author.username} found for sud ${sud}!`)
+            }
+            data.authorID = sud
         }
-        console.log('Saving: ', data)
+        const validatedPost = stripAndValidatePost(data)
+        if (validatedPost.error) return validatedPost
+
+        console.log('Saving post object: ', validatedPost)
         const response = await API.graphql({
             query: mutations.createPost,
-            variables: {input: data},
+            variables: {input: validatedPost},
             authMode: 'AMAZON_COGNITO_USER_POOLS'
         })
         return response.data.createPost
@@ -131,10 +153,13 @@ export const createPost = async (data) => {
 }
 
 export const updatePost = async (data) => {
+    const validatedPost = stripAndValidatePost(data)
+    if (validatedPost.error) return validatedPost
+
     try {
         const response =  await API.graphql({
             query: mutations.updatePost,
-            variables: {input: data},
+            variables: {input: validatedPost},
             authMode: 'AMAZON_COGNITO_USER_POOLS'
         })
         return response.data.updatePost
@@ -154,4 +179,43 @@ export const deletePostById = async (id) => {
     } catch (e) {
         return handleError(e)
     }
+}
+
+export const createAuthor = async (currentUser, sud) => {
+    if (!currentUser) return handleError({ message: userNotFound})
+    const input = {
+        cognitoUserSud: sud,
+        username: currentUser.username
+    }
+    try {
+        const response = await API.graphql({
+            query: mutations.createAuthor,
+            variables: {input: input},
+            authMode: 'AMAZON_COGNITO_USER_POOLS'
+        })
+        return response.data.createAuthor
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
+
+/*
+ * Private functions
+ */
+const getUserSud = async (currentUser=undefined) => {
+    // Fetch current user info if not given
+    if (!currentUser) currentUser = await Auth.currentUserInfo()
+    // Parse sub
+    const ownerSub = currentUser?.attributes?.sub
+    if (!ownerSub) handleError({ message: userSudError})
+    return ownerSub
+}
+
+const stripAndValidatePost = (data) => {
+    console.log('Stripping and validating post..')
+    data = stripExtraProperties(data)
+    const validation = validatePostObject(data)
+    if (validation.error) return handleError(validation)
+    return data
 }

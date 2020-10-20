@@ -12,12 +12,12 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
 
 // MUI styles
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     userDiv: {
         minWidth: '100px'
     },
-    userMenu: {
-
+    menuPaper: {
+        backgroundColor: theme.palette.primary.light,
     },
     avatar: {
         float: 'right'
@@ -92,6 +92,7 @@ const UserMenu = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
                 className={classes.userMenu}
+                classes={{paper: classes.menuPaper}}
             >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>

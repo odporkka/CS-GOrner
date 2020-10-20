@@ -34,17 +34,17 @@ export const getPost = /* GraphQL */ `
   query GetPost($id: ID!) {
     getPost(id: $id) {
       id
-      published
-      publishDate
-      deprecated
-      s3id
       title
       authorID
       mapID
+      published
+      publishDate
+      deprecated
       tags
       description
       markdown
       sanitizedHtml
+      s3id
       images {
         key
         url
@@ -55,6 +55,18 @@ export const getPost = /* GraphQL */ `
         id
         name
         canonicalName
+        createdAt
+        updatedAt
+      }
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
         createdAt
         updatedAt
       }
@@ -70,17 +82,17 @@ export const listPosts = /* GraphQL */ `
     listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        published
-        publishDate
-        deprecated
-        s3id
         title
         authorID
         mapID
+        published
+        publishDate
+        deprecated
         tags
         description
         markdown
         sanitizedHtml
+        s3id
         images {
           key
           url
@@ -91,6 +103,14 @@ export const listPosts = /* GraphQL */ `
           id
           name
           canonicalName
+          createdAt
+          updatedAt
+        }
+        author {
+          id
+          cognitoUserSud
+          username
+          bio
           createdAt
           updatedAt
         }
@@ -114,17 +134,17 @@ export const searchPosts = /* GraphQL */ `
     ) {
       items {
         id
-        published
-        publishDate
-        deprecated
-        s3id
         title
         authorID
         mapID
+        published
+        publishDate
+        deprecated
         tags
         description
         markdown
         sanitizedHtml
+        s3id
         images {
           key
           url
@@ -138,9 +158,64 @@ export const searchPosts = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        author {
+          id
+          cognitoUserSud
+          username
+          bio
+          createdAt
+          updatedAt
+        }
       }
       nextToken
       total
+    }
+  }
+`;
+export const listAuthors = /* GraphQL */ `
+  query ListAuthors(
+    $cognitoUserSud: String
+    $filter: ModelAuthorFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listAuthors(
+      cognitoUserSud: $cognitoUserSud
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getAuthor = /* GraphQL */ `
+  query GetAuthor($cognitoUserSud: String!) {
+    getAuthor(cognitoUserSud: $cognitoUserSud) {
+      id
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
+      }
+      bio
+      createdAt
+      updatedAt
     }
   }
 `;

@@ -75,7 +75,7 @@ const PostHeader = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='body1'>
-                        by {data.authorID.toString()}
+                        by {data?.author?.username ? data.author.username : '(author)'}
                     </Typography>
                     <Typography variant='body2' style={{fontSize: 10}}>
                         last edit: { data.updatedAt }

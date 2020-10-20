@@ -38,17 +38,17 @@ export const onCreatePost = /* GraphQL */ `
   subscription OnCreatePost($authorID: String) {
     onCreatePost(authorID: $authorID) {
       id
-      published
-      publishDate
-      deprecated
-      s3id
       title
       authorID
       mapID
+      published
+      publishDate
+      deprecated
       tags
       description
       markdown
       sanitizedHtml
+      s3id
       images {
         key
         url
@@ -59,6 +59,18 @@ export const onCreatePost = /* GraphQL */ `
         id
         name
         canonicalName
+        createdAt
+        updatedAt
+      }
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
         createdAt
         updatedAt
       }
@@ -69,17 +81,17 @@ export const onUpdatePost = /* GraphQL */ `
   subscription OnUpdatePost($authorID: String) {
     onUpdatePost(authorID: $authorID) {
       id
-      published
-      publishDate
-      deprecated
-      s3id
       title
       authorID
       mapID
+      published
+      publishDate
+      deprecated
       tags
       description
       markdown
       sanitizedHtml
+      s3id
       images {
         key
         url
@@ -90,6 +102,18 @@ export const onUpdatePost = /* GraphQL */ `
         id
         name
         canonicalName
+        createdAt
+        updatedAt
+      }
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
         createdAt
         updatedAt
       }
@@ -100,17 +124,17 @@ export const onDeletePost = /* GraphQL */ `
   subscription OnDeletePost($authorID: String) {
     onDeletePost(authorID: $authorID) {
       id
-      published
-      publishDate
-      deprecated
-      s3id
       title
       authorID
       mapID
+      published
+      publishDate
+      deprecated
       tags
       description
       markdown
       sanitizedHtml
+      s3id
       images {
         key
         url
@@ -124,6 +148,66 @@ export const onDeletePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const onCreateAuthor = /* GraphQL */ `
+  subscription OnCreateAuthor($cognitoUserSud: String) {
+    onCreateAuthor(cognitoUserSud: $cognitoUserSud) {
+      id
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
+      }
+      bio
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateAuthor = /* GraphQL */ `
+  subscription OnUpdateAuthor($cognitoUserSud: String) {
+    onUpdateAuthor(cognitoUserSud: $cognitoUserSud) {
+      id
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
+      }
+      bio
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteAuthor = /* GraphQL */ `
+  subscription OnDeleteAuthor($cognitoUserSud: String) {
+    onDeleteAuthor(cognitoUserSud: $cognitoUserSud) {
+      id
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
+      }
+      bio
+      createdAt
+      updatedAt
     }
   }
 `;
