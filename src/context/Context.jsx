@@ -50,9 +50,12 @@ const ContextAPIProvider = (props) => {
      */
     useEffect( () => {
         async function fetchData() {
-            const maps = await api.fetchMaps()
+            let maps = await api.fetchMaps()
+            maps = sortMaps(maps)
             const posts = await api.fetch10NewestPosts()
-            const authors = await api.fetchAuthorsList()
+            let authors = await api.fetchAuthorsList()
+            authors = authors.sort((a1, a2) => (a1.username > a2.username) ? 1 : -1)
+
             if (maps.error || posts.error) {
                 console.log('Error(s) while fetching data:')
                 if (maps.error) console.log('Maps error:', maps.errorMessage)
@@ -62,7 +65,7 @@ const ContextAPIProvider = (props) => {
             }
             setContentData(prevState => ({
                 ...prevState,
-                maps: sortMaps(maps),
+                maps: maps,
                 newPosts: posts,
                 authors: authors
             }))

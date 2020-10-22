@@ -24,6 +24,9 @@ export const fetch = async (searchCriteria) => {
     searchCriteria.deprecated ?
         filter.deprecated = { eq: searchCriteria.deprecated } : filter.deprecated = { eq: false }
 
+    // Set author if present
+    if (searchCriteria.author) filter.authorID = { eq: searchCriteria.author }
+
     // Set maps if defined
     if (searchCriteria.maps && Array.isArray(searchCriteria.maps)) {
         filter = buildMapFilter(filter, searchCriteria.maps)

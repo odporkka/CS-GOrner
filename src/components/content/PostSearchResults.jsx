@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
 import PostTeaser from './PostTeaser'
 import { tagToString } from '../../backend/models/post'
+import { Context } from '../../context/Context'
 
 
 
@@ -20,9 +21,13 @@ const PostSearchResults = (props) => {
         results,
         searchCriteria
     } = props
+    const { contentData } = useContext(Context)
 
     const showMapCriteria = (searchCriteria.maps && searchCriteria.maps.length > 0)
     const showTagCriteria = (searchCriteria.tags && searchCriteria.tags.length > 0)
+    const selectedAuthor = searchCriteria.author ?
+        contentData.authors.find(a => a.cognitoUserSud === searchCriteria.author).username : undefined
+
 
     return (
         <>
@@ -32,11 +37,14 @@ const PostSearchResults = (props) => {
                     <Typography variant='body1'>Maps:{searchCriteria.maps.map(m => ` ${m.canonicalName}`)}</Typography>
                 )}
                 { showTagCriteria && (
-                    <Typography variant='body1'>Maps: {searchCriteria.tags.map(t => ` ${tagToString(t)}`)}</Typography>
+                    <Typography variant='body1'>Tags: {searchCriteria.tags.map(t => ` ${tagToString(t)}`)}</Typography>
+                )}
+                { selectedAuthor && (
+                    <Typography variant='body1'>Author: {selectedAuthor}</Typography>
                 )}
             </Grid>
 
-            { results.items.map((post) => (
+            { results.items && results.items.map((post) => (
                     <Grid item key={post.id} xs={12}>
                         <PostTeaser postData={post} />
                     </Grid>
