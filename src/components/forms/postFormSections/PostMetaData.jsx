@@ -36,7 +36,6 @@ const PostMetaData = (props) => {
     } = props
     const classes = useStyles()
     const { contentData } = useContext(Context)
-    const firstMap = contentData?.maps?.[0]?.id ? contentData.maps[0].id : ''
 
 
     return (
@@ -66,7 +65,8 @@ const PostMetaData = (props) => {
             {/* Map pick */}
             <Grid item xs={12}>
                 <label htmlFor='map' className={classes.label}>Map:</label>
-                <select name='mapID' value={post.mapID ? post.mapID : firstMap} onChange={handleInputChange}>
+                <select name='mapID' value={post.mapID ? post.mapID : undefined} onChange={handleInputChange}>
+                    <option value={undefined} key='no_map'>-</option>
                     { contentData.maps.map((map) => (
                             <option value={map.id} key={map.id}>{map.canonicalName}</option>
                         )

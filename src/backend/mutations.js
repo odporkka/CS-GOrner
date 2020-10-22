@@ -87,6 +87,23 @@ export const deletePost = /* GraphQL */ `
   ) {
     deletePost(input: $input, condition: $condition) {
       id
+      published
+      publishDate
+      deprecated
+      s3id
+      title
+      authorID
+      mapID
+      tags
+      description
+      markdown
+      sanitizedHtml
+      images {
+        key
+        url
+      }
+      createdAt
+      updatedAt
     }
   }
 `;

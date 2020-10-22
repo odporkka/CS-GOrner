@@ -72,10 +72,9 @@ export const fetchCurrentUsersPosts = async () =>{
  */
 const buildMapFilter = (filter, maps) => {
     const mapList = []
-    while (maps.length > 0) {
-        const map = maps.shift()
+    maps.forEach(map => {
         if (map.id) mapList.push({ mapID: {eq: map.id}})
-    }
+    })
     if (mapList.length > 0) {
         filter = {...filter, or: mapList}
     }
