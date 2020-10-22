@@ -111,6 +111,15 @@ export const fetchAuthorWithSud = async (sud) => {
     }
 }
 
+export const fetchAuthorsList = async () => {
+    try {
+        const response = await API.graphql(graphqlOperation(queries.listAuthors))
+        return response.data.listAuthors.items
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
 /*
  * Mutations
  * Use authMode: 'AMAZON_COGNITO_USER_POOLS' here to only allow authenticated users to modify content.

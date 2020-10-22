@@ -53,7 +53,6 @@ const TacticsBrowsePage = () => {
     const [panelState, setPanelState] = useState(initialPanelState)
     const [results, setResults] = useState(initialResults)
 
-
     /*
      * Elastic search all posts by map.
      * (TODO: Consider limit if amount of posts is big?)

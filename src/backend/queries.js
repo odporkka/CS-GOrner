@@ -195,3 +195,26 @@ export const getAuthor = /* GraphQL */ `
     }
   }
 `;
+export const listAuthors = /* GraphQL */ `
+  query ListAuthors(
+    $cognitoUserSud: String
+    $filter: ModelAuthorFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listAuthors(
+      cognitoUserSud: $cognitoUserSud
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        cognitoUserSud
+        username
+      }
+      nextToken
+    }
+  }
+`;

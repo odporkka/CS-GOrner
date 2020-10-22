@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {makeStyles} from '@material-ui/core/styles'
+import {Context} from "../../../context/Context"
 
 // MUI styles
 const useStyles = makeStyles({
@@ -18,22 +19,22 @@ const useStyles = makeStyles({
  * @constructor
  */
 const AuthorSelect = (props) => {
+    const {
+        selectedAuthor,
+        handleAuthorChange
+    } = props
     const classes = useStyles()
+    const { contentData } = useContext(Context)
 
-    const authors = [
-        'author1',
-        'author2',
-        'author3'
-    ]
 
     return (
         <div>
             <label htmlFor='authors' className={classes.label}>Author:</label>
 
-            <select name='authors' value={authors[0]} onChange={() => console.log('Author picked!')}>
-                <option value='' key=''> </option>
-                { authors.map((author) => (
-                        <option value={author} key={author}>{author}</option>
+            <select name='authors' value={selectedAuthor}  onChange={handleAuthorChange}>
+                <option value='' key='no_author'>Select author.. </option>
+                { contentData.authors.map((author) => (
+                        <option value={author.cognitoUserSud} key={author.cognitoUserSud}>{author.username}</option>
                     )
                 )}
             </select>

@@ -72,6 +72,12 @@ const TacticsSearchPanel = (props) => {
         setSearchCriteria({...searchCriteria, tags: tagArray})
     }
 
+    const handleAuthorChange = (event) => {
+        // Set empty string as undefined
+        const value = event.target.value ? event.target.value : undefined
+        setSearchCriteria({...searchCriteria, author: value})
+    }
+
 
     return (
         <div className={classes.root}>
@@ -93,7 +99,7 @@ const TacticsSearchPanel = (props) => {
 
                         <Grid item xs={12} container spacing={2}>
                             <Grid item xs={6}>
-                                <AuthorSelect />
+                                <AuthorSelect checkedAuthor={searchCriteria.author} handleAuthorChange={handleAuthorChange}/>
                             </Grid>
                         </Grid>
 

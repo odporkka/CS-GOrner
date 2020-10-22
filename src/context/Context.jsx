@@ -8,6 +8,7 @@ import * as api from "../backend/api"
 const initialValues = {
     maps: [],
     newPosts: [],
+    authors: []
 }
 export const Context = createContext(initialValues)
 
@@ -51,13 +52,20 @@ const ContextAPIProvider = (props) => {
         async function fetchData() {
             const maps = await api.fetchMaps()
             const posts = await api.fetch10NewestPosts()
+            const authors = await api.fetchAuthorsList()
             if (maps.error || posts.error) {
                 console.log('Error(s) while fetching data:')
                 if (maps.error) console.log('Maps error:', maps.errorMessage)
                 if (posts.error) console.log('Posts error:', posts.errorMessage)
+                if (authors.error) console.log('Authors error:', authors.errorMessage)
                 return
             }
-            setContentData(state => ({...state, maps: sortMaps(maps), newPosts: posts}))
+            setContentData(prevState => ({
+                ...prevState,
+                maps: sortMaps(maps),
+                newPosts: posts,
+                authors: authors
+            }))
         }
         fetchData()
             .catch((e) => console.log(e))

@@ -62,6 +62,11 @@ const PostForm = (props) => {
         setPost({...post, [name]: value})
     }
 
+    const handleMapChange = (event) => {
+        const value = event.target.value ? event.target.value : undefined
+        setPost({...post, mapID: value})
+    }
+
     /*
      * Change post state if tag is added/removed
      */
@@ -89,6 +94,7 @@ const PostForm = (props) => {
                             post={post}
                             handleInputChange={handleInputChange}
                             handleTagChange={handleTagChange}
+                            handleMapChange={handleMapChange}
                         />
                     </Grid>
 
