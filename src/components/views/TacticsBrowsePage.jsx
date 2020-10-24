@@ -7,8 +7,8 @@ import Paper from '@material-ui/core/Paper'
 // Own classes/components
 import LoadingSpinner from '../content/LoadingSpinner'
 import PostSearchResults from '../content/PostSearchResults'
-import TacticsMapPanel from '../navigation/TacticsMapPanel'
-import TacticsSearchPanel from '../navigation/TacticsSearchPanel'
+import TacticsMapPanel from '../forms/TacticsMapPanel'
+import TacticsSearchPanel from '../forms/TacticsSearchPanel'
 import * as chicken from '../../util/postFetchingChicken'
 
 // MUI styles

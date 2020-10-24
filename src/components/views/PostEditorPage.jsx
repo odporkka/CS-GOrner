@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 // Own classes/components
 import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
 import { initialPostState } from "../../backend/models/post"
-import PostSelect from '../forms/postFormSections/PostSelect'
+import PostSelect from '../forms/formSections/PostSelect'
 import PostForm from '../forms/PostForm'
 import * as api from '../../backend/api'
 import * as chicken from '../../util/postFetchingChicken'

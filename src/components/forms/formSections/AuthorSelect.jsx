@@ -26,13 +26,12 @@ const AuthorSelect = (props) => {
     const classes = useStyles()
     const { contentData } = useContext(Context)
 
-
     return (
         <div>
             <label htmlFor='authors' className={classes.label}>Author:</label>
 
             <select name='authors' value={selectedAuthor}  onChange={handleAuthorChange}>
-                <option value='' key='no_author'>Select author.. </option>
+                <option value='no_author' key='no_author'>Select author.. </option>
                 { contentData.authors.map((author) => (
                         <option value={author.cognitoUserSud} key={author.cognitoUserSud}>{author.username}</option>
                     )

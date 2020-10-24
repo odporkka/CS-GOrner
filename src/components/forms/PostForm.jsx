@@ -6,8 +6,8 @@ import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
 import Post from '../content/Post'
-import PostFormImageUpload from './postFormSections/PostFormImageUpload'
-import PostMetaData from "./postFormSections/PostMetaData"
+import PostFormImageUpload from './formSections/PostFormImageUpload'
+import PostMetaData from "./formSections/PostMetaData"
 
 // MUI styles
 const useStyles = makeStyles({

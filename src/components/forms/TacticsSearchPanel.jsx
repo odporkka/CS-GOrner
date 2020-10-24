@@ -10,9 +10,9 @@ import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 
 // Own classes/components
-import AuthorSelect from '../forms/postFormSections/AuthorSelect'
-import MapCheckbox from '../forms/postFormSections/MapCheckbox'
-import TagCheckbox from '../forms/postFormSections/TagCheckbox'
+import AuthorSelect from './formSections/AuthorSelect'
+import MapCheckbox from './formSections/MapCheckbox'
+import TagCheckbox from './formSections/TagCheckbox'
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
@@ -74,7 +74,8 @@ const TacticsSearchPanel = (props) => {
 
     const handleAuthorChange = (event) => {
         // Set empty string as undefined
-        const value = event.target.value ? event.target.value : undefined
+        const value = event.target.value === 'no_author' ? undefined : event.target.value
+        console.log('changed', value)
         setSearchCriteria({...searchCriteria, author: value})
     }
 
