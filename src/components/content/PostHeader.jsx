@@ -7,7 +7,7 @@ import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 
 
-import { tagToString } from "../../backend/models/post"
+import { tagToString } from '../../backend/models/tags'
 
 
 // MUI styles

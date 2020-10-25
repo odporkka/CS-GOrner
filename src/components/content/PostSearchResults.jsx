@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
 import PostTeaser from './PostTeaser'
-import { tagToString } from '../../backend/models/post'
+import { tagToString } from '../../backend/models/tags'
 import { Context } from '../../context/Context'
 
 

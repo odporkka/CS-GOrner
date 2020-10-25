@@ -43,7 +43,7 @@ type Post
     published: Boolean!
     publishDate: AWSDateTime
     deprecated: Boolean!
-    tags: [PostCategoryTag]!
+    tags: String!
     description: String!
     markdown: String!
     sanitizedHtml: String!
@@ -85,20 +85,4 @@ type Image {
 input ImageInput {
     key: String!
     url: String!
-}
-
-#########
-# ENUMS #
-#########
-enum PostCategoryTag {
-    AIM,
-    MOVEMENT,
-    UTILITY,
-    ECONOMY,
-    TEAMWORK,
-    SOLO,
-    SOUNDS,
-    CLUTCH,
-    SUPPORT,
-    SETTINGS
 }

@@ -1,6 +1,7 @@
 import { API, Auth, graphqlOperation } from 'aws-amplify'
 
 import { validatePostObject, stripExtraProperties } from './models/post'
+import { tagsToTagArray, tagArrayToTags } from './models/tags'
 import * as queries from './queries'
 import * as mutations from './mutations'
 
@@ -44,7 +45,9 @@ export const fetchMaps = async () => {
 export const fetchPostWithId = async (id) => {
     try {
         const response = await API.graphql(graphqlOperation(queries.getPost, {id: id}))
-        return response.data.getPost
+        let post = response.data.getPost
+        if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
+        return post
     } catch (e) {
         return handleError(e)
     }
@@ -60,13 +63,18 @@ export const fetch10NewestPosts = async () => {
             },
             limit: 10
         }))
-        return response.data.searchPosts.items
+        let posts = response.data.searchPosts.items
+        posts.forEach((post) => {
+                if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
+            }
+        )
+        return posts
     } catch (e) {
         return handleError(e)
     }
 }
 
-export const elasticSearch = async (filter, nextToken=undefined) => {
+export const elasticSearchPosts = async (filter, nextToken=undefined) => {
     try {
         const response = await API.graphql(graphqlOperation(queries.searchPosts, {
             filter: filter,
@@ -77,7 +85,12 @@ export const elasticSearch = async (filter, nextToken=undefined) => {
             limit: 10,
             nextToken: nextToken
         }))
-        return response.data.searchPosts
+        let posts = response.data.searchPosts.items
+        posts.forEach((post) => {
+                if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
+            }
+        )
+        return {items: posts, total: response.total}
     } catch (e) {
         return handleError(e)
     }
@@ -155,7 +168,9 @@ export const createPost = async (data) => {
             variables: {input: validatedPost},
             authMode: 'AMAZON_COGNITO_USER_POOLS'
         })
-        return response.data.createPost
+        let post = response.data.createPost
+        if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
+        return post
     } catch (e) {
         return handleError(e)
     }
@@ -171,7 +186,9 @@ export const updatePost = async (data) => {
             variables: {input: validatedPost},
             authMode: 'AMAZON_COGNITO_USER_POOLS'
         })
-        return response.data.updatePost
+        let post = response.data.updatePost
+        if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
+        return post
     } catch (e) {
         return handleError(e)
     }
@@ -184,7 +201,9 @@ export const deletePostById = async (id) => {
             variables: {input: {id: id}},
             authMode: 'AMAZON_COGNITO_USER_POOLS'
         })
-        return response.data.deletePost
+        let post = response.data.deletePost
+        if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
+        return post
     } catch (e) {
         return handleError(e)
     }
@@ -226,5 +245,6 @@ const stripAndValidatePost = (data) => {
     data = stripExtraProperties(data)
     const validation = validatePostObject(data)
     if (validation.error) return handleError(validation)
+    data.tags = tagArrayToTags(data.tags)
     return data
 }

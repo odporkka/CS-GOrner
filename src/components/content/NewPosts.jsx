@@ -25,7 +25,7 @@ const NewPosts = (props) => {
     return (
         <Paper>
             <Container>
-                <Grid container spacing={2}>
+                <Grid container spacing={4}>
                     <Grid item xs={12}>
                         <Typography variant='h5'>New Posts</Typography>
                     </Grid>

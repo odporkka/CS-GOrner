@@ -34,7 +34,7 @@ export const fetch = async (searchCriteria) => {
 
     console.log('Chicken made a filter: ', filter)
 
-    let response = await api.elasticSearch(filter)
+    let response = await api.elasticSearchPosts(filter)
     if (!response.total) {
         response.total = 0
     }

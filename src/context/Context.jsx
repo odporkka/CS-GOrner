@@ -63,6 +63,11 @@ const ContextAPIProvider = (props) => {
                 if (authors.error) console.log('Authors error:', authors.errorMessage)
                 return
             }
+
+            // console.log('Context-Maps: ', maps)
+            // console.log('Context-Posts: ', posts)
+            // console.log('Context-Authors: ', authors)
+
             setContentData(prevState => ({
                 ...prevState,
                 maps: maps,
