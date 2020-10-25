@@ -15,23 +15,28 @@ import * as api from "../backend/api"
 export const fetch = async (searchCriteria) => {
     console.log('Chicken is parsing search criteria:', searchCriteria)
 
-    let filter = {}
+    // Top level conditions are combined with AND
+    let filter = { and: []}
+
     // Set published if defined, default to true
-    searchCriteria.published ?
-        filter.published = { eq: searchCriteria.published } : filter.published = { eq: true }
+    filter.and.push({
+        published: { eq: searchCriteria.hasOwnProperty('published') ? searchCriteria.published : true }
+    })
 
     // Set deprecated if defined, default to false
-    searchCriteria.deprecated ?
-        filter.deprecated = { eq: searchCriteria.deprecated } : filter.deprecated = { eq: false }
+    filter.and.push({
+        deprecated: { eq: searchCriteria.hasOwnProperty('deprecated') ? searchCriteria.deprecated : false }
+    })
 
     // Set author if present
-    if (searchCriteria.author) filter.authorID = { eq: searchCriteria.author }
+    if (searchCriteria.author) filter.and.push({authorID: { eq: searchCriteria.author }})
 
     // Set maps if defined
     if (searchCriteria.maps && Array.isArray(searchCriteria.maps)) {
         filter = buildMapFilter(filter, searchCriteria.maps)
     }
 
+    // Set tags if defined
     if (searchCriteria.tags && Array.isArray(searchCriteria.tags)) {
         filter = buildTagFilter(filter, searchCriteria.tags)
     }
@@ -78,7 +83,7 @@ const buildMapFilter = (filter, maps) => {
         if (map.id) mapList.push({ mapID: {eq: map.id}})
     })
     if (mapList.length > 0) {
-        filter = {...filter, or: mapList}
+        filter.and.push({ or: mapList })
     }
     return filter
 }
@@ -97,7 +102,7 @@ const buildTagFilter = (filter, tags) => {
         tagList.push({ tags: { matchPhrase: `${tag};` }})
     })
     if (tagList.length > 0) {
-        filter = {...filter, or: tagList}
+        filter.and.push({ or: tagList })
     }
     return filter
 }

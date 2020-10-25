@@ -13,8 +13,6 @@ import { tagToString } from '../../backend/models/tags'
 // MUI styles
 const useStyles = makeStyles({
     root: {
-        // height: '120px',
-        // maxHeight: '120px'
     },
     link: {
         color: 'blue'
@@ -26,8 +24,8 @@ const useStyles = makeStyles({
         height: '100%'
     },
     divider: {
-        // marginTop: '10px',
-        // marginBottom: '20px'
+    },
+    mapText: {
     }
 })
 
@@ -46,7 +44,6 @@ const PostHeader = (props) => {
         inTeaser
     } = props
     const classes = useStyles()
-
 
     return (
         <Grid container className={classes.root} spacing={2}>
@@ -97,6 +94,11 @@ const PostHeader = (props) => {
                 </Grid>
                 <Grid item xs={12} className={classes.imageContainer}>
                     <img src='images/csgo-placeholder-logo.png' alt='map' className={classes.image}/>
+                </Grid>
+                <Grid item xs={12} className={classes.mapText}>
+                    <Typography variant='body1'>
+                        { data.map.canonicalName }
+                    </Typography>
                 </Grid>
             </Grid>
 
