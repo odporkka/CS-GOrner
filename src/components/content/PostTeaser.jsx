@@ -41,7 +41,7 @@ const PostTeaser = (props) => {
             <Container>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <PostHeader data={postData} inTeaser={true}/>
+                        <PostHeader post={postData} inTeaser={true}/>
                     </Grid>
                     <Grid item xs={12}>
                         {postData.description}

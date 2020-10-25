@@ -105,7 +105,8 @@ const PostEditorPage = () => {
      * @param input Post object
      * @return {Promise<void>}
      */
-    const savePost = async (input) => {
+    const savePost = async (data) => {
+        let input = {...data}
         input.sanitizedHtml = markdownUtils.markdownToHtml(input.markdown)
 
         let response

@@ -40,7 +40,7 @@ const Post = (props) => {
             <Container>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <PostHeader data={data} inTeaser={false}/>
+                        <PostHeader post={data} inTeaser={false}/>
                     </Grid>
                     <Grid item xs={12}>
                         <div dangerouslySetInnerHTML={{ __html: data.sanitizedHtml }} />

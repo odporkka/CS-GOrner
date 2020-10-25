@@ -40,7 +40,7 @@ const useStyles = makeStyles({
  */
 const PostHeader = (props) => {
     const {
-        data,
+        post,
         inTeaser
     } = props
     const classes = useStyles()
@@ -56,15 +56,15 @@ const PostHeader = (props) => {
                                     className={classes.link}
                                     component={RouterLink}
                                     color='inherit'
-                                    to={`/tactics/${data.id}`}
+                                    to={`/tactics/${post.id}`}
                                 >
-                                    {data.title}
+                                    {post.title}
                                 </Link>
 
                             :
 
                             <>
-                                {data.title}
+                                {post.title}
                             </>
                         }
 
@@ -72,15 +72,15 @@ const PostHeader = (props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='body1'>
-                        by {data?.author?.username ? data.author.username : '(author)'}
+                        by {post?.author?.username ? post.author.username : '(author)'}
                     </Typography>
                     <Typography variant='body2' style={{fontSize: 10}}>
-                        last edit: { data.updatedAt }
+                        last edit: { post.updatedAt }
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='body1'>
-                        Tags:{data.tags.map((t) => (` ${tagToString(t)}`))}
+                        Tags:{post.tags.map((t) => (` ${tagToString(t)}`))}
                     </Typography>
                 </Grid>
             </Grid>
@@ -89,7 +89,7 @@ const PostHeader = (props) => {
             <Grid item container xs={4} justify='flex-end' align='right'>
                 <Grid item xs={12}>
                     <Typography variant='body1'>
-                        { data.publishDate }
+                        { post.publishDate }
                     </Typography>
                 </Grid>
                 <Grid item xs={12} className={classes.imageContainer}>
@@ -97,7 +97,7 @@ const PostHeader = (props) => {
                 </Grid>
                 <Grid item xs={12} className={classes.mapText}>
                     <Typography variant='body1'>
-                        { data.map.canonicalName }
+                        { post.map ? post.map.canonicalName : ''}
                     </Typography>
                 </Grid>
             </Grid>
