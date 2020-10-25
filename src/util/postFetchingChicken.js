@@ -32,6 +32,10 @@ export const fetch = async (searchCriteria) => {
         filter = buildMapFilter(filter, searchCriteria.maps)
     }
 
+    if (searchCriteria.tags && Array.isArray(searchCriteria.tags)) {
+        filter = buildTagFilter(filter, searchCriteria.tags)
+    }
+
     console.log('Chicken made a filter: ', filter)
 
     let response = await api.elasticSearchPosts(filter)
@@ -39,11 +43,6 @@ export const fetch = async (searchCriteria) => {
         response.total = 0
     }
     console.log('Chicken got response from backend: ', response)
-
-    // Have to do filtering here since elastic search doesn't allow operations on array field
-    if (searchCriteria.tags && Array.isArray(searchCriteria.tags)) {
-        response = filterByTags(response, searchCriteria.tags)
-    }
 
     return response
 }
@@ -85,13 +84,20 @@ const buildMapFilter = (filter, maps) => {
 }
 
 /**
- * Pick only posts where tags have any of tags in search criteria
+ * Filter by chosen tags
  *
- * @param response
+ * @param filter
  * @param tags
  * @return {*}
  */
-const filterByTags = (response, tags) => {
-    console.log('TODO: filter response by tags', tags)
-    return response
+const buildTagFilter = (filter, tags) => {
+    const tagList = []
+    tags.forEach(tag => {
+        // Tags are stored as ; separated string.
+        tagList.push({ tags: { matchPhrase: `${tag};` }})
+    })
+    if (tagList.length > 0) {
+        filter = {...filter, or: tagList}
+    }
+    return filter
 }

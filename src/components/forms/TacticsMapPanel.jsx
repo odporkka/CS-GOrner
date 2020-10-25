@@ -17,7 +17,11 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         marginBottom: '20px'
     },
-    heading: {}
+    heading: {},
+    expandIcon: {
+        fontSize: 40,
+        color: '#ffffff'
+    }
 }))
 
 
@@ -49,7 +53,7 @@ const TacticsMapPanel = (props) => {
         <div className={classes.root}>
             <Accordion expanded={panelExpanded} onClick={() => toggleExpand()}>
                 <AccordionSummary
-                    expandIcon={<ExpandMoreIcon fontSize='large'/>}
+                    expandIcon={<ExpandMoreIcon className={classes.expandIcon}/>}
                     aria-controls="search settings"
                     id="panel1a-header"
                 >

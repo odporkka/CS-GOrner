@@ -90,7 +90,7 @@ export const elasticSearchPosts = async (filter, nextToken=undefined) => {
                 if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
             }
         )
-        return {items: posts, total: response.total}
+        return {items: posts, total: response.data.searchPosts.total}
     } catch (e) {
         return handleError(e)
     }

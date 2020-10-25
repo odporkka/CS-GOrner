@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography'
-import SearchIcon from '@material-ui/icons/Search'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         marginBottom: '20px'
+    },
+    expandIcon: {
+        fontSize: 40,
+        color: '#ffffff'
     }
 }))
 
@@ -84,7 +88,7 @@ const TacticsSearchPanel = (props) => {
         <div className={classes.root}>
             <Accordion expanded={panelExpanded}>
                 <AccordionSummary
-                    expandIcon={<SearchIcon />}
+                    expandIcon={<ExpandMoreIcon className={classes.expandIcon}/>}
                     aria-controls="search settings"
                     id="panel1a-header"
                     onClick={() => toggleExpand()}
@@ -111,7 +115,10 @@ const TacticsSearchPanel = (props) => {
                         </Grid>
 
                         <Grid item xs={6}>
-                            <TagCheckbox checkedList={searchCriteria.tags} handleTagChange={handleTagChange} />
+                            <TagCheckbox
+                                checkedList={searchCriteria.tags}
+                                handleTagChange={handleTagChange}
+                                label='Tags include'/>
                         </Grid>
 
                         <Grid item xs={12}>

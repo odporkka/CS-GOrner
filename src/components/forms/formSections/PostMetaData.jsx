@@ -77,7 +77,7 @@ const PostMetaData = (props) => {
 
             {/* Tags */}
             <Grid item xs={12}>
-                <TagCheckbox checkedList={post.tags} handleTagChange={handleTagChange}/>
+                <TagCheckbox checkedList={post.tags} handleTagChange={handleTagChange} label='Tags'/>
             </Grid>
         </Grid>
     )

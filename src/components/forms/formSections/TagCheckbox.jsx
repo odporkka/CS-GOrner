@@ -14,13 +14,14 @@ import { tags, tagToString } from "../../../backend/models/tags"
 const TagCheckbox = (props) => {
     const {
         handleTagChange,
-        checkedList
+        checkedList,
+        label
     } = props
 
 
     return (
         <div>
-            <label htmlFor='tags'>Tags: </label>
+            <label htmlFor='tags'>{label}: </label>
             {Object.entries(tags).map(([key,value]) => (
                 <div key={key}>
                     <input
