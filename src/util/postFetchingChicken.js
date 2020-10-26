@@ -13,8 +13,6 @@ import * as api from "../backend/api"
  * @return {Promise<{errorMessage: *, error: boolean}|{errorMessage: string, error: boolean}|undefined>}
  */
 export const fetch = async (searchCriteria) => {
-    console.log('Chicken is parsing search criteria:', searchCriteria)
-
     // Top level conditions are combined with AND
     let filter = { and: []}
 
@@ -41,13 +39,14 @@ export const fetch = async (searchCriteria) => {
         filter = buildTagFilter(filter, searchCriteria.tags)
     }
 
-    console.log('Chicken made a filter: ', filter)
-
     let response = await api.elasticSearchPosts(filter)
+
+    if (!response.items || response.error) {
+        response.items = []
+    }
     if (!response.total) {
         response.total = 0
     }
-    console.log('Chicken got response from backend: ', response)
 
     return response
 }
@@ -58,15 +57,10 @@ export const fetch = async (searchCriteria) => {
  * @return {Promise<*[]|*>}
  */
 export const fetchCurrentUsersPosts = async () =>{
-    console.log('Chicken is fetching your posts!')
-
     const response = await api.elasticSearchCurrentUsersPosts()
-    console.log('Chicken got response from backend: ', response)
-
     if (!response.items || response.error) {
         return []
     }
-
     return response.items
 }
 

@@ -90,7 +90,8 @@ export const elasticSearchPosts = async (filter, nextToken=undefined) => {
                 if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
             }
         )
-        return {items: posts, total: response.data.searchPosts.total}
+        const total = response.data.searchPosts.total ? response.data.searchPosts.total : 0
+        return {items: posts, total: total}
     } catch (e) {
         return handleError(e)
     }
@@ -151,18 +152,18 @@ export const createPost = async (data) => {
             // Check if author object is made
             let author = await fetchAuthorWithSud(sud)
             if (!author || author.error) {
-                console.log(`Author is not yet made for sud ${sud}!`)
+                // console.log(`Author is not yet made for sud ${sud}!`)
                 author = await createAuthor(currentUser, sud)
                 if (author.error) return handleError({ message: authorCouldNotBeCreatedError})
             } else {
-                console.log(`Author ${author.username} found for sud ${sud}!`)
+                // console.log(`Author ${author.username} found for sud ${sud}!`)
             }
             data.authorID = sud
         }
         const validatedPost = stripAndValidatePost(data)
         if (validatedPost.error) return validatedPost
 
-        console.log('Saving post object: ', validatedPost)
+        // console.log('Saving post object: ', validatedPost)
         const response = await API.graphql({
             query: mutations.createPost,
             variables: {input: validatedPost},
@@ -241,7 +242,6 @@ const getUserSud = async (currentUser=undefined) => {
 }
 
 const stripAndValidatePost = (data) => {
-    console.log('Stripping and validating post..')
     data = stripExtraProperties(data)
     const validation = validatePostObject(data)
     if (validation.error) return handleError(validation)
