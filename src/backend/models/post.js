@@ -7,7 +7,7 @@
 
 export const initialPostState = {
     id: undefined,
-    title: '',
+    title: 'Unknown',
     // Cognito user sub
     authorID: undefined,
     mapID: undefined,
@@ -68,14 +68,14 @@ export const validatePostObject = (post) => {
     // Exists, is array
     if (!post.tags) errors.push('Post must have attribute "tags"!')
     if (post.tags && !Array.isArray(post.tags)) errors.push('Attribute "tags" must be of type array!')
-    // Non empty string
-    if (!post.description) errors.push('Post must have attribute "description"!')
+    // Exists, is string
+    if (post.description === undefined) errors.push('Post must have attribute "description"!')
     if (post.description && typeof post.description !== 'string') errors.push('Attribute "description" must be of type string!')
-    // Non empty string
-    if (!post.markdown) errors.push('Post must have attribute "markdown"!')
+    // Exists, is string
+    if (post.markdown === undefined) errors.push('Post must have attribute "markdown"!')
     if (post.markdown && typeof post.markdown !== 'string') errors.push('Attribute "markdown" must be of type string!')
-    // Non empty string
-    if (!post.sanitizedHtml) errors.push('Post must have attribute "sanitizedHtml"!')
+    // Exists, is string
+    if (post.sanitizedHtml === undefined) errors.push('Post must have attribute "sanitizedHtml"!')
     if (post.sanitizedHtml && typeof post.sanitizedHtml !== 'string') errors.push('Attribute "sanitizedHtml" must be of type string!')
     // Exists, is string
     if (post.s3id === undefined) errors.push('Post must have attribute "s3id"!')

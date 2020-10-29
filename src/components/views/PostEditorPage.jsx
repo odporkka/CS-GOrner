@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import { Storage } from 'aws-amplify'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
@@ -20,6 +19,8 @@ import PostSelect from '../forms/formSections/PostSelect'
 import * as api from '../../backend/api'
 import * as chicken from '../../util/postFetchingChicken'
 import * as markdownUtils from '../../util/markdownUtils'
+import * as s3 from '../../util/s3'
+import {Context} from "../../context/Context"
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 const PostEditorPage = () => {
     const classes = useStyles()
     const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
+    const { contentData } = useContext(Context)
     const history = useHistory()
     const [usersPosts, setUsersPosts] = useState([])
     const [post, setPost] = useState(initialPostState)
@@ -99,6 +101,17 @@ const PostEditorPage = () => {
         return () => { mounted = false }
     }, [])
 
+    /*
+     * Set general as default map choice
+     */
+    useEffect(() => {
+        const mapID = contentData.maps[0] ? contentData.maps[0].id : undefined
+        setPost(prevState => ({
+            ...prevState,
+            mapID: mapID
+        }))
+    },[contentData.maps])
+
 
     /*
      * Save post to API.
@@ -108,6 +121,7 @@ const PostEditorPage = () => {
      * @return {Promise<void>}
      */
     const savePost = async (data) => {
+        // Spread copy object to prevent mutation of state
         let input = {...data}
         input.sanitizedHtml = markdownUtils.markdownToHtml(input.markdown)
 
@@ -140,22 +154,16 @@ const PostEditorPage = () => {
      */
     const deletePost = async () => {
         if (post.id) {
-
             const response = await api.deletePostById(post.id)
 
             if (response && !response.error) {
-                console.log(`Post '${response.title}' deleted successfully from backend!`)
-                console.log(`Removing ${response.images.length} associated files from S3..`)
                 try {
-                    for (const image in response.images) {
-                        await Storage.remove(image.key)
-                    }
+                    await s3.bulkRemoveFromS3(response.images)
                 } catch (e) {
                     alert(`Something went wrong while removing files.. Restoring post..`)
                     savePost(response).catch((e) => alert(e))
                     return
                 }
-                alert(`Post '${response.title}' deleted successfully from backend!`)
                 history.push('/post-editor')
             } else {
                 if (response.error) {
@@ -168,57 +176,23 @@ const PostEditorPage = () => {
     }
 
     /*
-    * Post specific uuid that is used to group posts images under same path.
-    * "Folder" in S3. i.e. /public/<uuid>/fileName
-    *
-    * @param fileName
-    * @return {string}
-    */
-    const resolveName = (fileName) => {
-        const s3id = post.s3id ?
-            post.s3id : uuidv4().split('-')[0]
-        return `${s3id}/${fileName}`
-    }
-
-    /*
-     * Construct public url to embed in markdown
-     *
-     * @param fileName
-     * @return {string}
-     */
-    const resolvePublicUrl = (fileName) => {
-        const s3Config = Storage.getPluggable('AWSS3')._config
-        const bucket = s3Config.bucket
-        const region = s3Config.region
-        return `https://${bucket}.s3-${region}.amazonaws.com/public/${fileName}`
-    }
-
-    /*
      * Upload image file to S3 and update post.images
      */
     const uploadToS3 = async (file) => {
-        const fileName = resolveName(file.name)
-        const publicUrl = resolvePublicUrl(fileName)
-
-        // Push image to S3 & update metadata on post
-        let result
         try {
-            result = await Storage.put(fileName, file, {
-                progressCallback(progress) {
-                    const progressPercentage = (Math.round(progress.loaded / progress.total * 100))
-                    setUploadProgress(progressPercentage)
-                },
-                ACL: 'public-read'
-            })
-
-            if (result && result.key) {
-                result.url = publicUrl
-                const newImageArray = post.images.concat(result)
-                const updatedPost = {...post, images: newImageArray}
-                savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
-            }
-
+            const s3id = post.s3id ? post.s3id : uuidv4().split('-')[0]
+            const result = await s3.uploadToS3(s3id, file, setUploadProgress)
             setUploadProgress(undefined)
+            if (result && !result.error) {
+                const newImageArray = post.images.concat(result)
+                const updatedPost = {...post, s3id: s3id, images: newImageArray}
+                savePost(updatedPost).catch((e) => {
+                    console.log(e);alert(e)
+                    s3.removeFromS3(result)
+                })
+            } else if (result.error) {
+                alert(`Error:\n${result.errorMessage}`)
+            }
         } catch (e) {
             console.log(e)
             alert(e)
@@ -229,19 +203,20 @@ const PostEditorPage = () => {
      * Remove image from S3 and post.images
      */
     const removeFromS3 = async (image) => {
-        console.log(`Removing image ${image.key} from S3..`)
         try {
-            const result = await Storage.remove(image.key)
+            const result = await s3.removeFromS3(image)
             // Just a simple check. IDK what should really be checked and docs aren't helping either.
-            if (result) {
-                console.log(`Removing image data from post object..`)
+            if (result && !result.error) {
                 // Filter removed image out of post.images
                 const newImageArray = post.images.filter((i) =>(i !== image))
                 const updatedPost = {...post, images: newImageArray}
                 savePost(updatedPost).catch((e) => {console.log(e);alert(e)})
+            } else if (result.error) {
+                alert(`Error:\n${result.errorMessage}`)
             }
         } catch (e) {
-            alert(`Something went wrong when removing image:\n ${e}`)
+            console.log(e)
+            alert(e)
         }
     }
 
@@ -284,7 +259,7 @@ const PostEditorPage = () => {
                 <Container xs={12}>
                     <Grid container spacing={2} justify='center'>
                         <Grid item>
-                            <Typography variant="h6" component="h6">
+                            <Typography variant="body1">
                                 You must be logged in as admin to edit and create posts.
                             </Typography>
                         </Grid>

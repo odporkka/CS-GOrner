@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, {useContext, useEffect} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
@@ -67,7 +67,6 @@ const PostMetaData = (props) => {
             <Grid item xs={12}>
                 <label htmlFor='map' className={classes.label}>Map:</label>
                 <select name='mapID' value={post.mapID} onChange={handleMapChange}>
-                    <option value='' key='no_map'>-</option>
                     { contentData.maps.map((map) => (
                             <option value={map.id} key={map.id}>{map.canonicalName}</option>
                         )
