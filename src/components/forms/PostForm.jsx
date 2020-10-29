@@ -2,10 +2,8 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
-import Post from '../content/Post'
 import PostFormImageUpload from './formSections/PostFormImageUpload'
 import PostMetaData from "./formSections/PostMetaData"
 
@@ -154,20 +152,6 @@ const PostForm = (props) => {
                     </Grid>
                 </Grid>
             </form>
-
-            {/* Preview */}
-            { post.sanitizedHtml && (
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Typography variant="h6" component="h6">
-                            Preview:
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Post data={post} />
-                    </Grid>
-                </Grid>
-            )}
         </div>
     )
 }

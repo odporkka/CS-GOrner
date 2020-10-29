@@ -18,12 +18,13 @@ import PostForm from '../forms/PostForm'
 import * as api from '../../backend/api'
 import * as chicken from '../../util/postFetchingChicken'
 import * as markdownUtils from '../../util/markdownUtils'
+import Post from "../content/Post"
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
     root: {
     },
-    contentPaper: {
+    lightPaper: {
         backgroundColor: theme.palette.primary.light,
     },
     divider: {
@@ -293,60 +294,83 @@ const PostEditorPage = () => {
     }
 
     return (
-        <Paper className={classes.contentPaper}>
-            <Container xs={12}>
-                <Grid container spacing={2}>
-                    <Grid container item xs={12} spacing={2} justify='flex-end'>
-                        <Grid item>
-                            <PostSelect
-                                name='drafts'
-                                label='Your drafts'
-                                history={history}
-                                posts={usersPosts.filter((p) => (p.published === false))} />
+        <Grid container spacing={4}>
+            <Grid item xs={12}>
+                <Paper>
+                    <Container>
+                        <Grid container spacing={2}>
+                            <Grid container item xs={12} spacing={2} justify='flex-end'>
+                                <Grid item>
+                                    <PostSelect
+                                        name='drafts'
+                                        label='Your drafts'
+                                        history={history}
+                                        posts={usersPosts.filter((p) => (p.published === false))} />
+                                </Grid>
+                                <Grid item>
+                                    <PostSelect
+                                        name='posts'
+                                        label='Your posts'
+                                        history={history}
+                                        posts={usersPosts.filter((p) => (p.published === true))} />
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        className={classes.button} variant='contained' color="primary"
+                                        onClick={() => history.push('/post-editor')} >
+                                        New post
+                                    </Button>
+                                </Grid>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Typography variant="h5" component="h5">
+                                    Post editor - {post.title} {post.published ? '' : '(Draft)'}
+                                </Typography>
+                                <Divider className={classes.divider}/>
+                            </Grid>
+
+
+
+                            <Grid item xs={12}>
+                                <PostForm
+                                    post={post}
+                                    setPost={setPost}
+
+                                    uploadToS3={uploadToS3}
+                                    uploadProgress={uploadProgress}
+                                    removeFromS3={removeFromS3}
+
+                                    calculatePreview={calculatePreview}
+                                    savePost={savePost}
+                                    togglePublish={togglePublish}
+                                    deletePost={deletePost}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <PostSelect
-                                name='posts'
-                                label='Your posts'
-                                history={history}
-                                posts={usersPosts.filter((p) => (p.published === true))} />
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                className={classes.button} variant='contained' color="primary"
-                                onClick={() => history.push('/post-editor')} >
-                                New post
-                            </Button>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <Typography variant="h5" component="h5">
-                            Post editor - {post.title} {post.published ? '' : '(Draft)'}
-                        </Typography>
-                        <Divider className={classes.divider}/>
-                    </Grid>
-
-
-
-                    <Grid item xs={12}>
-                        <PostForm
-                            post={post}
-                            setPost={setPost}
-
-                            uploadToS3={uploadToS3}
-                            uploadProgress={uploadProgress}
-                            removeFromS3={removeFromS3}
-
-                            calculatePreview={calculatePreview}
-                            savePost={savePost}
-                            togglePublish={togglePublish}
-                            deletePost={deletePost}
-                        />
-                    </Grid>
-                </Grid>
-            </Container>
-        </Paper>
+                    </Container>
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
+                <Paper>
+                    <Container>
+                        {/* Preview */}
+                        { post.sanitizedHtml && (
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <Typography variant="h6" component="h6">
+                                        Preview:
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Post data={post} />
+                                </Grid>
+                            </Grid>
+                        )}
+                    </Container>
+                </Paper>
+            </Grid>
+        </Grid>
     );
 }
 
