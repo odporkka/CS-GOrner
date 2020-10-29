@@ -30,7 +30,7 @@ const useStyles = makeStyles({
  */
 const Post = (props) => {
     const {
-        data
+        postData
     } = props
     const classes = useStyles()
 
@@ -40,10 +40,10 @@ const Post = (props) => {
             <Container>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <PostHeader post={data} inTeaser={false}/>
+                        <PostHeader post={postData} inTeaser={false}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <div dangerouslySetInnerHTML={{ __html: data.sanitizedHtml }} />
+                        <div dangerouslySetInnerHTML={{ __html: postData.sanitizedHtml }} />
                     </Grid>
                 </Grid>
             </Container>

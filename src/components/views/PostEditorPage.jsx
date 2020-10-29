@@ -12,13 +12,14 @@ import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
 import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
-import { initialPostState } from "../../backend/models/post"
-import PostSelect from '../forms/formSections/PostSelect'
+import { initialPostState } from '../../backend/models/post'
+import Post from '../content/Post'
 import PostForm from '../forms/PostForm'
+import PostTeaser from '../content/PostTeaser'
+import PostSelect from '../forms/formSections/PostSelect'
 import * as api from '../../backend/api'
 import * as chicken from '../../util/postFetchingChicken'
 import * as markdownUtils from '../../util/markdownUtils'
-import Post from "../content/Post"
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
@@ -351,19 +352,37 @@ const PostEditorPage = () => {
                     </Container>
                 </Paper>
             </Grid>
+
+            {/* Previews */}
             <Grid item xs={12}>
                 <Paper>
                     <Container>
-                        {/* Preview */}
                         { post.sanitizedHtml && (
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    <Typography variant="h6" component="h6">
-                                        Preview:
+                                    <Typography variant="h5">
+                                        Preview
+                                    </Typography>
+                                </Grid>
+
+                                {/* Teaser */}
+                                <Grid item xs={12}>
+                                    <Typography variant="h6">
+                                        Teaser:
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Post data={post} />
+                                    <PostTeaser postData={post} />
+                                </Grid>
+
+                                {/* Full post */}
+                                <Grid item xs={12}>
+                                    <Typography variant="h6">
+                                        Full Post:
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Post postData={post} />
                                 </Grid>
                             </Grid>
                         )}
