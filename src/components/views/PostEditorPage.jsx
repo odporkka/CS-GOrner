@@ -52,6 +52,7 @@ const PostEditorPage = () => {
     const history = useHistory()
     const [usersPosts, setUsersPosts] = useState([])
     const [post, setPost] = useState(initialPostState)
+    const [fileToUpload, setFileToUpload] = useState(undefined)
     const [uploadProgress, setUploadProgress] = useState(undefined)
 
     /*
@@ -66,6 +67,7 @@ const PostEditorPage = () => {
 
         const fetch = async () => {
             const searchParams = new URLSearchParams(history.location.search)
+            // Fetch post if id defined in url parameters
             if (searchParams.has('id')) {
                 const id = searchParams.get('id')
                 const post = await api.fetchPostWithId(id)
@@ -77,15 +79,19 @@ const PostEditorPage = () => {
                         history.push('/post-editor')
                     }
                 }
+            // Set always initial state if no id in url parameters
             } else {
-                setPost(initialPostState)
+                // Set default map to general
+                const mapID = contentData.maps[0] ? contentData.maps[0].id : undefined
+                setPost({...initialPostState, mapID: mapID})
+                setFileToUpload(undefined)
             }
         }
         fetch().catch((e) => console.log(e))
 
         return () => { mounted = false }
 
-    },[history, history.location.search])
+    },[history, history.location.search, contentData.maps])
 
     /*
      * Fetch current users posts.
@@ -100,18 +106,6 @@ const PostEditorPage = () => {
 
         return () => { mounted = false }
     }, [])
-
-    /*
-     * Set general as default map choice
-     */
-    useEffect(() => {
-        const mapID = contentData.maps[0] ? contentData.maps[0].id : undefined
-        setPost(prevState => ({
-            ...prevState,
-            mapID: mapID
-        }))
-    },[contentData.maps])
-
 
     /*
      * Save post to API.
@@ -164,6 +158,7 @@ const PostEditorPage = () => {
                     savePost(response).catch((e) => alert(e))
                     return
                 }
+                alert(`Post with id ${response.id} deleted successfully!`)
                 history.push('/post-editor')
             } else {
                 if (response.error) {
@@ -178,10 +173,10 @@ const PostEditorPage = () => {
     /*
      * Upload image file to S3 and update post.images
      */
-    const uploadToS3 = async (file) => {
+    const uploadToS3 = async () => {
         try {
             const s3id = post.s3id ? post.s3id : uuidv4().split('-')[0]
-            const result = await s3.uploadToS3(s3id, file, setUploadProgress)
+            const result = await s3.uploadToS3(s3id, fileToUpload, setUploadProgress)
             setUploadProgress(undefined)
             if (result && !result.error) {
                 const newImageArray = post.images.concat(result)
@@ -313,6 +308,8 @@ const PostEditorPage = () => {
                                     post={post}
                                     setPost={setPost}
 
+                                    fileToUpload={fileToUpload}
+                                    setFileToUpload={setFileToUpload}
                                     uploadToS3={uploadToS3}
                                     uploadProgress={uploadProgress}
                                     removeFromS3={removeFromS3}

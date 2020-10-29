@@ -16,6 +16,7 @@ const useStyles = makeStyles({
 
 /**
  * S3 Image upload component.
+ * TODO: Bug when pressing "New post" and setting same image.
  *
  * @param props
  * @return {JSX.Element}
@@ -24,19 +25,17 @@ const useStyles = makeStyles({
 const PostFormImageUpload = (props) => {
     const {
         post,
+        fileToUpload,
+        setFileToUpload,
         uploadToS3,
         uploadProgress,
         removeFromS3
     } = props
     const classes = useStyles()
-    const initialState = {
-        file: undefined,
-        uploadButtonDisabled: false,
-    }
-    const [state, setState] = useState(initialState)
+    const [uploadButtonDisabled, setUploadButtonDisabled] = useState(false)
 
     const onChangeHandler = (event) => {
-        setState({...state, file: event.target.files[0]})
+        setFileToUpload(event.target.files[0])
     }
 
     const copyToClipboard = (url, fileName) => {
@@ -54,8 +53,9 @@ const PostFormImageUpload = (props) => {
 
     const onUpload = async (event) => {
         event.preventDefault() // Need this, otherwise page reloads and does some strange shit
-        setState({...state, uploadButtonDisabled: true})
-        uploadToS3(state.file)
+        setUploadButtonDisabled(true)
+        await uploadToS3()
+        setUploadButtonDisabled(false)
     }
 
     /*
@@ -68,7 +68,7 @@ const PostFormImageUpload = (props) => {
             return (
                 <Typography>{uploadProgress} %</Typography>
             )
-        } else if (state.file && !state.uploadButtonDisabled){
+        } else if (fileToUpload && !uploadButtonDisabled){
             return (
                 <button onClick={onUpload}>Upload!</button>
             )
@@ -81,7 +81,7 @@ const PostFormImageUpload = (props) => {
 
     return (
         <div>
-            <label htmlFor='fileUpload' className={classes.label}>Upload images/videos/gifs..:</label>
+            <label htmlFor='fileUpload' className={classes.label}>Upload images:</label>
             <input type="file" name="fileUpload" id='fileUpload' onChange={onChangeHandler}/>
             <br />
             {showState()}

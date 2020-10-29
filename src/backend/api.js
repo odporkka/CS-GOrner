@@ -46,7 +46,7 @@ export const fetchPostWithId = async (id) => {
     try {
         const response = await API.graphql(graphqlOperation(queries.getPost, {id: id}))
         let post = response.data.getPost
-        if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
+        if (post && post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
         return post
     } catch (e) {
         return handleError(e)

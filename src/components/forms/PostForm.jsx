@@ -40,6 +40,8 @@ const PostForm = (props) => {
         post,
         setPost,
         // S3 & files stuff
+        fileToUpload,
+        setFileToUpload,
         uploadToS3,
         uploadProgress,
         removeFromS3,
@@ -100,6 +102,8 @@ const PostForm = (props) => {
                     <Grid item xs={6}>
                         <PostFormImageUpload
                             post={post}
+                            fileToUpload={fileToUpload}
+                            setFileToUpload={setFileToUpload}
                             uploadToS3={uploadToS3}
                             uploadProgress={uploadProgress}
                             removeFromS3={removeFromS3}
