@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Auth } from '@aws-amplify/auth'
+import { Auth } from 'aws-amplify'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -59,6 +59,7 @@ const App = () => {
     useEffect( () => {
         async function fetchUser() {
             const user = await Auth.currentAuthenticatedUser()
+            console.log(user)
             setAWSCognitoUser(user)
         }
         fetchUser()

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Auth } from '@aws-amplify/auth'
+import { Auth } from 'aws-amplify'
 import { withAuthenticator } from '@aws-amplify/ui-react'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'

@@ -1,9 +1,16 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { Auth } from 'aws-amplify'
+import { render, screen, waitFor } from '@testing-library/react'
 
 import App from '../App'
 
-it('App.js renders without crashing', () => {
-    const div = document.createElement('div')
-    ReactDOM.render(<App />, div)
+
+describe('App.js renders', () => {
+
+    it('and context is set', async () => {
+        render(<App />)
+        await waitFor(() => {
+            expect(Auth.currentAuthenticatedUser).rejects.toEqual('not authenticated')
+        })
+    })
 })
