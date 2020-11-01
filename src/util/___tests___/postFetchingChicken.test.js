@@ -1,39 +1,28 @@
 import * as chicken from '../../util/postFetchingChicken'
-
 import * as api from '../../backend/api'
-jest.mock('../../backend/api')
-
+import { mockData } from "../../__mocks__/mockData"
 
 describe('Test fetchCurrentUsersPosts', () => {
-    const successfulResponse = {
-        items: [
-        {id: "00001", title: "Title", published: true},
-        {id: "00001", title: "Title", published: false}
-        ]
-    }
-    const errorResponse = { error: true, errorMessage: 'Error'}
-
     afterEach(() => {
         api.elasticSearchCurrentUsersPosts.mockClear()
     })
 
-
     test("Returns users posts if api returns items", async () => {
-        api.elasticSearchCurrentUsersPosts.mockResolvedValue(successfulResponse)
+        api.elasticSearchCurrentUsersPosts.mockResolvedValue(mockData.post.elasticSearchCurrentUsersPosts.success)
 
         const response = await chicken.fetchCurrentUsersPosts()
-        expect(response).toEqual(successfulResponse.items)
+        expect(response).toEqual(mockData.post.elasticSearchCurrentUsersPosts.success.items)
     })
 
     test("Returns empty array if api returns no items", async () => {
-        api.elasticSearchCurrentUsersPosts.mockResolvedValue({ total: 0})
+        api.elasticSearchCurrentUsersPosts.mockResolvedValue(mockData.post.elasticSearchCurrentUsersPosts.empty)
 
         const response = await chicken.fetchCurrentUsersPosts()
         expect(response).toEqual([])
     })
 
     test("Returns empty array if api returns error", async () => {
-        api.elasticSearchCurrentUsersPosts.mockResolvedValue(errorResponse)
+        api.elasticSearchCurrentUsersPosts.mockResolvedValue(mockData.post.elasticSearchCurrentUsersPosts.error)
 
         const response = await chicken.fetchCurrentUsersPosts()
         expect(response).toEqual([])
@@ -42,18 +31,7 @@ describe('Test fetchCurrentUsersPosts', () => {
 
 
 describe('Test fetch', () => {
-    const successfulResponse = {
-        items: [
-            {id: "00001", title: "Title"},
-            {id: "00001", title: "Title"}
-        ],
-        total: 2
-    }
-    const emptyItemsResponse = { items: [], total: 0}
-    const apiErrorResponse = { error: true, errorMessage: 'Error'}
-    const errorResponse = { items: [], total: 0, error: true, errorMessage: 'Error'}
     let searchCriteria
-
     beforeEach(() => {
         searchCriteria = {
             maps: [],
@@ -66,30 +44,29 @@ describe('Test fetch', () => {
         api.elasticSearchPosts.mockClear()
     })
 
-
-
     test("Returns items and total if api returns them", async () => {
-        api.elasticSearchPosts.mockResolvedValue(successfulResponse)
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.success)
 
         const response = await chicken.fetch(searchCriteria)
-        expect(response).toEqual(successfulResponse)
+        expect(response).toEqual(mockData.post.elasticSearchPosts.success)
     })
 
     test("Returns empty array and total 0 if api returns empty items", async () => {
-        api.elasticSearchPosts.mockResolvedValue(emptyItemsResponse)
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.empty)
 
         const response = await chicken.fetch(searchCriteria)
-        expect(response).toEqual(emptyItemsResponse)
+        expect(response).toEqual(mockData.post.elasticSearchPosts.empty)
     })
 
     test("Returns empty array, total 0 and error info if api returns error", async () => {
-        api.elasticSearchPosts.mockResolvedValue(apiErrorResponse)
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.error)
 
         const response = await chicken.fetch(searchCriteria)
-        expect(response).toEqual(errorResponse)
+        expect(response).toEqual({...mockData.post.elasticSearchPosts.error, items: [], total: 0})
     })
 
     test("Api is called with right filter if initial searchCriteria is given", async () => {
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.success)
         await chicken.fetch(searchCriteria)
         expect(api.elasticSearchPosts).toHaveBeenCalledTimes(1)
         expect(api.elasticSearchPosts).toHaveBeenCalledWith({
@@ -101,10 +78,11 @@ describe('Test fetch', () => {
     })
 
     test("Api is called with right filter if author is given in searchCriteria", async () => {
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.success)
         searchCriteria.author = 'author'
         await chicken.fetch(searchCriteria)
-        expect(api.elasticSearchPosts).toHaveBeenCalledTimes(1)
-        expect(api.elasticSearchPosts).toHaveBeenCalledWith({
+        await expect(api.elasticSearchPosts).toHaveBeenCalledTimes(1)
+        await expect(api.elasticSearchPosts).toHaveBeenCalledWith({
             and: [
                 { published: {eq: true}},
                 { deprecated: {eq: false}},
@@ -114,6 +92,7 @@ describe('Test fetch', () => {
     })
 
     test("Api is called with right filter if maps are given in searchCriteria", async () => {
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.success)
         searchCriteria.maps = [{id: 'mapID1'}, {id: 'mapID2'}, {id: 'mapID3'}]
         await chicken.fetch(searchCriteria)
         expect(api.elasticSearchPosts).toHaveBeenCalledTimes(1)
@@ -131,6 +110,7 @@ describe('Test fetch', () => {
     })
 
     test("Api is called with right filter if tags are given in searchCriteria", async () => {
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.success)
         searchCriteria.tags = ['TAG1', 'TAG2', 'TAG3']
         await chicken.fetch(searchCriteria)
         expect(api.elasticSearchPosts).toHaveBeenCalledTimes(1)
@@ -148,6 +128,7 @@ describe('Test fetch', () => {
     })
 
     test("Api is called with right filter if published is given in searchCriteria", async () => {
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.success)
         searchCriteria.published = false
         await chicken.fetch(searchCriteria)
         expect(api.elasticSearchPosts).toHaveBeenCalledTimes(1)
@@ -160,6 +141,7 @@ describe('Test fetch', () => {
     })
 
     test("Api is called with right filter if deprecated is given in searchCriteria", async () => {
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.success)
         searchCriteria.deprecated = true
         await chicken.fetch(searchCriteria)
         expect(api.elasticSearchPosts).toHaveBeenCalledTimes(1)
@@ -172,6 +154,7 @@ describe('Test fetch', () => {
     })
 
     test("Api is called with right filter if EVERYTHING is given in searchCriteria", async () => {
+        api.elasticSearchPosts.mockResolvedValue(mockData.post.elasticSearchPosts.success)
         searchCriteria.published = false
         searchCriteria.deprecated = true
         searchCriteria.author = 'author'
