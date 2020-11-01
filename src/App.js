@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Auth } from 'aws-amplify'
-import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from '@material-ui/core/Container'
@@ -59,11 +58,10 @@ const App = () => {
     useEffect( () => {
         async function fetchUser() {
             const user = await Auth.currentAuthenticatedUser()
-            console.log(user)
             setAWSCognitoUser(user)
         }
         fetchUser()
-            .catch((e) => console.log(e))
+            .catch((e) => {})
     }, [])
 
     return (
@@ -74,26 +72,23 @@ const App = () => {
                         AWSCognitoUser={AWSCognitoUser}
                         setAWSCognitoUser={setAWSCognitoUser}>
                         <CssBaseline />
-                        <BrowserRouter>
-                            <ScrollToTopComponent />
+                        <ScrollToTopComponent />
 
-                            <NavBar />
+                        <NavBar />
 
-                            <Grid container className={classes.mainGrid} justify='center'>
-                                <Grid item className={classes.mainContent}>
-                                    <Router />
-                                </Grid>
-
-                                {/*<Grid item className={classes.rightSideBanner}>*/}
-                                {/*    <Container>*/}
-                                {/*        /!*<p>Sidebanner</p>*!/*/}
-                                {/*    </Container>*/}
-                                {/*</Grid>*/}
-
+                        <Grid container className={classes.mainGrid} justify='center'>
+                            <Grid item className={classes.mainContent}>
+                                <Router />
                             </Grid>
 
-                            <Footer />
-                        </BrowserRouter>
+                            {/*<Grid item className={classes.rightSideBanner}>*/}
+                            {/*    <Container>*/}
+                            {/*        /!*<p>Sidebanner</p>*!/*/}
+                            {/*    </Container>*/}
+                            {/*</Grid>*/}
+
+                        </Grid>
+                        <Footer />
                     </AWSCognitoUserContextAPIProvider>
                 </ContextAPIProvider>
             </Container>

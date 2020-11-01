@@ -113,7 +113,7 @@ export const mockData = {
         }
     },
     map: {
-        allMaps: [[
+        allMaps: [
             {
                 "id": "1",
                 "name": "general",
@@ -177,7 +177,7 @@ export const mockData = {
                 "createdAt": "2020-10-10T18:26:26.648Z",
                 "updatedAt": "2020-10-10T18:26:26.648Z"
             }
-        ]]
+        ]
     },
     author: {
         fetchAuthorsList: [

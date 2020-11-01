@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     root: {
     },
     contentPaper: {
-        backgroundColor: theme.palette.primary.dark,
     },
     form: {
 
@@ -53,9 +52,9 @@ const AdminLoginPage = () => {
             <Container xs={12}>
                 <Grid container spacing={2} justify='center'>
                     <Grid item>
-                        <Typography variant="h6" component="h6">
-                            You are logged in with AWS admin account:
-                            {<p>{AWSCognitoUser?.username ? AWSCognitoUser.username : 'Error: no user found in context'}</p>}
+                        <Typography variant="body1">
+                            You are logged in with AWS admin account:<br/>
+                            {AWSCognitoUser?.username ? AWSCognitoUser.username : 'Error: no user found in context'}
                         </Typography>
                     </Grid>
                 </Grid>

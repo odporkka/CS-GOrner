@@ -58,7 +58,7 @@ export const fetch = async (searchCriteria) => {
  */
 export const fetchCurrentUsersPosts = async () =>{
     const response = await api.elasticSearchCurrentUsersPosts()
-    if (!response.items || response.error) {
+    if (!response || !response.items || response.error) {
         return []
     }
     return response.items

@@ -16,8 +16,15 @@ Amplify.configure(awsExports);
 // Mock window.scrollTo (browser function)
 window.scrollTo = jest.fn();
 
-jest.mock('aws-amplify')
+jest.spyOn(Auth, 'currentAuthenticatedUser')
 jest.mock('./backend/api.js')
+// Mock AWS sign out button. It caused some problems with tests
+jest.mock('@aws-amplify/ui-react', () => {
+    return {
+        ...jest.requireActual('@aws-amplify/ui-react'),
+        AmplifySignOut: 'button'
+    }
+})
 
 global.beforeEach(() => {
     Auth.currentAuthenticatedUser = jest.fn(mockData.amplifyAuth.currentAuthenticatedUserReject)

@@ -105,9 +105,7 @@ const UserMenu = () => {
                             {adminMenuItemLabel('Post editor')}
                         </MenuItem>
                         <MenuItem onClick={handleClose}>
-                            <Button onClick={logoutAWS}>
-                                <AmplifySignOut />
-                            </Button>
+                            <AmplifySignOut onClick={logoutAWS}/>
                         </MenuItem>
                     </div>
                 )}
