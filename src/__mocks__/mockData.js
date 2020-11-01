@@ -61,28 +61,22 @@ export const mockData = {
                     {
                         "id": "2",
                         "published": true,
-                        "publishDate": "2020-10-29T20:23:25.027Z",
-                        "deprecated": false,
-                        "s3id": "",
-                        "title": "Editor2's Post",
-                        "authorID": "2",
-                        "mapID": "3",
-                        "tags": [],
-                        "description": "No tags in this post",
-                        "markdown": "No tags..",
-                        "sanitizedHtml": "<p>No tags..</p>\n",
-                        "images": [],
-                        "createdAt": "2020-10-29T20:23:21.474Z",
-                        "updatedAt": "2020-10-29T20:23:25.389Z",
-                        "map": {
-                            "name": "de_dust2",
-                            "canonicalName": "Dust II"
-                        },
-                        "author": {
-                            "cognitoUserSud": "2",
-                            "username": "Editor2",
-                            "profilePic": null
-                        }
+                        "title": "Editor2's Post 1",
+                    },
+                    {
+                        "id": "3",
+                        "published": true,
+                        "title": "Editor2's Post 2",
+                    },
+                    {
+                        "id": "4",
+                        "published": false,
+                        "title": "Editor2's Post 3",
+                    },
+                    {
+                        "id": "5",
+                        "published": false,
+                        "title": "Editor2's Post 4",
                     }
                 ],
                 total: 1},
@@ -232,5 +226,18 @@ export const mockData = {
             total: 0,
             error: true,
             errorMessage: 'Error'}
-    }
+    },
+    context: {
+        initialValues: {
+            maps: [],
+            newPosts: [],
+            authors: []
+        }
+    },
+    awsCognitoUserContext: {
+        initialValues: null,
+        awsCognitoUser: {
+            username: 'Editor2'
+        }
+    },
 }

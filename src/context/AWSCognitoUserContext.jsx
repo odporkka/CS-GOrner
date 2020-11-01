@@ -27,7 +27,7 @@ const AWSCognitoUserContextAPIProvider = (props) => {
         <AWSCognitoUserContext.Provider value={value}>
             {props.children}
         </AWSCognitoUserContext.Provider>
-        )
+    )
 }
 
 export default AWSCognitoUserContextAPIProvider

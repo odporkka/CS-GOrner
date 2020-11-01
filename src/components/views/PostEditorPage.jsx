@@ -15,12 +15,12 @@ import { initialPostState } from '../../backend/models/post'
 import Post from '../content/Post'
 import PostForm from '../forms/PostForm'
 import PostTeaser from '../content/PostTeaser'
-import PostSelect from '../forms/formSections/PostSelect'
 import * as api from '../../backend/api'
 import * as chicken from '../../util/postFetchingChicken'
 import * as markdownUtils from '../../util/markdownUtils'
 import * as s3 from '../../util/s3'
 import {Context} from "../../context/Context"
+import UsersPostsSelect from "../forms/formSections/UsersPostsSelect"
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +50,7 @@ const PostEditorPage = () => {
     const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
     const { contentData } = useContext(Context)
     const history = useHistory()
-    const [usersPosts, setUsersPosts] = useState([])
+    const [usersPosts, setUsersPosts] = useState(undefined)
     const [post, setPost] = useState(initialPostState)
     const [fileToUpload, setFileToUpload] = useState(undefined)
     const [uploadProgress, setUploadProgress] = useState(undefined)
@@ -271,20 +271,7 @@ const PostEditorPage = () => {
                     <Container>
                         <Grid container spacing={2}>
                             <Grid container item xs={12} spacing={2} justify='flex-end'>
-                                <Grid item>
-                                    <PostSelect
-                                        name='drafts'
-                                        label='Your drafts'
-                                        history={history}
-                                        posts={usersPosts.filter((p) => (p.published === false))} />
-                                </Grid>
-                                <Grid item>
-                                    <PostSelect
-                                        name='posts'
-                                        label='Your posts'
-                                        history={history}
-                                        posts={usersPosts.filter((p) => (p.published === true))} />
-                                </Grid>
+                                <UsersPostsSelect usersPosts={usersPosts} history={history}/>
                                 <Grid item>
                                     <Button
                                         className={classes.button} variant='contained' color="primary"
