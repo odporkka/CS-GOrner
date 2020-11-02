@@ -63,9 +63,9 @@ This will lead you through update process..
 There is multi-auth setup in this project.
 API_KEY is used as default and COGNITO_USER_POOLS for authenticated users.
 
-### GraphQL API
+## GraphQL API
 
-#### Updating API access policies
+### Updating API access policies
 Access policies can be updated in `graphql.schema`.  
 Basic syntax to allow/restrict access is:
 ```
@@ -76,7 +76,7 @@ Basic syntax to allow/restrict access is:
         ]
     )
 ```
-##### Public access
+#### Public access
 Default AppSync auth method is API_KEY, this is used for public access on resources. API key is bundled with frontend
 automatically.  
 
@@ -84,9 +84,33 @@ automatically.
  
 Public access include only READ access on: Maps, Posts, Comments etc.  
 
-##### Editor access
-Editor access is given for authenticated users in "Editors" group.
+#### Cognito users
+**Editor rights** are for authenticated users in "Editors" group.
 
-These include READ/WRITE/UPDATE/DELETE on Posts. Editors can log in at `/admin` endpoint with their own AWS user.
+These include READ/WRITE/UPDATE/DELETE on their own Posts. Editors can log in at `/admin` endpoint with their own AWS user.
 
+**Administrator rights** are for authenticated users in "Administrators" group.
 
+These include READ/WRITE/UPDATE/DELETE on ALL Posts. Administrators can log in at `/admin` endpoint with their own AWS user.
+
+## Tests
+Testing is done with Jest and React Testing Library. Focus is on integration testing over excessive unit testing.
+
+Tests structure:
+- \_\_tests__: 
+    - App.test.js: Test context, navigation and content which is always shown
+- \_\_mocks__:
+    - mockData.js: Predefined data that is used for testing
+- components/views/\_\_tests__:
+    - View.test.jsx(s): Tests for all views. These use mocked context providers and
+    test only view components. Main functionality is tested here.
+- util/\_\_tests__:
+    - util.test.js(s): Tests for util classes. These are strictly unit tests.
+- util/testUtil.js: General utils for tests. Most importantly helper functions for rendering components with
+predefined context and router
+
+#### Mocks
+- Backend/api.js: Mocked since mocking Amplifys API.graphql separately for every query is too troublesome.
+    - Remember to mock separate api functions in tests!
+- Auth: AWS Auth functions need to be mocked since we are not using AWS in tests.
+- window: window-object functions need to be mocked

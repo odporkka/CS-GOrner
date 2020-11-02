@@ -26,6 +26,7 @@ jest.mock('@aws-amplify/ui-react', () => {
     }
 })
 
+// TODO: Move these to App.test.js where context load is tested? Other tests mock context providers
 global.beforeEach(() => {
     Auth.currentAuthenticatedUser = jest.fn(mockData.amplifyAuth.currentAuthenticatedUserReject)
     api.fetchMaps.mockResolvedValue(mockData.map.allMaps)
