@@ -8,6 +8,20 @@ Only two branches, dev and master, are in use for now (Amplify creates backends 
 Amplify documentation:
 https://docs.amplify.aws/lib/q/platform/js
 
+### Setup
+
+1. Install amplify-cli: `npm install -g @aws-amplify/cli`
+2. Configure AWS profile: `amplify configure` (This should make .aws/ and .amplify/ folders in you home dir)
+    - accessKeyId: < Your IAM user accessKeyId >
+    - accessKeyId: < Your IAM user accessKeyId >
+    - region: eu-west-1
+3. Clone repository: `https://github.com/odporkka/CS-GOrner.git`
+4. Pull packend env: `amplify pull`
+    - Use your configured amplify profile and dev env or make a new one
+    - You can check the env with `amplify status`
+4. Install packages: `npm install`
+
+
 ### Workflow
 1. Checkout dev branch `git checkout dev`. (Amplify adjusts API environment based on this.)
 2. Run locally `npm start` and view on localhost:3000
