@@ -6,11 +6,7 @@ import '@testing-library/jest-dom/extend-expect'
 import Amplify, { Auth } from 'aws-amplify'
 import awsExports from './aws-exports'
 
-import { mockData } from './__mocks__/mockData'
-import * as api from './backend/api'
-
 // AWS-Amplify
-
 Amplify.configure(awsExports);
 
 // Mock window.scrollTo (browser function)
@@ -25,20 +21,3 @@ jest.mock('@aws-amplify/ui-react', () => {
         AmplifySignOut: 'button'
     }
 })
-
-// TODO: Move these to App.test.js where context load is tested? Other tests mock context providers
-global.beforeEach(() => {
-    Auth.currentAuthenticatedUser = jest.fn(mockData.amplifyAuth.currentAuthenticatedUserReject)
-    api.fetchMaps.mockResolvedValue(mockData.map.allMaps)
-    api.fetch10NewestPosts.mockResolvedValue(mockData.post.fetch10NewestPosts)
-    api.fetchAuthorsList.mockResolvedValue(mockData.author.fetchAuthorsList)
-})
-
-global.afterEach(() => {
-    Auth.currentAuthenticatedUser.mockClear()
-    api.fetchMaps.mockClear()
-    api.fetch10NewestPosts.mockClear()
-    api.fetchAuthorsList.mockClear()
-})
-
-

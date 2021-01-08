@@ -61,8 +61,7 @@ const App = () => {
             const user = await Auth.currentAuthenticatedUser()
             setAWSCognitoUser(user)
         }
-        fetchUser()
-            .catch((e) => {})
+        fetchUser().catch(() => {})
     }, [])
 
     /*
@@ -77,8 +76,19 @@ const App = () => {
     useEffect( () => {
         async function fetchData() {
             let maps = await api.fetchMaps()
+            const posts = await api.fetch10NewestPosts()
+            let authors = await api.fetchAuthorsList()
+
+            if (maps.error || posts.error || authors.error) {
+                console.log('Error(s) while fetching data:')
+                if (maps.error) console.log('Maps error:', maps.errorMessage)
+                if (posts.error) console.log('Posts error:', posts.errorMessage)
+                if (authors.error) console.log('Authors error:', authors.errorMessage)
+                return
+            }
+
             /*
-             * Sort maps based on canonical name, but put "General" first
+             * Sort and edit content
              */
             const sortMaps = (unsorted) => {
                 // Pick "general" map
@@ -92,17 +102,7 @@ const App = () => {
                 return sorted
             }
             maps = sortMaps(maps)
-            const posts = await api.fetch10NewestPosts()
-            let authors = await api.fetchAuthorsList()
             authors = authors.sort((a1, a2) => (a1.username > a2.username) ? 1 : -1)
-
-            if (maps.error || posts.error) {
-                console.log('Error(s) while fetching data:')
-                if (maps.error) console.log('Maps error:', maps.errorMessage)
-                if (posts.error) console.log('Posts error:', posts.errorMessage)
-                if (authors.error) console.log('Authors error:', authors.errorMessage)
-                return
-            }
 
             // console.log('Context-Maps: ', maps)
             // console.log('Context-Posts: ', posts)
@@ -115,8 +115,7 @@ const App = () => {
                 authors: authors
             }))
         }
-        fetchData()
-            .catch((e) => console.log(e))
+        fetchData().then()
     }, [])
 
 

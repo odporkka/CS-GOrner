@@ -28,3 +28,7 @@ export const renderWithProviders = (ui, contentContextValue, awsUserContextValue
     )
 }
 
+export const sleep = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+

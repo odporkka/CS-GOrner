@@ -189,22 +189,13 @@ export const mockData = {
             }
         ]
     },
+    apiError: {
+        error: true,
+        errorMessage: "Could not reach backend!"
+    },
     amplifyAuth: {
-        currentAuthenticatedUserResolve: () => {
-            return new Promise((resolve, reject) => {
-                process.nextTick(() => {
-                    resolve({ username: 'AWS_user' })
-                })
-            })
-        },
-        // currentAuthenticatedUserReject: 'not authenticated'
-        currentAuthenticatedUserReject: () => {
-            return new Promise((resolve, reject) => {
-                process.nextTick(() => {
-                    reject('not authenticated')
-                })
-            })
-        }
+        currentAuthenticatedUserResolve: () => Promise.resolve({ username: 'AWS_user'}),
+        currentAuthenticatedUserReject: () => Promise.reject('not authenticated'),
     },
     postFetchingChicken: {
         successfulResponse: {
