@@ -21,7 +21,7 @@ describe('When no AWS user is logged in the app renders', () => {
     })
 
     it('and landing page works if content fetch works', async () => {
-        api.fetchMaps.mockResolvedValue(mockData.map.allMaps)
+        api.fetchMaps.mockResolvedValue(mockData.map.fetchMaps)
         api.fetch10NewestPosts.mockResolvedValue(mockData.post.fetch10NewestPosts)
         api.fetchAuthorsList.mockResolvedValue(mockData.author.fetchAuthorsList)
 
@@ -104,7 +104,7 @@ describe('When AWS user is logged in the app renders', () => {
 
     beforeEach(() => {
         Auth.currentAuthenticatedUser = jest.fn(mockData.amplifyAuth.currentAuthenticatedUserResolve)
-        api.fetchMaps.mockResolvedValue(mockData.map.allMaps)
+        api.fetchMaps.mockResolvedValue(mockData.map.fetchMaps)
         api.fetch10NewestPosts.mockResolvedValue(mockData.post.fetch10NewestPosts)
         api.fetchAuthorsList.mockResolvedValue(mockData.author.fetchAuthorsList)
     })

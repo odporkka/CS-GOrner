@@ -1,5 +1,5 @@
 import React from 'react'
-import { screen, waitFor, getAllByText } from '@testing-library/react'
+import { fireEvent, prettyDOM, screen, waitFor, waitForElementToBeRemoved, getAllByText } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../../../util/testUtil'
 
@@ -45,7 +45,7 @@ describe('When no AWS user is logged in, PostEditorPage renders', () => {
     })
 })
 
-describe('When editor is logged in, PostEditorPage renders', () => {
+describe('When AWS user is logged in, PostEditorPage renders', () => {
 
     beforeEach(() => {
         api.elasticSearchCurrentUsersPosts.mockResolvedValue(mockData.post.elasticSearchCurrentUsersPosts.success)
@@ -73,11 +73,11 @@ describe('When editor is logged in, PostEditorPage renders', () => {
         expect(screen.getByTestId('post-editor-preview-container')).toBeInTheDocument()
 
         /*
-         * Shows loading on users posts
+         * Shows and removes users posts loading message when loaded
          */
-        expect(screen.getByText(/loading your posts/i)).toBeInTheDocument()
+        await waitForElementToBeRemoved(() => screen.getByText(/loading your posts/i))
         /*
-         * Shows users posts select when loaded
+         * Post select shows existing drafts and posts
          */
         await waitFor(() => {
             expect(screen.queryByText(/loading your posts/i)).not.toBeInTheDocument()
@@ -120,3 +120,15 @@ describe('When editor is logged in, PostEditorPage renders', () => {
         expect(getAllByText(preview, /settings/i).length).toBe(2)
     })
 })
+
+//         const yourPostsSelect = screen.getByLabelText(/your posts/i)
+//         const yourDraftsSelect = screen.getByLabelText(/your drafts/i)
+//         console.log(prettyDOM(yourPostsSelect))
+//         console.log(prettyDOM(yourDraftsSelect))
+//
+//         const yourPostsDiv = screen.getByText(/your posts/i).closest("div")
+//         const yourDraftsDiv = screen.getByText(/your drafts/i).closest("div")
+//         console.log(prettyDOM(yourPostsDiv))
+//         console.log(prettyDOM(yourDraftsDiv))
+//
+//         fireEvent.click(yourPostsDiv)
