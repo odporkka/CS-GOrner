@@ -9,8 +9,9 @@ import awsExports from './aws-exports'
 // AWS-Amplify
 Amplify.configure(awsExports);
 
-// Mock window.scrollTo (browser function)
+// Mock window functions
 window.scrollTo = jest.fn();
+window.alert = jest.fn();
 
 jest.spyOn(Auth, 'currentAuthenticatedUser')
 jest.mock('./backend/api.js')

@@ -38,7 +38,6 @@ const PostMetaData = (props) => {
     const classes = useStyles()
     const { contentData } = useContext(Context)
 
-
     return (
         <Grid container spacing={1}>
             {/* Title */}
@@ -65,8 +64,8 @@ const PostMetaData = (props) => {
 
             {/* Map pick */}
             <Grid item xs={12}>
-                <label htmlFor='map' className={classes.label}>Map:</label>
-                <select name='mapID' value={post.mapID} onChange={handleMapChange}>
+                <label htmlFor='mapID' className={classes.label}>Map:</label>
+                <select name='mapID' id='mapID' value={post.mapID} onChange={handleMapChange}>
                     { contentData.maps.map((map) => (
                             <option value={map.id} key={map.id}>{map.canonicalName}</option>
                         )

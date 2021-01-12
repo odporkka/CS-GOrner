@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 
 // Own classes/components
 import PostFormImageUpload from './formSections/PostFormImageUpload'
-import PostMetaData from "./formSections/PostMetaData"
+import PostMetaData from './formSections/PostMetaData'
+import { Context } from '../../context/Context'
 
 // MUI styles
 const useStyles = makeStyles({
@@ -52,6 +53,7 @@ const PostForm = (props) => {
         deletePost
     } = props
     const classes = useStyles()
+    const { contentData } = useContext(Context)
 
     /*
      * Change post state as form changes
@@ -63,8 +65,8 @@ const PostForm = (props) => {
     }
 
     const handleMapChange = (event) => {
-        const value = event.target.value ? event.target.value : undefined
-        setPost({...post, mapID: value})
+        const mapID = event.target.value ? event.target.value : undefined
+        setPost({...post, mapID: mapID, map: contentData.maps.find(m => m.id === mapID)})
     }
 
     /*
@@ -121,7 +123,7 @@ const PostForm = (props) => {
                             onChange={handleInputChange}/>
                         <br />
 
-                        <label htmlFor='description' className={classes.label}>Article (markdown):</label>
+                        <label htmlFor='markdown' className={classes.label}>Article (markdown):</label>
                         <br />
                         <textarea id='markdown'
                             name='markdown'

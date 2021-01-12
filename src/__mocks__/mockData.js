@@ -1,3 +1,5 @@
+import { initialPostState } from "../backend/models/post"
+
 export const mockData = {
     post: {
         fetch10NewestPosts: [
@@ -104,10 +106,20 @@ export const mockData = {
                 error: true,
                 errorMessage: 'API Error'
             },
-        }
+        },
+        createPost: {
+            initialStateSuccess: {
+                id: 69,
+                ...initialPostState,
+                map: {
+                    "name": "general",
+                    "canonicalName": "General",
+                }
+            }
+        },
     },
     map: {
-        allMaps: [
+        fetchMaps: [
             {
                 "id": "1",
                 "name": "general",
@@ -218,17 +230,24 @@ export const mockData = {
             error: true,
             errorMessage: 'Error'}
     },
+
+}
+
+export const mockContext = {
     context: {
         initialValues: {
-            maps: [],
-            newPosts: [],
-            authors: []
+            maps: mockData.map.fetchMaps,
+            newPosts: mockData.post.fetch10NewestPosts,
+            authors: mockData.author.fetchAuthorsList
         }
     },
     awsCognitoUserContext: {
         initialValues: null,
         awsCognitoUser: {
-            username: 'Editor2'
+            username: 'Editor2',
+            attributes: {
+                sub: 'cognitoTestSub'
+            }
         }
     },
 }

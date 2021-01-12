@@ -102,10 +102,12 @@ const PostEditorPage = () => {
             const posts = await chicken.fetchCurrentUsersPosts()
             if (mounted) setUsersPosts(posts)
         }
-        fetchUsersPosts().catch((e) => console.log(e))
+        if (AWSCognitoUser) {
+            fetchUsersPosts().catch((e) => console.log(e))
 
+        }
         return () => { mounted = false }
-    }, [])
+    }, [AWSCognitoUser])
 
     /*
      * Save post to API.
@@ -266,7 +268,7 @@ const PostEditorPage = () => {
 
     return (
         <Grid container spacing={4}>
-            <Grid item xs={12}>
+            <Grid item xs={12} data-testid='post-editor-form-container'>
                 <Paper>
                     <Container>
                         <Grid container spacing={2}>
@@ -313,38 +315,36 @@ const PostEditorPage = () => {
             </Grid>
 
             {/* Previews */}
-            <Grid item xs={12}>
+            <Grid item xs={12} data-testid='post-editor-preview-container'>
                 <Paper>
                     <Container>
-                        { post.sanitizedHtml && (
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <Typography variant="h5">
-                                        Preview
-                                    </Typography>
-                                </Grid>
-
-                                {/* Teaser */}
-                                <Grid item xs={12}>
-                                    <Typography variant="h6">
-                                        Teaser:
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <PostTeaser postData={post} />
-                                </Grid>
-
-                                {/* Full post */}
-                                <Grid item xs={12}>
-                                    <Typography variant="h6">
-                                        Full Post:
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Post postData={post} />
-                                </Grid>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography variant="h5">
+                                    Preview
+                                </Typography>
                             </Grid>
-                        )}
+
+                            {/* Teaser */}
+                            <Grid item xs={12}>
+                                <Typography variant="h6">
+                                    Teaser:
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <PostTeaser postData={post} />
+                            </Grid>
+
+                            {/* Full post */}
+                            <Grid item xs={12}>
+                                <Typography variant="h6">
+                                    Full Post:
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Post postData={post} />
+                            </Grid>
+                        </Grid>
                     </Container>
                 </Paper>
             </Grid>

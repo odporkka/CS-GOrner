@@ -109,7 +109,6 @@ export const elasticSearchCurrentUsersPosts =  async () => {
                 direction: 'asc'
             },
         }))
-        console.log(response.data.searchPosts)
         return response.data.searchPosts
     } catch (e) {
         return handleError(e)

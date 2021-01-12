@@ -42,7 +42,7 @@ const PostSelect = (props) => {
         <div className={classes.root}>
             <label htmlFor={name} className={classes.label}>{label}:</label>
 
-            <select className={classes.select} name={name} value='' onChange={onChange}>
+            <select className={classes.select} name={name} id={name} value='' onChange={onChange}>
                     <option value='' key=''> </option>
                     { posts.map((post) => (
                             <option value={post.id} key={post.id}>{post.title}</option>
