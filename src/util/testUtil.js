@@ -12,7 +12,7 @@ export const renderWithRouter = (ui, { route = '/'} = {}) => {
     return render(ui, { wrapper: BrowserRouter })
 }
 
-export const renderWithProviders = (ui, contentContextValue, awsUserContextValue) => {
+export const renderWithProviders = (ui, contentContextValue, awsUserContextValue, route) => {
     return renderWithRouter(
         <ThemeProvider theme={theme}>
             <ContextProvider
@@ -25,6 +25,9 @@ export const renderWithProviders = (ui, contentContextValue, awsUserContextValue
                 </AWSCognitoUserContextAPIProvider>
             </ContextProvider>
         </ThemeProvider>
+        , {
+            route: route,
+        }
     )
 }
 

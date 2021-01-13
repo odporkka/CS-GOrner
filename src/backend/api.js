@@ -45,6 +45,7 @@ export const fetchMaps = async () => {
 export const fetchPostWithId = async (id) => {
     try {
         const response = await API.graphql(graphqlOperation(queries.getPost, {id: id}))
+        // Is null if not found
         let post = response.data.getPost
         if (post && post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
         return post

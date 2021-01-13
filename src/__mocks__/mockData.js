@@ -2,6 +2,53 @@ import { initialPostState } from "../backend/models/post"
 
 export const mockData = {
     post: {
+        fetchPostWithId: {
+            "5": {
+                "id": "5",
+                "published": false,
+                "publishDate": null,
+                "deprecated": false,
+                "s3id": "",
+                "title": "Editor2's Draft 1",
+                "authorID": "2",
+                "mapID": "1",
+                "tags": [],
+                "description": "",
+                "markdown": "",
+                "sanitizedHtml": "",
+                "images": [],
+                "createdAt": "2021-01-12T23:21:47.338Z",
+                "updatedAt": "2021-01-12T23:21:47.338Z",
+                "map": {
+                    "name": "general",
+                    "canonicalName": "General"
+                },
+                "author": {
+                    "cognitoUserSud": "2",
+                    "username": "Editor2",
+                    "profilePic": null
+                }
+            },
+        },
+        deletePostWithId: {
+            "5": {
+                "id": "5",
+                "published": false,
+                "publishDate": null,
+                "deprecated": false,
+                "s3id": "",
+                "title": "Editor2's Draft 1",
+                "authorID": "2",
+                "mapID": "1",
+                "tags": [],
+                "description": "",
+                "markdown": "",
+                "sanitizedHtml": "",
+                "images": [],
+                "createdAt": "2021-01-12T23:21:47.338Z",
+                "updatedAt": "2021-01-12T23:21:47.338Z"
+            }
+        },
         fetch10NewestPosts: [
             {
                 "id": "1",
@@ -59,29 +106,31 @@ export const mockData = {
             }
         ],
         elasticSearchCurrentUsersPosts: {
-            success: {items : [
+            success: {
+                items : [
                     {
-                        "id": "2",
+                        "id": "3",
                         "published": true,
                         "title": "Editor2's Post 1",
                     },
                     {
-                        "id": "3",
+                        "id": "4",
                         "published": true,
                         "title": "Editor2's Post 2",
                     },
                     {
-                        "id": "4",
-                        "published": false,
-                        "title": "Editor2's Post 3",
-                    },
-                    {
                         "id": "5",
                         "published": false,
-                        "title": "Editor2's Post 4",
+                        "title": "Editor2's Draft 1",
+                    },
+                    {
+                        "id": "6",
+                        "published": false,
+                        "title": "Editor2's Draft 2",
                     }
                 ],
-                total: 1},
+                total: 1
+            },
             empty: {
                 total: 0
             },
@@ -109,8 +158,8 @@ export const mockData = {
         },
         createPost: {
             initialStateSuccess: {
-                id: 69,
                 ...initialPostState,
+                id: "69",
                 map: {
                     "name": "general",
                     "canonicalName": "General",

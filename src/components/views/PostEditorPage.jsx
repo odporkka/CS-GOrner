@@ -64,16 +64,19 @@ const PostEditorPage = () => {
      */
     useEffect(() => {
         let mounted = true
-
         const fetch = async () => {
             const searchParams = new URLSearchParams(history.location.search)
             // Fetch post if id defined in url parameters
             if (searchParams.has('id')) {
                 const id = searchParams.get('id')
-                const post = await api.fetchPostWithId(id)
+                const response = await api.fetchPostWithId(id)
                 if (mounted) {
-                    if (post) {
-                        setPost(post)
+                    if (response) {
+                        if (!response.error) {
+                            setPost(response)
+                        } else {
+                            alert(`Error while fetching post with id ${id}!`)
+                        }
                     } else {
                         alert(`Post with id ${id} not found! It might been deleted recently!`)
                         history.push('/post-editor')
@@ -104,7 +107,6 @@ const PostEditorPage = () => {
         }
         if (AWSCognitoUser) {
             fetchUsersPosts().catch((e) => console.log(e))
-
         }
         return () => { mounted = false }
     }, [AWSCognitoUser])
@@ -136,6 +138,8 @@ const PostEditorPage = () => {
             response = await api.createPost(input)
             if (!response.error) {
                 alert(`Post '${input.title}' created successfully!`)
+                setPost(response)
+                setUsersPosts(usersPosts.concat(response))
                 history.push(`/post-editor?id=${response.id}`)
             } else {
                 alert(`Error(s) occurred while trying to create post:\n${response.errorMessage}`)
@@ -161,6 +165,7 @@ const PostEditorPage = () => {
                     return
                 }
                 alert(`Post with id ${response.id} deleted successfully!`)
+                setUsersPosts(usersPosts.filter((p) => p.id !== post.id))
                 history.push('/post-editor')
             } else {
                 if (response.error) {
