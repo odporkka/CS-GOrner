@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid'
 // Own classes/components
 import PostFormImageUpload from './formSections/PostFormImageUpload'
 import PostMetaData from './formSections/PostMetaData'
+import YouTubeEmbedHelper from './formSections/YouTubeEmbedHelper'
 import { Context } from '../../context/Context'
 
 // MUI styles
@@ -89,7 +90,6 @@ const PostForm = (props) => {
         <div id='post-form'>
             <form className={classes.form} noValidate autoComplete="off">
                 <Grid container spacing={2}>
-
                     {/* Top left side */}
                     <Grid item xs={6}>
                         <PostMetaData
@@ -101,15 +101,20 @@ const PostForm = (props) => {
                     </Grid>
 
                     {/* Top right side */}
-                    <Grid item xs={6}>
-                        <PostFormImageUpload
-                            post={post}
-                            fileToUpload={fileToUpload}
-                            setFileToUpload={setFileToUpload}
-                            uploadToS3={uploadToS3}
-                            uploadProgress={uploadProgress}
-                            removeFromS3={removeFromS3}
+                    <Grid container item xs={6} spacing={2} direction='column' alignItems='stretch'>
+                        <Grid item>
+                            <YouTubeEmbedHelper />
+                        </Grid>
+                        <Grid item>
+                            <PostFormImageUpload
+                                post={post}
+                                fileToUpload={fileToUpload}
+                                setFileToUpload={setFileToUpload}
+                                uploadToS3={uploadToS3}
+                                uploadProgress={uploadProgress}
+                                removeFromS3={removeFromS3}
                             />
+                        </Grid>
                     </Grid>
 
                     {/* Text areas */}
