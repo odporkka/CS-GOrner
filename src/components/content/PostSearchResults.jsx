@@ -21,7 +21,8 @@ const PostSearchResults = (props) => {
     const {
         results,
         searchCriteria,
-        onPageChange
+        onPageChange,
+        postsOnPage
     } = props
     const { contentData } = useContext(Context)
 
@@ -29,13 +30,20 @@ const PostSearchResults = (props) => {
     const showTagCriteria = (searchCriteria.tags && searchCriteria.tags.length > 0)
     const selectedAuthor = searchCriteria.author ?
         contentData.authors.find(a => a.cognitoUserSud === searchCriteria.author).username : undefined
-    const pages = Math.ceil(results.postCount / 5)
+    const pages = Math.ceil(results.postCount / postsOnPage)
+
+    const getPostRange = () => {
+        const firstPostOnPage = (results.page * postsOnPage) - (postsOnPage - 1)
+        const lastPossible = firstPostOnPage + (postsOnPage - 1)
+        const lastPostOnPage = results.postCount < lastPossible ? results.postCount : lastPossible
+        return `Showing posts ${firstPostOnPage} - ${lastPostOnPage}`
+    }
 
 
     return (
         <>
             <Grid item xs={12}>
-                <Typography variant='h6'>Results ({results.postCount})</Typography>
+                <Typography variant='h6'>Results ({results.postCount}) </Typography>
                 { showMapCriteria && (
                     <Typography variant='body1'>Maps:{searchCriteria.maps.map(m => ` ${m.canonicalName}`)}</Typography>
                 )}
@@ -48,9 +56,22 @@ const PostSearchResults = (props) => {
             </Grid>
 
             { results.items && results.items.length > 0 &&
-            <Grid item xs={12}>
-                <Pagination count={pages} variant="outlined" shape="rounded" color="secondary" onChange={onPageChange}/>
-            </Grid>
+                <Grid container item xs={12} justify='space-between'>
+                    <Grid item xs={8}>
+                        <Pagination
+                            count={pages}
+                            page={results.page}
+                            variant="outlined"
+                            shape="rounded"
+                            color="secondary"
+                            onChange={onPageChange}/>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Typography variant='body1' align='right'>
+                            {getPostRange()}
+                        </Typography>
+                    </Grid>
+                </Grid>
             }
 
             { results.items && results.items.map((post) => (
@@ -62,7 +83,13 @@ const PostSearchResults = (props) => {
 
             { results.items && results.items.length > 0 &&
             <Grid item xs={12}>
-                <Pagination count={pages} variant="outlined" shape="rounded" color="secondary" onChange={onPageChange}/>
+                <Pagination
+                    count={pages}
+                    page={results.page}
+                    variant="outlined"
+                    shape="rounded"
+                    color="secondary"
+                    onChange={onPageChange}/>
             </Grid>
             }
         </>

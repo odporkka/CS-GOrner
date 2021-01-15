@@ -48,7 +48,6 @@ const TacticsBrowsePage = () => {
     const initialResults = {
         allItems: [],
         postCount: 0,
-        postsFetched: 0,
         items: [],
         page: 1,
         nextToken: undefined,
@@ -61,7 +60,6 @@ const TacticsBrowsePage = () => {
 
     /*
      * Initial search by criteria.
-     * (TODO: Consider limit if amount of posts is big?)
      *
      * @return {Promise<void>}
      */
@@ -81,14 +79,18 @@ const TacticsBrowsePage = () => {
         setResultsLoading(false)
     }
 
-    const onPageChange = (event, value) => {
-        const firstOnWantedPage = (value * POSTS_LIMIT) - (POSTS_LIMIT - 1)
-        // We already have fetched this
-        if (firstOnWantedPage <= results.postsFetched) {
-            console.log(`Show range ${firstOnWantedPage}-${firstOnWantedPage+(POSTS_LIMIT - 1)}`)
-        } else {
-            console.log('fetch more!')
-        }
+    /*
+     * "Search" by changing page
+     */
+    const onPageChange = async (event, value) => {
+        setResultsLoading(true)
+        setResults({...results, page: value})
+
+        const response = await chicken.fetch(searchCriteria, POSTS_LIMIT, results, value)
+
+        setResults(response)
+        setResultsLoading(false)
+
     }
 
     /*
@@ -136,6 +138,7 @@ const TacticsBrowsePage = () => {
                                 <PostSearchResults
                                     results={results}
                                     searchCriteria={searchCriteria}
+                                    postsOnPage={POSTS_LIMIT}
                                     onPageChange={onPageChange}/>
                             }
 

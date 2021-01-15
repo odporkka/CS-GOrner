@@ -13,12 +13,15 @@ import * as api from "../backend/api"
  * @param searchCriteria
  * @param limit
  * @param prevResults
+ * @param page
  * @return search results or error
  */
-export const fetch = async (searchCriteria, limit, prevResults=null) => {
-    console.log('prev results:', prevResults)
+export const fetch = async (searchCriteria, limit, prevResults=null, page=1) => {
     let filter = prevResults ? prevResults.apiFilter : undefined
     let postCount = prevResults ? prevResults.postCount : undefined
+    let allItems = prevResults ? prevResults.allItems : []
+    const nextToken = prevResults ? prevResults.nextToken : undefined
+    const firstPostOnPage = (page * limit) - (limit - 1)
 
     // If its initial search, build filter and fetch total count
     if (!prevResults) {
@@ -33,18 +36,29 @@ export const fetch = async (searchCriteria, limit, prevResults=null) => {
     }
 
     let result = {}
+    // First post on wanted page is already fetched
+    if (firstPostOnPage <= allItems.length) {
+        result.items = allItems.slice((firstPostOnPage - 1), (limit * page))
+        result.allItems = allItems
+        result.nextToken = nextToken
+    // Need to do fetch
+    } else {
+        const lastPostOnPage = firstPostOnPage + (limit - 1)
+        // How many posts can be fetched at max
+        const apiLimit = lastPostOnPage - allItems.length
 
-    let response = await api.elasticSearchPosts(filter, limit)
-    if (response.error) {
-        console.log(response)
-        return
+        const response = await api.elasticSearchPosts(filter, apiLimit, nextToken)
+
+        if (response.error) {
+            console.log(response)
+            return
+        }
+        result.allItems = response.items ? allItems.concat(response.items) : allItems
+        result.items = response.items ? result.allItems.slice(firstPostOnPage - 1) : []
+        result.nextToken = response.nextToken ? response.nextToken : undefined
     }
-
-    result.allItems = []
+    result.page = page
     result.postCount = postCount
-    result.postsFetched = result.postsFetched + (response.items ? response.items.length : 0)
-    result.items = response.items ? response.items : []
-    result.nextToken = response.nextToken
     result.apiFilter = filter
 
     return result
