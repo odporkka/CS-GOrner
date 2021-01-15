@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid'
 
 // Own classes/components
 import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
-import { Context } from '../../context/Context'
 import Post from '../content/Post'
 import * as api from "../../backend/api";
 
@@ -34,7 +33,6 @@ const TacticPage = (props) => {
     // Actually id for now. TODO: rename in Router?
     const title = props.match.params.title
     const history = useHistory()
-    const { contentData } = useContext(Context)
     const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
     const [ post, setPost ] = useState(null)
 
@@ -58,7 +56,7 @@ const TacticPage = (props) => {
         fetch().catch((e) => console.log(e))
 
         return () => { mounted = false }
-    }, [title])
+    }, [title, history])
 
 
     return (

@@ -145,11 +145,9 @@ export const mockData = {
                     {id: "00001", title: "Title"},
                     {id: "00001", title: "Title"}
                 ],
-                total: 2
             },
             empty: {
                 items: [],
-                total: 0
             },
             error: {
                 error: true,

@@ -74,7 +74,10 @@ const TacticsBrowsePage = () => {
             setSearchCriteria(searchInput)
         }
         const response = await chicken.fetch(searchInput, POSTS_LIMIT)
-
+        if (response.error) {
+            setResultsLoading(false)
+            return
+        }
         setResults(response)
         setResultsLoading(false)
     }
@@ -83,10 +86,16 @@ const TacticsBrowsePage = () => {
      * "Search" by changing page
      */
     const onPageChange = async (event, value) => {
+        const previousPage = results.page
         setResultsLoading(true)
         setResults({...results, page: value})
 
         const response = await chicken.fetch(searchCriteria, POSTS_LIMIT, results, value)
+        if (response.error) {
+            setResultsLoading(false)
+            setResults({...results, page: previousPage})
+            return
+        }
 
         setResults(response)
         setResultsLoading(false)

@@ -29,8 +29,7 @@ export const fetch = async (searchCriteria, limit, prevResults=null, page=1) => 
         const response = await api.elasticSearchPostsCount(filter)
         // TODO: better handling
         if (response.error) {
-            console.log('API error, make this better', response)
-            return
+            return response
         }
         postCount = response
     }
@@ -50,8 +49,7 @@ export const fetch = async (searchCriteria, limit, prevResults=null, page=1) => 
         const response = await api.elasticSearchPosts(filter, apiLimit, nextToken)
 
         if (response.error) {
-            console.log(response)
-            return
+            return response
         }
         result.allItems = response.items ? allItems.concat(response.items) : allItems
         result.items = response.items ? result.allItems.slice(firstPostOnPage - 1) : []
