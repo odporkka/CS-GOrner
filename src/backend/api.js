@@ -1,7 +1,7 @@
-import { API, Auth, graphqlOperation } from 'aws-amplify'
+import {API, Auth, graphqlOperation} from 'aws-amplify'
 
-import { validatePostObject, stripExtraProperties } from './models/post'
-import { tagsToTagArray, tagArrayToTags } from './models/tags'
+import {stripExtraProperties, validatePostObject} from './models/post'
+import {tagArrayToTags, tagsToTagArray} from './models/tags'
 import * as queries from './queries'
 import * as mutations from './mutations'
 
@@ -54,7 +54,7 @@ export const fetchPostWithId = async (id) => {
     }
 }
 
-export const fetch10NewestPosts = async () => {
+export const fetch5NewestPosts = async () => {
     try {
         const response = await API.graphql(graphqlOperation(queries.searchPosts, {
             filter: { published: { eq: true }},
@@ -62,7 +62,7 @@ export const fetch10NewestPosts = async () => {
                 field: 'publishDate',
                 direction: 'desc'
             },
-            limit: 10
+            limit: 5
         }))
         let posts = response.data.searchPosts.items
         posts.forEach((post) => {
@@ -75,7 +75,19 @@ export const fetch10NewestPosts = async () => {
     }
 }
 
-export const elasticSearchPosts = async (filter, nextToken=undefined) => {
+export const elasticSearchPostsCount = async (filter) => {
+    try {
+        // Fetch only count of posts matching filter since total returns only total caps at the limit if defined
+        const allMatching = await API.graphql(graphqlOperation(queries.searchPostCount, {
+            filter: filter
+        }))
+        return allMatching.data.searchPosts.total ? allMatching.data.searchPosts.total : 0
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
+export const elasticSearchPosts = async (filter, limit, nextToken=undefined) => {
     try {
         const response = await API.graphql(graphqlOperation(queries.searchPosts, {
             filter: filter,
@@ -83,16 +95,22 @@ export const elasticSearchPosts = async (filter, nextToken=undefined) => {
                 field: 'publishDate',
                 direction: 'desc'
             },
-            limit: 10,
+            limit: limit,
             nextToken: nextToken
         }))
+        // @searchable responds always with last item id as nextToken
+        const responseNextToken = response.data.searchPosts.nextToken
         let posts = response.data.searchPosts.items
         posts.forEach((post) => {
                 if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
             }
         )
-        const total = response.data.searchPosts.total ? response.data.searchPosts.total : 0
-        return {items: posts, total: total}
+
+        // console.log('limit:', limit)
+        // console.log('nextToken:', responseNextToken)
+        // console.log('total:', totalResults)
+
+        return { items: posts, nextToken: responseNextToken }
     } catch (e) {
         return handleError(e)
     }

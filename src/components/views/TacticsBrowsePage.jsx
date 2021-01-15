@@ -25,6 +25,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 
+const POSTS_LIMIT = 5
 
 /**
  * "/tactics" -page.
@@ -45,8 +46,13 @@ const TacticsBrowsePage = () => {
         author: undefined
     }
     const initialResults = {
+        allItems: [],
+        postCount: 0,
+        postsFetched: 0,
         items: [],
-        total: 0
+        page: 1,
+        nextToken: undefined,
+        apiFilter: undefined
     }
     const [searchCriteria, setSearchCriteria] = useState(initialSearchCriteria)
     const [resultsLoading, setResultsLoading] = useState(false)
@@ -54,35 +60,35 @@ const TacticsBrowsePage = () => {
     const [results, setResults] = useState(initialResults)
 
     /*
-     * Elastic search all posts by map.
+     * Initial search by criteria.
      * (TODO: Consider limit if amount of posts is big?)
      *
-     * @param map
      * @return {Promise<void>}
      */
-    const searchByMap = async (map) => {
-        setPanelState({searchPanelExpanded: false, mapPanelExpanded: false})
+    const search = async (map=null) => {
+        setPanelState({ searchPanelExpanded: false, mapPanelExpanded: false })
         setResultsLoading(true)
-        const newSearchOptions = { ...initialSearchCriteria, maps: [map]}
-        const results = await chicken.fetch(newSearchOptions)
-        setSearchCriteria(newSearchOptions)
-        setResults(results)
+
+        let searchInput = searchCriteria
+        // Check if its only one map search
+        if (map) {
+            searchInput = { ...initialSearchCriteria, maps: [map] }
+            setSearchCriteria(searchInput)
+        }
+        const response = await chicken.fetch(searchInput, POSTS_LIMIT)
+
+        setResults(response)
         setResultsLoading(false)
     }
 
-    /*
-     * Elastic search by criteria.
-     * (TODO: Consider limit if amount of posts is big?)
-     *
-     * @param map
-     * @return {Promise<void>}
-     */
-    const search = async () => {
-        setPanelState({searchPanelExpanded: false, mapPanelExpanded: false})
-        setResultsLoading(true)
-        const results = await chicken.fetch(searchCriteria)
-        setResults(results)
-        setResultsLoading(false)
+    const onPageChange = (event, value) => {
+        const firstOnWantedPage = (value * POSTS_LIMIT) - (POSTS_LIMIT - 1)
+        // We already have fetched this
+        if (firstOnWantedPage <= results.postsFetched) {
+            console.log(`Show range ${firstOnWantedPage}-${firstOnWantedPage+(POSTS_LIMIT - 1)}`)
+        } else {
+            console.log('fetch more!')
+        }
     }
 
     /*
@@ -116,18 +122,21 @@ const TacticsBrowsePage = () => {
                 <TacticsMapPanel
                     panelExpanded={panelState.mapPanelExpanded}
                     setPanelExpanded={setMapPanelExpanded}
-                    searchByMap={searchByMap}/>
+                    search={search}/>
             </Grid>
 
             <Grid className={classes.results} item xs={12}>
                 <Paper>
                     <Container>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={4}>
 
                             { resultsLoading ?
                                 <LoadingSpinner xsItemSize={12}/>
                             :
-                                <PostSearchResults results={results} searchCriteria={searchCriteria}/>
+                                <PostSearchResults
+                                    results={results}
+                                    searchCriteria={searchCriteria}
+                                    onPageChange={onPageChange}/>
                             }
 
                         </Grid>

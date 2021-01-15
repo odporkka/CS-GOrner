@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
  */
 const TacticsMapPanel = (props) => {
     const {
-        searchByMap,
+        search,
         panelExpanded,
         setPanelExpanded
     } = props
@@ -46,7 +46,7 @@ const TacticsMapPanel = (props) => {
     }
 
     const toggleSearch = (map) => {
-        searchByMap(map)
+        search(map)
     }
 
     return (

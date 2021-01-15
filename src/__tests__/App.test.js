@@ -16,13 +16,13 @@ describe('When no AWS user is logged in the app renders', () => {
     afterEach(() => {
         Auth.currentAuthenticatedUser.mockClear()
         api.fetchMaps.mockClear()
-        api.fetch10NewestPosts.mockClear()
+        api.fetch5NewestPosts.mockClear()
         api.fetchAuthorsList.mockClear()
     })
 
     it('and landing page works if content fetch works', async () => {
         api.fetchMaps.mockResolvedValue(mockData.map.fetchMaps)
-        api.fetch10NewestPosts.mockResolvedValue(mockData.post.fetch10NewestPosts)
+        api.fetch5NewestPosts.mockResolvedValue(mockData.post.fetch10NewestPosts)
         api.fetchAuthorsList.mockResolvedValue(mockData.author.fetchAuthorsList)
 
         renderWithRouter(<App />, { route: '/'})
@@ -39,7 +39,7 @@ describe('When no AWS user is logged in the app renders', () => {
             expect(api.fetchAuthorsList).toHaveBeenCalledTimes(1)
         })
         await waitFor(() => {
-            expect(api.fetch10NewestPosts).toHaveBeenCalledTimes(1)
+            expect(api.fetch5NewestPosts).toHaveBeenCalledTimes(1)
         })
         /*
          * Logo is present
@@ -76,7 +76,7 @@ describe('When no AWS user is logged in the app renders', () => {
     it('and landing page renders even if api returns error', async () => {
         api.fetchMaps.mockResolvedValue(mockData.apiError)
         api.fetchAuthorsList.mockResolvedValue(mockData.apiError)
-        api.fetch10NewestPosts.mockResolvedValue(mockData.apiError)
+        api.fetch5NewestPosts.mockResolvedValue(mockData.apiError)
 
         renderWithRouter(<App />, { route: '/'})
 
@@ -90,7 +90,7 @@ describe('When no AWS user is logged in the app renders', () => {
             expect(api.fetchAuthorsList).toHaveBeenCalledTimes(1)
         })
         await waitFor(() => {
-            expect(api.fetch10NewestPosts).toHaveBeenCalledTimes(1)
+            expect(api.fetch5NewestPosts).toHaveBeenCalledTimes(1)
         })
         expect(screen.queryByAltText(/admin-icon/i)).not.toBeInTheDocument()
         expect(screen.getByAltText(/csgorner logo/i)).toBeInTheDocument()
@@ -105,14 +105,14 @@ describe('When AWS user is logged in the app renders', () => {
     beforeEach(() => {
         Auth.currentAuthenticatedUser = jest.fn(mockData.amplifyAuth.currentAuthenticatedUserResolve)
         api.fetchMaps.mockResolvedValue(mockData.map.fetchMaps)
-        api.fetch10NewestPosts.mockResolvedValue(mockData.post.fetch10NewestPosts)
+        api.fetch5NewestPosts.mockResolvedValue(mockData.post.fetch10NewestPosts)
         api.fetchAuthorsList.mockResolvedValue(mockData.author.fetchAuthorsList)
     })
 
     afterEach(() => {
         Auth.currentAuthenticatedUser.mockClear()
         api.fetchMaps.mockClear()
-        api.fetch10NewestPosts.mockClear()
+        api.fetch5NewestPosts.mockClear()
         api.fetchAuthorsList.mockClear()
     })
 
@@ -132,7 +132,7 @@ describe('When AWS user is logged in the app renders', () => {
             expect(api.fetchAuthorsList).toHaveBeenCalledTimes(1)
         })
         await waitFor(() => {
-            expect(api.fetch10NewestPosts).toHaveBeenCalledTimes(1)
+            expect(api.fetch5NewestPosts).toHaveBeenCalledTimes(1)
         })
         await waitFor(() => {
             expect(screen.getAllByAltText(/admin-icon/i).length).toBeGreaterThan(0)

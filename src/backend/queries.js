@@ -175,6 +175,17 @@ export const searchPostTitlesAndIds = /* GraphQL */ `
     }
   }
 `;
+export const searchPostCount = /* GraphQL */ `
+  query searchPostIds(
+    $filter: SearchablePostFilterInput
+  ) {
+    searchPosts(
+      filter: $filter
+    ) {
+      total
+    }
+  }
+`;
 
 /*
  * AUTHORS

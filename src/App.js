@@ -76,7 +76,7 @@ const App = () => {
     useEffect( () => {
         async function fetchData() {
             let maps = await api.fetchMaps()
-            const posts = await api.fetch10NewestPosts()
+            const posts = await api.fetch5NewestPosts()
             let authors = await api.fetchAuthorsList()
 
             if (maps.error || posts.error || authors.error) {
