@@ -49,7 +49,7 @@ export const mockData = {
                 "updatedAt": "2021-01-12T23:21:47.338Z"
             }
         },
-        fetch10NewestPosts: [
+        fetch5NewestPosts: [
             {
                 "id": "1",
                 "published": true,
@@ -161,6 +161,22 @@ export const mockData = {
                 map: {
                     "name": "general",
                     "canonicalName": "General",
+                },
+                publishDate: undefined,
+                deprecated: false,
+                s3id: '',
+                authorID: "2",
+                mapID: "1",
+                tags: [],
+                description: "",
+                markdown: "",
+                sanitizedHtml: "",
+                createdAt: "2021-01-16T18:01:07.682Z",
+                updatedAt: "2021-01-16T18:01:07.682Z",
+                author: {
+                    cognitoUserSud: "2",
+                    username: "Editor2",
+                    profilePic: null
                 }
             }
         },
@@ -277,14 +293,24 @@ export const mockData = {
             error: true,
             errorMessage: 'Error'}
     },
-
+    s3: {
+        uploadSuccess: () => Promise.resolve({
+            key: "folder/chikken.png",
+            url: "calculated in code"
+        })
+    },
+    storage: {
+        config: {
+            _config: { bucket: "bucket", region: "region"}
+        }
+    }
 }
 
 export const mockContext = {
     context: {
         initialValues: {
             maps: mockData.map.fetchMaps,
-            newPosts: mockData.post.fetch10NewestPosts,
+            newPosts: mockData.post.fetch5NewestPosts,
             authors: mockData.author.fetchAuthorsList
         }
     },

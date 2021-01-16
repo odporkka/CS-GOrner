@@ -13,8 +13,8 @@ export const uploadToS3 = async (s3id, file, setUploadProgress) => {
     const fileName = resolveName(s3id, file.name)
     const publicUrl = resolvePublicUrl(fileName)
 
-    console.log('fileName', fileName)
-    console.log('publicUrl', publicUrl)
+    // console.log('fileName', fileName)
+    // console.log('publicUrl', publicUrl)
 
     // Push image to S3 & update metadata on post
     const result = await Storage.put(fileName, file, {
@@ -25,7 +25,7 @@ export const uploadToS3 = async (s3id, file, setUploadProgress) => {
         ACL: 'public-read'
     })
 
-    if (!result && !result.key) {
+    if (!result || !result.key) {
         return { error: true, errorMessage: 'Something went wrong while uploading file'}
     }
     result.url = publicUrl

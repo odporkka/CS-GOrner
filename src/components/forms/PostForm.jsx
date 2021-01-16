@@ -105,7 +105,7 @@ const PostForm = (props) => {
                         <Grid item>
                             <YouTubeEmbedHelper />
                         </Grid>
-                        <Grid item>
+                        <Grid item data-testid='post-editor-image-upload'>
                             <PostFormImageUpload
                                 post={post}
                                 fileToUpload={fileToUpload}

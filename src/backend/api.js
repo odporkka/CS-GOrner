@@ -208,6 +208,7 @@ export const updatePost = async (data) => {
         })
         let post = response.data.updatePost
         if (post.hasOwnProperty('tags')) post.tags = tagsToTagArray(post.tags)
+        console.log(post)
         return post
     } catch (e) {
         return handleError(e)

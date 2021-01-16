@@ -70,7 +70,7 @@ const PostFormImageUpload = (props) => {
             )
         } else if (fileToUpload && !uploadButtonDisabled){
             return (
-                <button onClick={onUpload}>Upload!</button>
+                <button onClick={onUpload}>Upload file!</button>
             )
         } else {
             return null
@@ -82,7 +82,12 @@ const PostFormImageUpload = (props) => {
     return (
         <div>
             <label htmlFor='fileUpload' className={classes.label}>Upload images:</label>
-            <input type="file" name="fileUpload" id='fileUpload' onChange={onChangeHandler}/>
+            <input
+                type="file"
+                name="fileUpload"
+                id='fileUpload'
+                accept='image/x-png,image/gif,image/jpeg'
+                onChange={onChangeHandler}/>
             <br />
             {showState()}
             <ul>
