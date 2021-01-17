@@ -19,7 +19,7 @@ export const SteamUserContext = createContext(initialValues)
  */
 const SteamUserContextAPIProvider = (props) => {
     const value = {
-        steamUser: props.setSteamUser,
+        steamUser: props.steamUser,
         setSteamUser: props.setSteamUser
     }
 

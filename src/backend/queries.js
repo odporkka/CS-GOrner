@@ -229,3 +229,16 @@ export const listAuthors = /* GraphQL */ `
     }
   }
 `;
+/*
+ * STEAM USERS & AUTHENTICATION
+ */
+export const authenticate = /* GraphQL */ `
+  query Authenticate($urlParams: String) {
+    authenticate(urlParams: $urlParams)
+  }
+`;
+export const sessionValid = /* GraphQL */ `
+  query SessionValid {
+    sessionValid
+  }
+`;

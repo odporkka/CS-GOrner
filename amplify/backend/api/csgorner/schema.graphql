@@ -1,5 +1,13 @@
 # https://docs.amplify.aws/cli/graphql-transformer/overview
 
+###########
+# QUERIES #
+###########
+type Query {
+    authenticate(urlParams: String): String @function(name: "SteamUserHandler-${env}")
+    sessionValid: String @function(name: "SteamUserHandler-${env}")
+}
+
 #########
 # TYPES #
 #########
@@ -52,26 +60,41 @@ type Post
 }
 
 type Author
-@model
-@key(fields: ["cognitoUserSud"])
-@auth(
-    rules: [
-        # All can read
-        { allow: public, provider: apiKey, operations: [read]},
-        # Editors can create author object (themselves, done automatically if not found)
-        { allow: groups, provider: userPools, groups: ["Editors"], operations: [create]}
-        # Owner a.k.a author himself can update
-        { allow: owner, ownerField: "cognitoUserSud", operations: [read, update], identityClaim: "sub"}
-        # Admins can do anything
-        { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
-    ]
-)
+    @model
+    @key(fields: ["cognitoUserSud"])
+    @auth(
+        rules: [
+            # All can read
+            { allow: public, provider: apiKey, operations: [read]},
+            # Editors can create author object (themselves, done automatically if not found)
+            { allow: groups, provider: userPools, groups: ["Editors"], operations: [create]}
+            # Owner a.k.a author himself can update
+            { allow: owner, ownerField: "cognitoUserSud", operations: [read, update], identityClaim: "sub"}
+            # Admins can do anything
+            { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
+        ]
+    )
 {
     id: ID!
     cognitoUserSud: String!             # AWS Cognito user sud
     username: String!                   # '_' replaced with space, shown own site
     profilePic: Image
     bio: String
+}
+
+type SteamUser
+    @model
+    @auth(
+        rules: [
+            { allow: public, provider: apiKey, operations: [read]},
+            { allow: groups, provider: userPools, groups: ["Editors"], operations: [read]}
+            { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
+        ]
+    )
+{
+    id: ID!
+    steamID: String!
+    username: String!
 }
 
 type Image {

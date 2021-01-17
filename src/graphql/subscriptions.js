@@ -211,3 +211,36 @@ export const onDeleteAuthor = /* GraphQL */ `
     }
   }
 `;
+export const onCreateSteamUser = /* GraphQL */ `
+  subscription OnCreateSteamUser {
+    onCreateSteamUser {
+      id
+      steamID
+      username
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSteamUser = /* GraphQL */ `
+  subscription OnUpdateSteamUser {
+    onUpdateSteamUser {
+      id
+      steamID
+      username
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSteamUser = /* GraphQL */ `
+  subscription OnDeleteSteamUser {
+    onDeleteSteamUser {
+      id
+      steamID
+      username
+      createdAt
+      updatedAt
+    }
+  }
+`;

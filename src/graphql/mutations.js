@@ -238,3 +238,45 @@ export const deleteAuthor = /* GraphQL */ `
     }
   }
 `;
+export const createSteamUser = /* GraphQL */ `
+  mutation CreateSteamUser(
+    $input: CreateSteamUserInput!
+    $condition: ModelSteamUserConditionInput
+  ) {
+    createSteamUser(input: $input, condition: $condition) {
+      id
+      steamID
+      username
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSteamUser = /* GraphQL */ `
+  mutation UpdateSteamUser(
+    $input: UpdateSteamUserInput!
+    $condition: ModelSteamUserConditionInput
+  ) {
+    updateSteamUser(input: $input, condition: $condition) {
+      id
+      steamID
+      username
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSteamUser = /* GraphQL */ `
+  mutation DeleteSteamUser(
+    $input: DeleteSteamUserInput!
+    $condition: ModelSteamUserConditionInput
+  ) {
+    deleteSteamUser(input: $input, condition: $condition) {
+      id
+      steamID
+      username
+      createdAt
+      updatedAt
+    }
+  }
+`;

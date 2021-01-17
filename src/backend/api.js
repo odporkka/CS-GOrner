@@ -1,7 +1,7 @@
-import {API, Auth, graphqlOperation} from 'aws-amplify'
+import { API, Auth, graphqlOperation } from 'aws-amplify'
 
-import {stripExtraProperties, validatePostObject} from './models/post'
-import {tagArrayToTags, tagsToTagArray} from './models/tags'
+import { stripExtraProperties, validatePostObject } from './models/post'
+import { tagArrayToTags, tagsToTagArray } from './models/tags'
 import * as queries from './queries'
 import * as mutations from './mutations'
 
@@ -152,6 +152,18 @@ export const fetchAuthorsList = async () => {
         return handleError(e)
     }
 }
+
+export const steamAuthentication = async (urlParams) => {
+    try {
+        const response = await API.graphql(graphqlOperation(queries.authenticate,
+            { urlParams: urlParams }))
+        const result = JSON.parse(response.data.authenticate)
+        return result
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
 
 /*
  * Mutations

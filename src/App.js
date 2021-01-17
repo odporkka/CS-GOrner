@@ -73,8 +73,8 @@ const App = () => {
     const [steamUser, setSteamUser] = useState(null)
     useEffect( () => {
         async function fetchUser() {
-            const user = { user: "User" }
-            setSteamUser(user)
+            // const user = { user: "User" }
+            // setSteamUser(user)
         }
         fetchUser().catch(() => {})
     }, [])

@@ -1,6 +1,16 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const authenticate = /* GraphQL */ `
+  query Authenticate($urlParams: String) {
+    authenticate(urlParams: $urlParams)
+  }
+`;
+export const sessionValid = /* GraphQL */ `
+  query SessionValid {
+    sessionValid
+  }
+`;
 export const listMaps = /* GraphQL */ `
   query ListMaps(
     $filter: ModelMapFilterInput
@@ -125,12 +135,14 @@ export const searchPosts = /* GraphQL */ `
     $sort: SearchablePostSortInput
     $limit: Int
     $nextToken: String
+    $from: Int
   ) {
     searchPosts(
       filter: $filter
       sort: $sort
       limit: $limit
       nextToken: $nextToken
+      from: $from
     ) {
       items {
         id
@@ -216,6 +228,35 @@ export const getAuthor = /* GraphQL */ `
       bio
       createdAt
       updatedAt
+    }
+  }
+`;
+export const getSteamUser = /* GraphQL */ `
+  query GetSteamUser($id: ID!) {
+    getSteamUser(id: $id) {
+      id
+      steamID
+      username
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSteamUsers = /* GraphQL */ `
+  query ListSteamUsers(
+    $filter: ModelSteamUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSteamUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        steamID
+        username
+        createdAt
+        updatedAt
+      }
+      nextToken
     }
   }
 `;
