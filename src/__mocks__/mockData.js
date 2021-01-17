@@ -297,6 +297,9 @@ export const mockData = {
         uploadSuccess: () => Promise.resolve({
             key: "folder/chikken.png",
             url: "calculated in code"
+        }),
+        uploadInvalidResponse: () => Promise.resolve({
+            url: "calculated in code"
         })
     },
     storage: {

@@ -132,6 +132,7 @@ const PostEditorPage = () => {
                 setPost(response)
             } else {
                 alert(`Error(s) occurred while saving:\n${response.errorMessage}`)
+                return response
             }
             // New posts, call create here
         } else {
@@ -143,6 +144,7 @@ const PostEditorPage = () => {
                 history.push(`/post-editor?id=${response.id}`)
             } else {
                 alert(`Error(s) occurred while trying to create post:\n${response.errorMessage}`)
+                return response
             }
         }
     }
@@ -183,20 +185,23 @@ const PostEditorPage = () => {
     const uploadToS3 = async () => {
         try {
             const s3id = post.s3id ? post.s3id : uuidv4().split('-')[0]
-            const result = await s3.uploadToS3(s3id, fileToUpload, setUploadProgress)
+            const s3result = await s3.uploadToS3(s3id, fileToUpload, setUploadProgress)
             setUploadProgress(undefined)
-            if (result && !result.error) {
-                const newImageArray = post.images.concat(result)
+            if (s3result && !s3result.error) {
+                const newImageArray = post.images.concat(s3result)
                 const updatedPost = {...post, s3id: s3id, images: newImageArray}
-                savePost(updatedPost).catch((e) => {
-                    console.log(e);alert(e)
-                    s3.removeFromS3(result)
-                })
-            } else if (result.error) {
-                alert(`Error:\n${result.errorMessage}`)
+                const response = await savePost(updatedPost)
+                if (response && response.error) {
+                    s3.removeFromS3(s3result).catch((e) => alert(e))
+                }
+            // uploadToS3 returned error
+            } else if (s3result.error) {
+                console.log(s3result.errorMessage)
+                alert(`Error:\n${s3result.errorMessage}`)
             }
+        // Something threw and error, includes s3 connection errors
         } catch (e) {
-            console.log(e)
+            console.log(e.message ? e.message : e)
             alert(e)
         }
     }

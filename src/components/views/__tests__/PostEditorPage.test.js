@@ -22,7 +22,7 @@ import { tags } from '../../../backend/models/tags'
 import * as api from '../../../backend/api'
 
 
-describe('When no AWS user is logged in PostEditorPage renders', () => {
+describe('When no AWS user is logged in the page renders', () => {
 
     beforeEach(() => {
         api.elasticSearchCurrentUsersPosts.mockResolvedValue(mockData.post.elasticSearchCurrentUsersPosts.error)
@@ -32,7 +32,7 @@ describe('When no AWS user is logged in PostEditorPage renders', () => {
         jest.clearAllMocks()
     })
 
-    it('and shows notification but does not show form', async () => {
+    it('and shows notification but does not show editor form', async () => {
         renderWithProviders(
             <PostEditorPage />,
             mockContext.context.initialValues,
@@ -50,7 +50,7 @@ describe('When no AWS user is logged in PostEditorPage renders', () => {
 })
 
 
-describe('When AWS user is logged in, PostEditorPage renders', () => {
+describe('When AWS user is logged in the page renders', () => {
 
     beforeEach(() => {
         api.elasticSearchCurrentUsersPosts.mockResolvedValue(mockData.post.elasticSearchCurrentUsersPosts.success)
@@ -60,7 +60,7 @@ describe('When AWS user is logged in, PostEditorPage renders', () => {
         jest.clearAllMocks()
     })
 
-    it('and fetches users posts and shows an empty form', async () => {
+    it('and fetches users posts and shows an empty editor form', async () => {
         renderWithProviders(
             <PostEditorPage />,
             mockContext.context.initialValues,
@@ -287,6 +287,19 @@ describe('When AWS user is logged in, PostEditorPage renders', () => {
         })
         checkFormIsRendered()
     })
+})
+
+describe('When AWS user is logged in, ImageUpload renders', () => {
+
+    beforeEach(() => {
+        api.elasticSearchCurrentUsersPosts.mockResolvedValue(mockData.post.elasticSearchCurrentUsersPosts.success)
+        Storage.getPluggable = jest.fn()
+        Storage.getPluggable.mockReturnValue(mockData.storage.config)
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
 
     it('and allows upload and delete of images', async () => {
         renderWithProviders(
@@ -299,11 +312,9 @@ describe('When AWS user is logged in, PostEditorPage renders', () => {
 
         const imageUpload = await screen.findByTestId('post-editor-image-upload')
         // Load file with file chooser
-        const uploadComponent = screen.getByLabelText(/upload/i)
         const file = new File(['(⌐□_□)'], 'chikken.png', { type: 'image/png' })
-        ReactTestUtils.Simulate.change(uploadComponent, { target: { files: [file] } })
+        ReactTestUtils.Simulate.change(screen.getByLabelText(/upload/i), { target: { files: [file] } })
         // Wait for upload button to appear, throws error if not found
-        const uploadButton = await findByRole(imageUpload,'button', { name: /upload/i })
 
         // Click upload and wait for post save
         let expected = {
@@ -325,12 +336,8 @@ describe('When AWS user is logged in, PostEditorPage renders', () => {
         }
         api.createPost.mockResolvedValue(apiResponse)
         api.fetchPostWithId.mockResolvedValue(apiResponse)
-        Storage.getPluggable = jest.fn()
-        Storage.getPluggable.mockReturnValue(mockData.storage.config)
         Storage.put = jest.fn(mockData.s3.uploadSuccess)
-
-        userEvent.click(uploadButton)
-
+        userEvent.click(await findByRole(imageUpload,'button', { name: /upload/i }))
         await waitFor(() => {
             expect(Storage.put).toHaveBeenCalledTimes(1)
         })
@@ -344,7 +351,6 @@ describe('When AWS user is logged in, PostEditorPage renders', () => {
             expect(queryByText(imageUpload, /chikken.png/i)).toBeInTheDocument()
         })
 
-
         // Test remove works
         expected = {
             ...mockData.post.createPost.initialStateSuccess,
@@ -352,11 +358,7 @@ describe('When AWS user is logged in, PostEditorPage renders', () => {
         }
         Storage.remove = jest.fn().mockReturnValue({ status: 204 })
         api.updatePost.mockResolvedValue(expected)
-
-        const deleteButton = await findByRole(imageUpload,'button', { name: /delete/i })
-
-        userEvent.click(deleteButton)
-
+        userEvent.click(await findByRole(imageUpload,'button', { name: /delete/i }))
         await waitFor(() => {
             expect(Storage.remove).toHaveBeenCalledTimes(1)
         })
@@ -364,6 +366,95 @@ describe('When AWS user is logged in, PostEditorPage renders', () => {
             expect(api.updatePost).toHaveBeenCalledWith(expected)
         })
     })
+
+    it('and does not crash even if s3 or api gets an error', async () => {
+        renderWithProviders(
+            <Route path="/post-editor" component={PostEditorPage} />,
+            mockContext.context.initialValues,
+            mockContext.awsCognitoUserContext.awsCognitoUser,
+            '/post-editor'
+        )
+        await waitForElementToBeRemoved(() => screen.getByText(/loading your posts/i))
+
+        const imageUpload = await screen.findByTestId('post-editor-image-upload')
+        // Load file with file chooser
+        const uploadComponent = screen.getByLabelText(/upload/i)
+        const file = new File(['(⌐□_□)'], 'chikken.png', { type: 'image/png' })
+        ReactTestUtils.Simulate.change(uploadComponent, { target: { files: [file] } })
+
+        // Click upload and S3 throws error
+        Storage.getPluggable = jest.fn()
+        Storage.getPluggable.mockReturnValue(mockData.storage.config)
+        Storage.put = jest.fn().mockImplementation(() => { throw new Error('S3 down!')})
+        userEvent.click(await findByRole(imageUpload,'button', { name: /upload/i }))
+        await waitFor(() => {
+            expect(Storage.put).toHaveBeenCalledTimes(1)
+        })
+        await waitFor(() => {
+            expect(api.createPost).toHaveBeenCalledTimes(0)
+        })
+        checkFormIsRendered()
+        expect(queryByText(imageUpload, /chikken.png/i)).not.toBeInTheDocument()
+
+        // S3 returns invalid response
+        Storage.put.mockClear()
+        Storage.put = jest.fn(mockData.s3.uploadInvalidResponse)
+        userEvent.click(await findByRole(imageUpload,'button', { name: /upload/i }))
+        await waitFor(() => {
+            expect(Storage.put).toHaveBeenCalledTimes(1)
+        })
+        await waitFor(() => {
+            expect(api.createPost).toHaveBeenCalledTimes(0)
+        })
+        checkFormIsRendered()
+        expect(queryByText(imageUpload, /chikken.png/i)).not.toBeInTheDocument()
+
+        // S3 returns valid response but API fails
+        Storage.put.mockClear()
+        Storage.put = jest.fn(mockData.s3.uploadSuccess)
+        Storage.remove = jest.fn().mockReturnValue({ status: 204 })
+        api.createPost.mockResolvedValue(mockData.apiError)
+        userEvent.click(await findByRole(imageUpload,'button', { name: /upload/i }))
+        await waitFor(() => {
+            expect(Storage.put).toHaveBeenCalledTimes(1)
+        })
+        await waitFor(() => {
+            expect(api.createPost).toHaveBeenCalledTimes(1)
+        })
+        await waitFor(() => {
+            expect(Storage.remove).toHaveBeenCalledWith('folder/chikken.png')
+        })
+        checkFormIsRendered()
+        expect(queryByText(imageUpload, /chikken.png/i)).not.toBeInTheDocument()
+
+        // Finally both go through and image is added to list
+        const apiResponse = {
+            ...mockData.post.createPost.initialStateSuccess,
+            images: [{
+                key: 'folder/chikken.png',
+                url: 'https://bucket.s3-region.amazonaws.com/public/d3adb33f/chikken.png'
+            }],
+            s3id: 'd3adb33f'
+        }
+        Storage.put.mockClear()
+        Storage.put = jest.fn(mockData.s3.uploadSuccess)
+        api.createPost.mockClear()
+        api.createPost.mockResolvedValue(apiResponse)
+        api.fetchPostWithId.mockResolvedValue(apiResponse)
+        userEvent.click(await findByRole(imageUpload,'button', { name: /upload/i }))
+        await waitFor(() => {
+            expect(Storage.put).toHaveBeenCalledTimes(1)
+        })
+        await waitFor(() => {
+            expect(api.createPost).toHaveBeenCalledTimes(1)
+        })
+        await waitFor(() => {
+            expect(queryByText(imageUpload, /chikken.png/i)).toBeInTheDocument()
+        })
+        checkFormIsRendered()
+
+    })
+
 })
 
 const checkFormIsRendered = () => {

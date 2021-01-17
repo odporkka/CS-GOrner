@@ -5,7 +5,6 @@
 import '@testing-library/jest-dom/extend-expect'
 import Amplify, {Auth, Storage} from 'aws-amplify'
 import awsExports from './aws-exports'
-import * as uuid from 'uuid'
 
 // AWS and Amplify
 Amplify.configure(awsExports);
