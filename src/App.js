@@ -12,8 +12,9 @@ import Footer from './components/content/Footer'
 import NavBar from './components/navigation/NavBar'
 import Router from './Router'
 import ScrollToTopComponent from './util/ScrollToTopComponent'
+import SteamUserContextAPIProvider from './context/SteamUserContext'
 import { theme } from './theme'
-import * as api from "./backend/api"
+import * as api from './backend/api'
 
 // MUI styles
 const useStyles = makeStyles(() => ({
@@ -60,6 +61,20 @@ const App = () => {
         async function fetchUser() {
             const user = await Auth.currentAuthenticatedUser()
             setAWSCognitoUser(user)
+        }
+        fetchUser().catch(() => {})
+    }, [])
+
+    /*
+     * Steam user stuff:
+     * - Actual getter/setter for user (these are passed to context as props)
+     * - UseEffect for fetching user if page is first loaded and previous login is still valid
+     */
+    const [steamUser, setSteamUser] = useState(null)
+    useEffect( () => {
+        async function fetchUser() {
+            const user = { user: "User" }
+            setSteamUser(user)
         }
         fetchUser().catch(() => {})
     }, [])
@@ -128,24 +143,29 @@ const App = () => {
                     <AWSCognitoUserContextAPIProvider
                         AWSCognitoUser={AWSCognitoUser}
                         setAWSCognitoUser={setAWSCognitoUser}>
-                        <CssBaseline />
-                        <ScrollToTopComponent />
+                        <SteamUserContextAPIProvider
+                            steamUser={steamUser}
+                            setSteamUser={setSteamUser}>
 
-                        <NavBar />
+                            <CssBaseline />
+                            <ScrollToTopComponent />
 
-                        <Grid container className={classes.mainGrid} justify='center'>
-                            <Grid item className={classes.mainContent}>
-                                <Router />
+                            <NavBar />
+
+                            <Grid container className={classes.mainGrid} justify='center'>
+                                <Grid item className={classes.mainContent}>
+                                    <Router />
+                                </Grid>
+
+                                {/*<Grid item className={classes.rightSideBanner}>*/}
+                                {/*    <Container>*/}
+                                {/*        /!*<p>Sidebanner</p>*!/*/}
+                                {/*    </Container>*/}
+                                {/*</Grid>*/}
+
                             </Grid>
-
-                            {/*<Grid item className={classes.rightSideBanner}>*/}
-                            {/*    <Container>*/}
-                            {/*        /!*<p>Sidebanner</p>*!/*/}
-                            {/*    </Container>*/}
-                            {/*</Grid>*/}
-
-                        </Grid>
-                        <Footer />
+                            <Footer />
+                        </SteamUserContextAPIProvider>
                     </AWSCognitoUserContextAPIProvider>
                 </ContextProvider>
             </Container>
