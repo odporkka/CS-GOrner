@@ -1,5 +1,6 @@
 /*global URLSearchParams*/
-const axios = require('axios');
+const jwtHandler = require('./jwtHandler');
+const steamApi = require('./steamApi');
 
 /* Amplify Params - DO NOT EDIT
 	API_CSGORNER_GRAPHQLAPIENDPOINTOUTPUT
@@ -9,7 +10,13 @@ const axios = require('axios');
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const STEAM_URL = 'https://steamcommunity.com/openid/login';
+function checkUserInfo(steamResponse, userFromDb) {
+    return steamResponse;
+}
+
+function saveUser(updatedUser) {
+    return updatedUser
+}
 
 /**
  * Using this as the entry point, you can use a single function to handle many resolvers.
@@ -17,32 +24,25 @@ const STEAM_URL = 'https://steamcommunity.com/openid/login';
 const resolvers = {
     Query: {
         authenticate: async (ctx) => {
-            // console.log('Steam auth verification started!')
-            const urlParams = ctx.arguments.urlParams;
-            // console.log('urlParams', urlParams)
-            const searchParams = new URLSearchParams(urlParams);
-            // console.log('searchParams', searchParams)
-            searchParams.set('openid.mode', 'check_authentication');
-            // console.log('searchParams', searchParams)
-            const url = STEAM_URL + "?" + searchParams.toString();
-            //console.log('url', url)
-
-            let response;
-            try {
-                const steamResponse = await axios.get(url);
-                console.log(steamResponse.data);
-                const regex = RegExp('is_valid:true');
-
-                if (regex.test(steamResponse.data)) {
-                    response = { status: 'ok', message: 'User was verified!' };
-                } else {
-                    response = { error: true, errorMessage: 'Could not validate steam user' };
-                }
-            } catch (e) {
-                console.log(e);
-                response = { error: true, errorMessage: 'Could not validate steam user' };
+            const loginValidateResponse = await steamApi.validateLogin(ctx.arguments);
+            if (loginValidateResponse.error) {
+                return JSON.stringify(loginValidateResponse);
             }
-            return JSON.stringify(response);
+            // TODO: Fetch user info from steam
+            let steamResponse = { steamId: '12345' }
+            // TODO: Fetch user info from db if found
+            let userFromDb = null
+            // TODO: Update user info if needed
+            const user = checkUserInfo(steamResponse, userFromDb)
+            // TODO: Calculate tokens and set them to user object
+            const accessToken = jwtHandler.getAccessToken(user)
+            const refreshToken = jwtHandler.getRefreshToken(user)
+            const updatedUser = { ...user, accessToken: accessToken, refreshToken: refreshToken}
+            // TODO: Save user
+            saveUser(updatedUser)
+            // Return user with accessToken
+            const response = { ...user, accessToken: accessToken}
+            return JSON.stringify(response)
         },
         sessionValid: ctx => {
             console.log('Session check started!');
