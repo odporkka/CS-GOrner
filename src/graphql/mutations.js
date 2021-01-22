@@ -245,8 +245,15 @@ export const createSteamUser = /* GraphQL */ `
   ) {
     createSteamUser(input: $input, condition: $condition) {
       id
-      steamID
-      username
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
       createdAt
       updatedAt
     }
@@ -259,8 +266,15 @@ export const updateSteamUser = /* GraphQL */ `
   ) {
     updateSteamUser(input: $input, condition: $condition) {
       id
-      steamID
-      username
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
       createdAt
       updatedAt
     }
@@ -273,8 +287,15 @@ export const deleteSteamUser = /* GraphQL */ `
   ) {
     deleteSteamUser(input: $input, condition: $condition) {
       id
-      steamID
-      username
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
       createdAt
       updatedAt
     }

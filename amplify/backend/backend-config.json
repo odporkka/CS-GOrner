@@ -11,13 +11,16 @@
               "userPoolConfig": {
                 "userPoolId": "authcsgorner962324e8"
               }
+            },
+            {
+              "authenticationType": "AWS_IAM"
             }
           ],
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 365,
-              "description": "AppSync API Key"
+              "description": "AppSync API key"
             }
           }
         }

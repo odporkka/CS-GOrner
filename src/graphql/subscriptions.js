@@ -215,8 +215,15 @@ export const onCreateSteamUser = /* GraphQL */ `
   subscription OnCreateSteamUser {
     onCreateSteamUser {
       id
-      steamID
-      username
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
       createdAt
       updatedAt
     }
@@ -226,8 +233,15 @@ export const onUpdateSteamUser = /* GraphQL */ `
   subscription OnUpdateSteamUser {
     onUpdateSteamUser {
       id
-      steamID
-      username
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
       createdAt
       updatedAt
     }
@@ -237,8 +251,15 @@ export const onDeleteSteamUser = /* GraphQL */ `
   subscription OnDeleteSteamUser {
     onDeleteSteamUser {
       id
-      steamID
-      username
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
       createdAt
       updatedAt
     }

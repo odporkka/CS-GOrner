@@ -6,9 +6,14 @@ export const authenticate = /* GraphQL */ `
     authenticate(urlParams: $urlParams)
   }
 `;
-export const sessionValid = /* GraphQL */ `
-  query SessionValid {
-    sessionValid
+export const isSessionValid = /* GraphQL */ `
+  query IsSessionValid {
+    isSessionValid
+  }
+`;
+export const ratePost = /* GraphQL */ `
+  query RatePost {
+    ratePost
   }
 `;
 export const listMaps = /* GraphQL */ `
@@ -232,11 +237,18 @@ export const getAuthor = /* GraphQL */ `
   }
 `;
 export const getSteamUser = /* GraphQL */ `
-  query GetSteamUser($id: ID!) {
-    getSteamUser(id: $id) {
+  query GetSteamUser($steamid: String!) {
+    getSteamUser(steamid: $steamid) {
       id
-      steamID
-      username
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
       createdAt
       updatedAt
     }
@@ -244,15 +256,30 @@ export const getSteamUser = /* GraphQL */ `
 `;
 export const listSteamUsers = /* GraphQL */ `
   query ListSteamUsers(
+    $steamid: String
     $filter: ModelSteamUserFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listSteamUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listSteamUsers(
+      steamid: $steamid
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
-        steamID
-        username
+        token
+        steamid
+        personaname
+        profileurl
+        avatar
+        avatarmedium
+        avatarfull
+        avatarhash
+        loccountrycode
         createdAt
         updatedAt
       }

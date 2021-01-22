@@ -1,4 +1,5 @@
 const index = require('./index');
+const steam = require('./lib/steamService');
 
 const authenticateEvent = {
     "typeName": "Query",
@@ -46,3 +47,5 @@ const authenticateEvent = {
 };
 
 index.handler(authenticateEvent).then((response) => console.log(response));
+
+// const claimed_id = 'https%3A%2F%2Fsteamcommunity.com%2Fopenid%2Fid%2F76561198105617749'

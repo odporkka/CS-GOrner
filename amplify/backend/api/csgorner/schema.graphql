@@ -5,7 +5,8 @@
 ###########
 type Query {
     authenticate(urlParams: String): String @function(name: "SteamUserHandler-${env}")
-    sessionValid: String @function(name: "SteamUserHandler-${env}")
+    isSessionValid: String @function(name: "SteamUserHandler-${env}")
+    ratePost: String @function(name: "SteamUserHandler-${env}")
 }
 
 #########
@@ -84,17 +85,29 @@ type Author
 
 type SteamUser
     @model
+    @key(fields: ["steamid"])
     @auth(
         rules: [
+            # All can read
             { allow: public, provider: apiKey, operations: [read]},
             { allow: groups, provider: userPools, groups: ["Editors"], operations: [read]}
+            # Admins can edit
             { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
+            # IAM for Lambda
+            { allow: private, provider: iam}
         ]
     )
 {
     id: ID!
-    steamID: String!
-    username: String!
+    token: String!
+    steamid: String!
+    personaname: String!
+    profileurl: String!
+    avatar: String
+    avatarmedium: String
+    avatarfull: String
+    avatarhash: String
+    loccountrycode: String
 }
 
 type Image {

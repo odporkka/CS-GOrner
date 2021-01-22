@@ -1,6 +1,7 @@
 /*global URLSearchParams*/
-const jwtHandler = require('./jwtHandler');
-const steamApi = require('./steamApi');
+const jwtAuth = require('./lib/jwtAuthService');
+const steam = require('./lib/steamService');
+const api = require('./lib/apiService');
 
 /* Amplify Params - DO NOT EDIT
 	API_CSGORNER_GRAPHQLAPIENDPOINTOUTPUT
@@ -10,41 +11,46 @@ const steamApi = require('./steamApi');
 	REGION
 Amplify Params - DO NOT EDIT */
 
-function checkUserInfo(steamResponse, userFromDb) {
-    return steamResponse;
-}
-
-function saveUser(updatedUser) {
-    return updatedUser
-}
-
 /**
  * Using this as the entry point, you can use a single function to handle many resolvers.
  */
 const resolvers = {
     Query: {
         authenticate: async (ctx) => {
-            const loginValidateResponse = await steamApi.validateLogin(ctx.arguments);
+            // Validate login and parse steamID
+            const loginValidateResponse = await steam.validateLogin(ctx.arguments);
             if (loginValidateResponse.error) {
                 return JSON.stringify(loginValidateResponse);
             }
-            // TODO: Fetch user info from steam
-            let steamResponse = { steamId: '12345' }
-            // TODO: Fetch user info from db if found
-            let userFromDb = null
-            // TODO: Update user info if needed
-            const user = checkUserInfo(steamResponse, userFromDb)
-            // TODO: Calculate tokens and set them to user object
-            const accessToken = jwtHandler.getAccessToken(user)
-            const refreshToken = jwtHandler.getRefreshToken(user)
-            const updatedUser = { ...user, accessToken: accessToken, refreshToken: refreshToken}
-            // TODO: Save user
-            saveUser(updatedUser)
-            // Return user with accessToken
-            const response = { ...user, accessToken: accessToken}
-            return JSON.stringify(response)
+            // Fetch user info from steam and database
+            const user = await steam.getUserInfo(loginValidateResponse.steamid);
+            console.log('user:', user)
+            if (user && user.error) {
+                return JSON.stringify(user);
+            }
+            const userFromDb = await api.getSteamUser(loginValidateResponse.steamid);
+            if (userFromDb && userFromDb.error) {
+                return JSON.stringify(userFromDb);
+            }
+            console.log('userFromDb', userFromDb)
+            // Calculate session token
+            user.token = jwtAuth.getAccessToken(user);
+            // Save or create user
+            let apiResponse;
+            if (!userFromDb) {
+                apiResponse = await api.createSteamUser(user);
+            } else {
+                apiResponse = await api.updateSteamUser(user);
+            }
+            console.log('apiResponse', apiResponse)
+            if (apiResponse.error) {
+                return JSON.stringify(apiResponse);
+            }
+            console.log('token:', apiResponse.token)
+            console.log(jwtAuth.verifyAccessToken(apiResponse.token))
+            return JSON.stringify(apiResponse)
         },
-        sessionValid: ctx => {
+        isSessionValid: ctx => {
             console.log('Session check started!');
             console.log(ctx);
             return 'Session ok!';
