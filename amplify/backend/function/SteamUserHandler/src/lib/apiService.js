@@ -40,7 +40,7 @@ exports.getSteamUser = async (steamid) => {
         const signer = new AWS.Signers.V4(req, "appsync", true);
         signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
 
-        const data = await new Promise((resolve, reject) => {
+        const apiResponse = await new Promise((resolve, reject) => {
             const httpRequest = https.request({ ...req, host: endpoint }, (result) => {
                 result.on('data', (data) => {
                     resolve(JSON.parse(data.toString()));
@@ -51,7 +51,7 @@ exports.getSteamUser = async (steamid) => {
             httpRequest.end();
         });
 
-        return data.getSteamUser;
+        return apiResponse.data.getSteamUser;
     } catch (e) {
         console.log(e);
         return { error: true, errorMessage: 'Error happened while fetching steam user data' };
@@ -87,7 +87,7 @@ exports.createSteamUser = async (user) => {
         signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
 
 
-        const data = await new Promise((resolve, reject) => {
+        const apiResponse = await new Promise((resolve, reject) => {
             const httpRequest = https.request({ ...req, host: endpoint }, (result) => {
                 result.on('data', (data) => {
                     resolve(JSON.parse(data.toString()));
@@ -96,10 +96,10 @@ exports.createSteamUser = async (user) => {
             httpRequest.write(req.body);
             httpRequest.end();
         });
-        console.log(data)
-
-        if (data && data.createSteamUser) {
-            return data.createSteamUser;
+        if (apiResponse &&
+            apiResponse.data &&
+            apiResponse.data.createSteamUser) {
+            return apiResponse.data.createSteamUser;
         } else {
             return { error: true, errorMessage: 'No user data in api response' };
         }
@@ -137,7 +137,7 @@ exports.updateSteamUser = async (user) => {
         const signer = new AWS.Signers.V4(req, "appsync", true);
         signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
 
-        const data = await new Promise((resolve, reject) => {
+        const apiResponse = await new Promise((resolve, reject) => {
             const httpRequest = https.request({ ...req, host: endpoint }, (result) => {
                 result.on('data', (data) => {
                     resolve(JSON.parse(data.toString()));
@@ -146,8 +146,11 @@ exports.updateSteamUser = async (user) => {
             httpRequest.write(req.body);
             httpRequest.end();
         });
-        if (data && data.updateSteamUser) {
-            return data.updateSteamUser;
+        console.log(apiResponse)
+        if (apiResponse &&
+            apiResponse.data &&
+            apiResponse.data.updateSteamUser) {
+            return apiResponse.data.updateSteamUser;
         } else {
             return { error: true, errorMessage: 'No user data in api response' };
         }

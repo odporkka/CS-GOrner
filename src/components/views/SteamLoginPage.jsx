@@ -7,9 +7,9 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 // Own classes/components
-import * as api from '../../backend/api'
 import { SteamUserContext } from '../../context/SteamUserContext'
 import LoadingSpinner from '../content/LoadingSpinner'
+import * as steamService from '../../util/steamService'
 
 
 // MUI styles
@@ -39,40 +39,36 @@ const useStyles = makeStyles((theme) => ({
 const SteamLoginPage = () => {
     const classes = useStyles()
     const history = useHistory()
-    const [ loading, setLoading ] = useState(false)
+    const [ loading, setLoading ] = useState(true)
     const { steamUser, setSteamUser } = useContext(SteamUserContext)
 
     useEffect(() => {
         let mounted = true
-        setLoading(true)
-
-        const validateUser = async () => {
+        const login = async () => {
             const searchParams = new URLSearchParams(history.location.search)
             if (mounted) {
+                // Already logged in, don't do anything
+                if (steamUser) {
+                    return
+                // Check if token present and validate
+                } else if (steamService.tokenPresent()) {
+                    await steamService.renew(setSteamUser)
                 // Initial steam login redirect,
-                if (searchParams.has('openid.mode') &&
+                } else if (searchParams.has('openid.mode') &&
                     searchParams.get('openid.mode') === 'id_res') {
-                    const response = await api.steamAuthentication(searchParams.toString())
-                    console.log('response:', response)
-                    // Wipe user info from context if error was returned
-                    if (response.error) {
-                        setSteamUser(null)
-                    // Ask confirmation
-                    } else if (response.status === 'register') {
-                        console.log('Need permission from user')
-                    // Set user
-                    } else if (response.status === 'ok') {
-                        setSteamUser('user')
-                    }
+                    await steamService.authenticate(searchParams, setSteamUser)
                 }
+                setLoading(false)
             }
         }
-
-        validateUser().catch((e) => console.log(e))
-        setLoading(false)
+        login().catch((e) => console.log(e))
         return () => { mounted = false }
-    },[history.location.search, setSteamUser])
+    },[history.location.search, steamUser, setSteamUser])
 
+    const logOutHandler = () => {
+        steamService.logOut(setSteamUser)
+        history.push('/login')
+    }
 
     return (
         <Paper className={classes.contentPaper}>
@@ -114,13 +110,13 @@ const SteamLoginPage = () => {
                     <>
                         <Grid item xs={12}>
                             <Typography variant='h6' align='center'>
-                                You are logged in as: {steamUser}!<br/>
+                                You are logged in as: {steamUser.personaname}!<br/>
                                 You can log out below (this doesn't log you out from Steam):
                             </Typography>
                         </Grid>
                         <Grid container item xs={12} justify='center'>
                             <Grid item>
-                                <button onClick={() => alert('log out!')}>Log out!</button>
+                                <button onClick={() => logOutHandler()}>Log out!</button>
                             </Grid>
                         </Grid>
                     </>

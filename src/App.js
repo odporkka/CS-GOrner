@@ -11,7 +11,7 @@ import ContextProvider from './context/Context'
 import Footer from './components/content/Footer'
 import NavBar from './components/navigation/NavBar'
 import Router from './Router'
-import ScrollToTopComponent from './util/ScrollToTopComponent'
+import ScrollToTopComponent from './components/navigation/ScrollToTopComponent'
 import SteamUserContextAPIProvider from './context/SteamUserContext'
 import { theme } from './theme'
 import * as api from './backend/api'
@@ -71,13 +71,6 @@ const App = () => {
      * - UseEffect for fetching user if page is first loaded and previous login is still valid
      */
     const [steamUser, setSteamUser] = useState(null)
-    useEffect( () => {
-        async function fetchUser() {
-            // const user = { user: "User" }
-            // setSteamUser(user)
-        }
-        fetchUser().catch(() => {})
-    }, [])
 
     /*
      * Content fetched at first page load

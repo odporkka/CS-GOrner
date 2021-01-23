@@ -237,8 +237,8 @@ export const authenticate = /* GraphQL */ `
     authenticate(urlParams: $urlParams)
   }
 `;
-export const sessionValid = /* GraphQL */ `
-  query SessionValid {
-    sessionValid
+export const renew = /* GraphQL */ `
+  query Renew($token: String) {
+    renew(token: $token)
   }
 `;

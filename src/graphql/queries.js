@@ -6,9 +6,9 @@ export const authenticate = /* GraphQL */ `
     authenticate(urlParams: $urlParams)
   }
 `;
-export const isSessionValid = /* GraphQL */ `
-  query IsSessionValid {
-    isSessionValid
+export const renew = /* GraphQL */ `
+  query Renew($token: String) {
+    renew(token: $token)
   }
 `;
 export const ratePost = /* GraphQL */ `

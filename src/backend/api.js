@@ -164,6 +164,17 @@ export const steamAuthentication = async (urlParams) => {
     }
 }
 
+export const steamRenew = async (token) => {
+    try {
+        const response = await API.graphql(graphqlOperation(queries.renew,
+            { token: token }))
+        const result = JSON.parse(response.data.renew)
+        return result
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
 
 /*
  * Mutations

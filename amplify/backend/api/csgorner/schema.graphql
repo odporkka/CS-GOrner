@@ -5,7 +5,7 @@
 ###########
 type Query {
     authenticate(urlParams: String): String @function(name: "SteamUserHandler-${env}")
-    isSessionValid: String @function(name: "SteamUserHandler-${env}")
+    renew(token: String): String @function(name: "SteamUserHandler-${env}")
     ratePost: String @function(name: "SteamUserHandler-${env}")
 }
 
@@ -100,6 +100,7 @@ type SteamUser
 {
     id: ID!
     token: String!
+#    refreshToken: String!
     steamid: String!
     personaname: String!
     profileurl: String!

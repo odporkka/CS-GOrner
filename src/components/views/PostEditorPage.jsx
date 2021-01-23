@@ -17,8 +17,8 @@ import PostForm from '../forms/PostForm'
 import PostTeaser from '../content/PostTeaser'
 import * as api from '../../backend/api'
 import * as chicken from '../../util/postFetchingChicken'
-import * as markdownUtils from '../../util/markdownUtils'
-import * as s3 from '../../util/s3'
+import * as markdownUtils from '../../util/markdownService'
+import * as s3 from '../../util/s3service'
 import {Context} from "../../context/Context"
 import UsersPostsSelect from "../forms/formSections/UsersPostsSelect"
 
