@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AmplifySignOut } from '@aws-amplify/ui-react'
 import { makeStyles } from '@material-ui/core/styles'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import Menu from '@material-ui/core/Menu'
@@ -10,17 +10,36 @@ import MenuItem from '@material-ui/core/MenuItem'
 
 // Own classes/components
 import { AWSCognitoUserContext } from '../../context/AWSCognitoUserContext'
+import { SteamUserContext } from '../../context/SteamUserContext'
+import * as steamService from '../../util/steamService'
 
 // MUI styles
 const useStyles = makeStyles((theme) => ({
     userDiv: {
         minWidth: '100px'
     },
+    userMenuButtonDiv: {
+        border: `2px solid red`,
+        borderRadius: 4
+    },
+    userMenuButton: {
+        margin: '0px 0px 0px 10px',
+        textTransform: 'none'
+    },
+    userName: {
+        fontSize: 16,
+        color: '#ccba7c'
+    },
+    logInText: {
+        fontSize: 16,
+        color: '#5d79ae'
+    },
     menuPaper: {
         backgroundColor: theme.palette.primary.light,
     },
     avatar: {
-        float: 'right'
+        height: '25px',
+        width: '25px'
     },
     adminTitle: {
         paddingLeft: '20px'
@@ -44,7 +63,8 @@ const useStyles = makeStyles((theme) => ({
 const UserMenu = () => {
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = useState(null)
-    const { AWSCognitoUser } = useContext(AWSCognitoUserContext)
+    const { AWSCognitoUser, setAWSCognitoUser } = useContext(AWSCognitoUserContext)
+    const { steamUser, setSteamUser } = useContext(SteamUserContext)
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget)
@@ -54,8 +74,13 @@ const UserMenu = () => {
         setAnchorEl(null)
     }
 
+    const handleLogout = () => {
+        setAnchorEl(null)
+        steamService.logOut(setSteamUser)
+    }
+
     const logoutAWS = () => {
-        console.log('logged out')
+        setAWSCognitoUser(null)
     }
 
     const adminIcon = (width, height) => {
@@ -71,16 +96,39 @@ const UserMenu = () => {
         )
     }
 
+
     return (
         <div className={classes.userDiv}>
-            <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-                startIcon={<AccountCircleIcon />}
-                endIcon={AWSCognitoUser ? adminIcon(20, 20) : null}>
-                Log in
-            </Button>
+            { steamUser ?
+                <div className={classes.userMenuButtonDiv}>
+                    <Button className={classes.userMenuButton}
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                        startIcon={<Avatar
+                            variant='square'
+                            src='images/csgo-headshot-sharpened-white-h50.png'
+                            className={classes.avatar}/>}
+                        endIcon={AWSCognitoUser ? adminIcon(20, 20) : null}>
+                        <b className={classes.userName}>{steamUser.personaname}</b>
+                    </Button>
+                </div>
+            :
+                <div className={classes.userMenuButtonDiv}>
+                    <Button className={classes.userMenuButton}
+                        aria-controls="simple-menu"
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                            startIcon={<Avatar
+                                variant='square'
+                                src='images/csgo-headshot-sharpened-white-h50.png'
+                                className={classes.avatar}/>}
+                        endIcon={AWSCognitoUser ? adminIcon(20, 20) : null}>
+                        <b className={classes.logInText}>Log in</b>
+                    </Button>
+                </div>
+            }
+
 
             <Menu
                 id="simple-menu"
@@ -94,9 +142,11 @@ const UserMenu = () => {
                 className={classes.userMenu}
                 classes={{paper: classes.menuPaper}}
             >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Log out</MenuItem>
+                { steamUser ?
+                    <MenuItem onClick={handleLogout}>Log out</MenuItem>
+                    :
+                    <MenuItem onClick={handleClose} component={Link} to='/login'>Log in (through Steam)</MenuItem>
+                }
 
                 {AWSCognitoUser && (
                     <div id='AWS admin options'>
