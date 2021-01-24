@@ -90,7 +90,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-csgorner-dev-232358-deployment",
-          "S3Key": "amplify-builds/SteamUserHandler-55683276516f6836706b-build.zip"
+          "S3Key": "amplify-builds/SteamUserHandler-6f447470774a43643964-build.zip"
         }
       }
     },

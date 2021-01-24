@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 4
     },
     userMenuButton: {
-        margin: '0px 0px 0px 10px',
+        margin: '-3px 0px -2px 10px',
         textTransform: 'none'
     },
     userName: {
@@ -145,7 +145,7 @@ const UserMenu = () => {
                 { steamUser ?
                     <MenuItem onClick={handleLogout}>Log out</MenuItem>
                     :
-                    <MenuItem onClick={handleClose} component={Link} to='/login'>Log in (through Steam)</MenuItem>
+                    <MenuItem onClick={handleClose} component={Link} to='/login'>Log in (via Steam)</MenuItem>
                 }
 
                 {AWSCognitoUser && (

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = 'getThisToEnvVarsPls';
 const JWT_REFRESH_SECRET = 'getThisToEnvVarsTooPls';
-const JWT_TOKEN_TTL = 86400;            // 24 h
+const JWT_TOKEN_TTL = 43200;            // 12 h
 const JWT_REFRESH_TOKEN_TTL = 86400;    // 24 h
 const JWT_ALGORITHM = 'HS256';
 

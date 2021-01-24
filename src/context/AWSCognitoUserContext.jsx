@@ -1,4 +1,5 @@
-import React, { createContext } from 'react'
+import React, {createContext, useEffect} from 'react'
+import { Auth } from 'aws-amplify';
 
 // Values that context should have
 const initialValues = {
@@ -18,9 +19,18 @@ export const AWSCognitoUserContext = createContext(initialValues)
  * @constructor
  */
 const AWSCognitoUserContextAPIProvider = (props) => {
+    const { AWSCognitoUser, setAWSCognitoUser } = props
+    useEffect( () => {
+        async function fetchUser() {
+            const user = await Auth.currentAuthenticatedUser()
+            setAWSCognitoUser(user)
+        }
+        fetchUser().catch(() => {})
+    }, [setAWSCognitoUser])
+
     const value = {
-        AWSCognitoUser: props.AWSCognitoUser,
-        setAWSCognitoUser: props.setAWSCognitoUser
+        AWSCognitoUser: AWSCognitoUser,
+        setAWSCognitoUser: setAWSCognitoUser
     }
 
     return (

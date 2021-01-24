@@ -57,13 +57,6 @@ const App = () => {
      * - UseEffect for fetching user if page is first loaded and previous login is still valid
      */
     const [AWSCognitoUser, setAWSCognitoUser] = useState(null)
-    useEffect( () => {
-        async function fetchUser() {
-            const user = await Auth.currentAuthenticatedUser()
-            setAWSCognitoUser(user)
-        }
-        fetchUser().catch(() => {})
-    }, [])
 
     /*
      * Steam user stuff:

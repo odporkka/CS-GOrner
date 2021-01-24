@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import { Auth } from 'aws-amplify'
-import { withAuthenticator } from '@aws-amplify/ui-react'
+import { Hub } from 'aws-amplify'
+import { AmplifyAuthenticator, AmplifyContainer } from '@aws-amplify/ui-react'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
@@ -18,6 +18,13 @@ const useStyles = makeStyles((theme) => ({
     },
     form: {
 
+    },
+    authDiv: {
+        height: 'auto'
+    },
+    authContainer: {
+        width: '500px',
+        height: '500px'
     }
 }))
 
@@ -37,25 +44,33 @@ const AdminLoginPage = () => {
     const classes = useStyles()
     // Fetch AWS user if not found yet (right after login)
     const { AWSCognitoUser, setAWSCognitoUser } = useContext(AWSCognitoUserContext)
-    if (!AWSCognitoUser) {
-        async function fetchUser() {
-            const user = await Auth.currentAuthenticatedUser()
-            setAWSCognitoUser(user)
-        }
-        fetchUser()
-            .catch((e) => console.log(e))
-    }
 
+    const authListener = (data) => {
+        if (data.payload.event === 'signIn') {
+            setAWSCognitoUser(data.payload.data)
+        }
+    }
+    Hub.listen('auth', authListener)
 
     return (
         <Paper className={classes.contentPaper}>
             <Container xs={12}>
                 <Grid container spacing={2} justify='center'>
-                    <Grid item>
-                        <Typography variant="body1">
-                            You are logged in with AWS admin account:<br/>
-                            {AWSCognitoUser?.username ? AWSCognitoUser.username : 'Error: no user found in context'}
-                        </Typography>
+                    <Grid item className={classes.authDiv}>
+                        <AmplifyContainer className={classes.authContainer}>
+                            <AmplifyAuthenticator>
+                                { AWSCognitoUser &&
+                                <>
+                                    <Typography variant='h6'>
+                                        You are logged in with AWS admin account:
+                                    </Typography>
+                                    <Typography variant='h4'>
+                                        {AWSCognitoUser.username}
+                                    </Typography>
+                                </>
+                                }
+                            </AmplifyAuthenticator>
+                        </AmplifyContainer>
                     </Grid>
                 </Grid>
             </Container>
@@ -63,4 +78,4 @@ const AdminLoginPage = () => {
     )
 }
 
-export default withAuthenticator(AdminLoginPage)
+export default AdminLoginPage
