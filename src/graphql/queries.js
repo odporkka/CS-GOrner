@@ -1,43 +1,47 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getBlog = /* GraphQL */ `
-  query GetBlog($id: ID!) {
-    getBlog(id: $id) {
-      id
-      name
-      posts {
-        items {
-          id
-          title
-          blogID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
+export const authenticate = /* GraphQL */ `
+  query Authenticate($urlParams: String) {
+    authenticate(urlParams: $urlParams)
   }
 `;
-export const listBlogs = /* GraphQL */ `
-  query ListBlogs(
-    $filter: ModelBlogFilterInput
+export const renew = /* GraphQL */ `
+  query Renew($token: String) {
+    renew(token: $token)
+  }
+`;
+export const ratePost = /* GraphQL */ `
+  query RatePost {
+    ratePost
+  }
+`;
+export const listMaps = /* GraphQL */ `
+  query ListMaps(
+    $filter: ModelMapFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listMaps(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
-        posts {
-          nextToken
-        }
+        canonicalName
         createdAt
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const getMap = /* GraphQL */ `
+  query GetMap($id: ID!) {
+    getMap(id: $id) {
+      id
+      name
+      canonicalName
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -46,28 +50,41 @@ export const getPost = /* GraphQL */ `
     getPost(id: $id) {
       id
       title
-      blogID
-      blog {
-        id
-        name
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
+      authorID
+      mapID
+      published
+      publishDate
+      deprecated
+      tags
+      description
+      markdown
+      sanitizedHtml
+      s3id
+      images {
+        key
+        url
       }
       createdAt
       updatedAt
+      map {
+        id
+        name
+        canonicalName
+        createdAt
+        updatedAt
+      }
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -81,16 +98,121 @@ export const listPosts = /* GraphQL */ `
       items {
         id
         title
-        blogID
-        blog {
+        authorID
+        mapID
+        published
+        publishDate
+        deprecated
+        tags
+        description
+        markdown
+        sanitizedHtml
+        s3id
+        images {
+          key
+          url
+        }
+        createdAt
+        updatedAt
+        map {
           id
           name
+          canonicalName
           createdAt
           updatedAt
         }
-        comments {
-          nextToken
+        author {
+          id
+          cognitoUserSud
+          username
+          bio
+          createdAt
+          updatedAt
         }
+      }
+      nextToken
+    }
+  }
+`;
+export const searchPosts = /* GraphQL */ `
+  query SearchPosts(
+    $filter: SearchablePostFilterInput
+    $sort: SearchablePostSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchPosts(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        title
+        authorID
+        mapID
+        published
+        publishDate
+        deprecated
+        tags
+        description
+        markdown
+        sanitizedHtml
+        s3id
+        images {
+          key
+          url
+        }
+        createdAt
+        updatedAt
+        map {
+          id
+          name
+          canonicalName
+          createdAt
+          updatedAt
+        }
+        author {
+          id
+          cognitoUserSud
+          username
+          bio
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const listAuthors = /* GraphQL */ `
+  query ListAuthors(
+    $cognitoUserSud: String
+    $filter: ModelAuthorFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listAuthors(
+      cognitoUserSud: $cognitoUserSud
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
         createdAt
         updatedAt
       }
@@ -98,121 +220,66 @@ export const listPosts = /* GraphQL */ `
     }
   }
 `;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
+export const getAuthor = /* GraphQL */ `
+  query GetAuthor($cognitoUserSud: String!) {
+    getAuthor(cognitoUserSud: $cognitoUserSud) {
       id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
       }
-      content
+      bio
       createdAt
       updatedAt
     }
   }
 `;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        postID
-        post {
-          id
-          title
-          blogID
-          createdAt
-          updatedAt
-        }
-        content
-        createdAt
-        updatedAt
-      }
-      nextToken
+export const getSteamUser = /* GraphQL */ `
+  query GetSteamUser($steamid: String!) {
+    getSteamUser(steamid: $steamid) {
+      id
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
+      createdAt
+      updatedAt
     }
   }
 `;
-export const queryPostsByBlog = /* GraphQL */ `
-  query QueryPostsByBlog(
-    $blogID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelPostFilterInput
+export const listSteamUsers = /* GraphQL */ `
+  query ListSteamUsers(
+    $steamid: String
+    $filter: ModelSteamUserFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    queryPostsByBlog(
-      blogID: $blogID
-      sortDirection: $sortDirection
+    listSteamUsers(
+      steamid: $steamid
       filter: $filter
       limit: $limit
       nextToken: $nextToken
-    ) {
-      items {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const queryCommentsByPost = /* GraphQL */ `
-  query QueryCommentsByPost(
-    $postID: ID!
-    $content: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    queryCommentsByPost(
-      postID: $postID
-      content: $content
       sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
     ) {
       items {
         id
-        postID
-        post {
-          id
-          title
-          blogID
-          createdAt
-          updatedAt
-        }
-        content
+        token
+        steamid
+        personaname
+        profileurl
+        avatar
+        avatarmedium
+        avatarfull
+        avatarhash
+        loccountrycode
         createdAt
         updatedAt
       }

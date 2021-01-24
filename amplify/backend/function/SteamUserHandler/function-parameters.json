@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "api": {
+      "csgorner": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

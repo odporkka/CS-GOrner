@@ -1,20 +1,125 @@
-type Blog @model {
-  id: ID!
-  name: String!
-  posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
+# https://docs.amplify.aws/cli/graphql-transformer/overview
+
+###########
+# QUERIES #
+###########
+type Query {
+    authenticate(urlParams: String): String @function(name: "SteamUserHandler-${env}")
+    renew(token: String): String @function(name: "SteamUserHandler-${env}")
+    ratePost: String @function(name: "SteamUserHandler-${env}")
 }
 
-type Post @model @key(name: "byBlog", fields: ["blogID"]) {
-  id: ID!
-  title: String!
-  blogID: ID!
-  blog: Blog @connection(fields: ["blogID"])
-  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+#########
+# TYPES #
+#########
+type Map
+    @model
+    @auth(
+        rules: [
+            { allow: public, provider: apiKey, operations: [read]},
+            { allow: groups, provider: userPools, groups: ["Editors"], operations: [read]}
+            { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
+        ]
+    )
+{
+    id: ID!
+    name: String!
+    canonicalName: String!
 }
 
-type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
-  id: ID!
-  postID: ID!
-  post: Post @connection(fields: ["postID"])
-  content: String!
+type Post
+    @model
+    @searchable
+    @auth(
+        rules: [
+            # All can read
+            { allow: public, provider: apiKey, operations: [read]},
+            # Editors can create posts
+            { allow: groups, provider: userPools, groups: ["Editors"], operations: [create]}
+            # Owner of the post can delete/edit, restrict creation to editors/admins
+            { allow: owner, ownerField: "authorID", operations: [read, update, delete], identityClaim: "sub"}
+            # Admins can do anything
+            { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
+        ]
+    )
+{
+    id: ID!
+    title: String!
+    authorID: String!
+    author: Author @connection(fields: ["authorID"])
+    mapID: ID!
+    map: Map @connection(fields: ["mapID"])
+    published: Boolean!
+    publishDate: AWSDateTime
+    deprecated: Boolean!
+    tags: String!
+    description: String!
+    markdown: String!
+    sanitizedHtml: String!
+    s3id: String!
+    images: [Image]
+}
+
+type Author
+    @model
+    @key(fields: ["cognitoUserSud"])
+    @auth(
+        rules: [
+            # All can read
+            { allow: public, provider: apiKey, operations: [read]},
+            # Editors can create author object (themselves, done automatically if not found)
+            { allow: groups, provider: userPools, groups: ["Editors"], operations: [create]}
+            # Owner a.k.a author himself can update
+            { allow: owner, ownerField: "cognitoUserSud", operations: [read, update], identityClaim: "sub"}
+            # Admins can do anything
+            { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
+        ]
+    )
+{
+    id: ID!
+    cognitoUserSud: String!             # AWS Cognito user sud
+    username: String!                   # '_' replaced with space, shown own site
+    profilePic: Image
+    bio: String
+}
+
+type SteamUser
+    @model
+    @key(fields: ["steamid"])
+    @auth(
+        rules: [
+            # All can read
+            { allow: public, provider: apiKey, operations: [read]},
+            { allow: groups, provider: userPools, groups: ["Editors"], operations: [read]}
+            # Admins can edit
+            { allow: groups, provider: userPools, groups: ["Administrators"], operations: [read, create, update, delete]}
+            # IAM for Lambda
+            { allow: private, provider: iam}
+        ]
+    )
+{
+    id: ID!
+    token: String!
+#    refreshToken: String!
+    steamid: String!
+    personaname: String!
+    profileurl: String!
+    avatar: String
+    avatarmedium: String
+    avatarfull: String
+    avatarhash: String
+    loccountrycode: String
+}
+
+type Image {
+    key: String!
+    url: String!
+}
+
+##########
+# INPUTS #
+##########
+input ImageInput {
+    key: String!
+    url: String!
 }

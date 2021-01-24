@@ -1,232 +1,265 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateBlog = /* GraphQL */ `
-  subscription OnCreateBlog {
-    onCreateBlog {
+export const onCreateMap = /* GraphQL */ `
+  subscription OnCreateMap {
+    onCreateMap {
       id
       name
-      posts {
-        items {
-          id
-          title
-          blogID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      canonicalName
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateBlog = /* GraphQL */ `
-  subscription OnUpdateBlog {
-    onUpdateBlog {
+export const onUpdateMap = /* GraphQL */ `
+  subscription OnUpdateMap {
+    onUpdateMap {
       id
       name
-      posts {
-        items {
-          id
-          title
-          blogID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      canonicalName
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteBlog = /* GraphQL */ `
-  subscription OnDeleteBlog {
-    onDeleteBlog {
+export const onDeleteMap = /* GraphQL */ `
+  subscription OnDeleteMap {
+    onDeleteMap {
       id
       name
-      posts {
-        items {
-          id
-          title
-          blogID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      canonicalName
       createdAt
       updatedAt
     }
   }
 `;
 export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost {
-    onCreatePost {
+  subscription OnCreatePost($authorID: String) {
+    onCreatePost(authorID: $authorID) {
       id
       title
-      blogID
-      blog {
-        id
-        name
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
+      authorID
+      mapID
+      published
+      publishDate
+      deprecated
+      tags
+      description
+      markdown
+      sanitizedHtml
+      s3id
+      images {
+        key
+        url
       }
       createdAt
       updatedAt
+      map {
+        id
+        name
+        canonicalName
+        createdAt
+        updatedAt
+      }
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
 export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost {
-    onUpdatePost {
+  subscription OnUpdatePost($authorID: String) {
+    onUpdatePost(authorID: $authorID) {
       id
       title
-      blogID
-      blog {
-        id
-        name
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
+      authorID
+      mapID
+      published
+      publishDate
+      deprecated
+      tags
+      description
+      markdown
+      sanitizedHtml
+      s3id
+      images {
+        key
+        url
       }
       createdAt
       updatedAt
+      map {
+        id
+        name
+        canonicalName
+        createdAt
+        updatedAt
+      }
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
 export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost {
-    onDeletePost {
+  subscription OnDeletePost($authorID: String) {
+    onDeletePost(authorID: $authorID) {
       id
       title
-      blogID
-      blog {
+      authorID
+      mapID
+      published
+      publishDate
+      deprecated
+      tags
+      description
+      markdown
+      sanitizedHtml
+      s3id
+      images {
+        key
+        url
+      }
+      createdAt
+      updatedAt
+      map {
         id
         name
-        posts {
-          nextToken
-        }
+        canonicalName
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
         }
-        nextToken
+        bio
+        createdAt
+        updatedAt
       }
+    }
+  }
+`;
+export const onCreateAuthor = /* GraphQL */ `
+  subscription OnCreateAuthor($cognitoUserSud: String) {
+    onCreateAuthor(cognitoUserSud: $cognitoUserSud) {
+      id
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
+      }
+      bio
       createdAt
       updatedAt
     }
   }
 `;
-export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment {
-    onCreateComment {
+export const onUpdateAuthor = /* GraphQL */ `
+  subscription OnUpdateAuthor($cognitoUserSud: String) {
+    onUpdateAuthor(cognitoUserSud: $cognitoUserSud) {
       id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
       }
-      content
+      bio
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment {
-    onUpdateComment {
+export const onDeleteAuthor = /* GraphQL */ `
+  subscription OnDeleteAuthor($cognitoUserSud: String) {
+    onDeleteAuthor(cognitoUserSud: $cognitoUserSud) {
       id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
       }
-      content
+      bio
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment {
-    onDeleteComment {
+export const onCreateSteamUser = /* GraphQL */ `
+  subscription OnCreateSteamUser {
+    onCreateSteamUser {
       id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSteamUser = /* GraphQL */ `
+  subscription OnUpdateSteamUser {
+    onUpdateSteamUser {
+      id
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSteamUser = /* GraphQL */ `
+  subscription OnDeleteSteamUser {
+    onDeleteSteamUser {
+      id
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
       createdAt
       updatedAt
     }

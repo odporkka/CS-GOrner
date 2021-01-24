@@ -1,70 +1,43 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createBlog = /* GraphQL */ `
-  mutation CreateBlog(
-    $input: CreateBlogInput!
-    $condition: ModelBlogConditionInput
+export const createMap = /* GraphQL */ `
+  mutation CreateMap(
+    $input: CreateMapInput!
+    $condition: ModelMapConditionInput
   ) {
-    createBlog(input: $input, condition: $condition) {
+    createMap(input: $input, condition: $condition) {
       id
       name
-      posts {
-        items {
-          id
-          title
-          blogID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      canonicalName
       createdAt
       updatedAt
     }
   }
 `;
-export const updateBlog = /* GraphQL */ `
-  mutation UpdateBlog(
-    $input: UpdateBlogInput!
-    $condition: ModelBlogConditionInput
+export const updateMap = /* GraphQL */ `
+  mutation UpdateMap(
+    $input: UpdateMapInput!
+    $condition: ModelMapConditionInput
   ) {
-    updateBlog(input: $input, condition: $condition) {
+    updateMap(input: $input, condition: $condition) {
       id
       name
-      posts {
-        items {
-          id
-          title
-          blogID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      canonicalName
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteBlog = /* GraphQL */ `
-  mutation DeleteBlog(
-    $input: DeleteBlogInput!
-    $condition: ModelBlogConditionInput
+export const deleteMap = /* GraphQL */ `
+  mutation DeleteMap(
+    $input: DeleteMapInput!
+    $condition: ModelMapConditionInput
   ) {
-    deleteBlog(input: $input, condition: $condition) {
+    deleteMap(input: $input, condition: $condition) {
       id
       name
-      posts {
-        items {
-          id
-          title
-          blogID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      canonicalName
       createdAt
       updatedAt
     }
@@ -78,28 +51,41 @@ export const createPost = /* GraphQL */ `
     createPost(input: $input, condition: $condition) {
       id
       title
-      blogID
-      blog {
-        id
-        name
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
+      authorID
+      mapID
+      published
+      publishDate
+      deprecated
+      tags
+      description
+      markdown
+      sanitizedHtml
+      s3id
+      images {
+        key
+        url
       }
       createdAt
       updatedAt
+      map {
+        id
+        name
+        canonicalName
+        createdAt
+        updatedAt
+      }
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -111,28 +97,41 @@ export const updatePost = /* GraphQL */ `
     updatePost(input: $input, condition: $condition) {
       id
       title
-      blogID
-      blog {
-        id
-        name
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
+      authorID
+      mapID
+      published
+      publishDate
+      deprecated
+      tags
+      description
+      markdown
+      sanitizedHtml
+      s3id
+      images {
+        key
+        url
       }
       createdAt
       updatedAt
+      map {
+        id
+        name
+        canonicalName
+        createdAt
+        updatedAt
+      }
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
+        }
+        bio
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -144,116 +143,159 @@ export const deletePost = /* GraphQL */ `
     deletePost(input: $input, condition: $condition) {
       id
       title
-      blogID
-      blog {
+      authorID
+      mapID
+      published
+      publishDate
+      deprecated
+      tags
+      description
+      markdown
+      sanitizedHtml
+      s3id
+      images {
+        key
+        url
+      }
+      createdAt
+      updatedAt
+      map {
         id
         name
-        posts {
-          nextToken
-        }
+        canonicalName
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
+      author {
+        id
+        cognitoUserSud
+        username
+        profilePic {
+          key
+          url
         }
-        nextToken
+        bio
+        createdAt
+        updatedAt
       }
+    }
+  }
+`;
+export const createAuthor = /* GraphQL */ `
+  mutation CreateAuthor(
+    $input: CreateAuthorInput!
+    $condition: ModelAuthorConditionInput
+  ) {
+    createAuthor(input: $input, condition: $condition) {
+      id
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
+      }
+      bio
       createdAt
       updatedAt
     }
   }
 `;
-export const createComment = /* GraphQL */ `
-  mutation CreateComment(
-    $input: CreateCommentInput!
-    $condition: ModelCommentConditionInput
+export const updateAuthor = /* GraphQL */ `
+  mutation UpdateAuthor(
+    $input: UpdateAuthorInput!
+    $condition: ModelAuthorConditionInput
   ) {
-    createComment(input: $input, condition: $condition) {
+    updateAuthor(input: $input, condition: $condition) {
       id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
       }
-      content
+      bio
       createdAt
       updatedAt
     }
   }
 `;
-export const updateComment = /* GraphQL */ `
-  mutation UpdateComment(
-    $input: UpdateCommentInput!
-    $condition: ModelCommentConditionInput
+export const deleteAuthor = /* GraphQL */ `
+  mutation DeleteAuthor(
+    $input: DeleteAuthorInput!
+    $condition: ModelAuthorConditionInput
   ) {
-    updateComment(input: $input, condition: $condition) {
+    deleteAuthor(input: $input, condition: $condition) {
       id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
+      cognitoUserSud
+      username
+      profilePic {
+        key
+        url
       }
-      content
+      bio
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteComment = /* GraphQL */ `
-  mutation DeleteComment(
-    $input: DeleteCommentInput!
-    $condition: ModelCommentConditionInput
+export const createSteamUser = /* GraphQL */ `
+  mutation CreateSteamUser(
+    $input: CreateSteamUserInput!
+    $condition: ModelSteamUserConditionInput
   ) {
-    deleteComment(input: $input, condition: $condition) {
+    createSteamUser(input: $input, condition: $condition) {
       id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      content
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateSteamUser = /* GraphQL */ `
+  mutation UpdateSteamUser(
+    $input: UpdateSteamUserInput!
+    $condition: ModelSteamUserConditionInput
+  ) {
+    updateSteamUser(input: $input, condition: $condition) {
+      id
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteSteamUser = /* GraphQL */ `
+  mutation DeleteSteamUser(
+    $input: DeleteSteamUserInput!
+    $condition: ModelSteamUserConditionInput
+  ) {
+    deleteSteamUser(input: $input, condition: $condition) {
+      id
+      token
+      steamid
+      personaname
+      profileurl
+      avatar
+      avatarmedium
+      avatarfull
+      avatarhash
+      loccountrycode
       createdAt
       updatedAt
     }
