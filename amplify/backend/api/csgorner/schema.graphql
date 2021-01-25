@@ -79,6 +79,7 @@ type Author
     id: ID!
     cognitoUserSud: String!             # AWS Cognito user sud
     username: String!                   # '_' replaced with space, shown own site
+    nOfPosts: Int!
     profilePic: Image
     bio: String
 }

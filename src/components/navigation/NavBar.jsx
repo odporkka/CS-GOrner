@@ -91,7 +91,7 @@ const NavBar = () => {
     const classes = useStyles()
     const location = useLocation()
 
-    const navBarPaths = ['/', '/tactics', '/forum', '/about']
+    const navBarPaths = ['/', '/tactics', '/forum', '/authors','/about']
 
     const resolveTabValue = () => {
         return navBarPaths.includes(location.pathname) ? location.pathname : false
@@ -111,7 +111,8 @@ const NavBar = () => {
                                 <Tab label='News' value={navBarPaths[0]} component={RouterLink} to={navBarPaths[0]} className={classes.tab} />
                                 <Tab label='Tactics' value={navBarPaths[1]} component={RouterLink} to={navBarPaths[1]} className={classes.tab} />
                                 <Tab label='Forum' value={navBarPaths[2]} component={RouterLink} to={navBarPaths[2]} className={classes.tab} />
-                                <Tab label='About' value={navBarPaths[3]} component={RouterLink} to={navBarPaths[3]} className={classes.tab} />
+                                <Tab label='Authors' value={navBarPaths[3]} component={RouterLink} to={navBarPaths[3]} className={classes.tab} />
+                                <Tab label='About' value={navBarPaths[4]} component={RouterLink} to={navBarPaths[4]} className={classes.tab} />
                             </Tabs>
                         </Grid>
                         <Grid item >

@@ -77,6 +77,7 @@ export const getPost = /* GraphQL */ `
         id
         cognitoUserSud
         username
+        nOfPosts
         profilePic {
           key
           url
@@ -125,6 +126,7 @@ export const listPosts = /* GraphQL */ `
           id
           cognitoUserSud
           username
+          nOfPosts
           bio
           createdAt
           updatedAt
@@ -179,6 +181,7 @@ export const searchPosts = /* GraphQL */ `
           id
           cognitoUserSud
           username
+          nOfPosts
           bio
           createdAt
           updatedAt
@@ -208,6 +211,7 @@ export const listAuthors = /* GraphQL */ `
         id
         cognitoUserSud
         username
+        nOfPosts
         profilePic {
           key
           url
@@ -226,6 +230,7 @@ export const getAuthor = /* GraphQL */ `
       id
       cognitoUserSud
       username
+      nOfPosts
       profilePic {
         key
         url

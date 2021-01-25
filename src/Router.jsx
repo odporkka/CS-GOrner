@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 // Own classes/components
 import AboutPage from './components/views/AboutPage'
 import AdminLoginPage from './components/views/AdminLoginPage'
+import AuthorPage from './components/views/AuthorPage'
 import ErrorPage404 from './components/views/ErrorPage404'
 import ForumPage from './components/views/ForumPage'
 import HomePage from './components/views/HomePage'
@@ -27,6 +28,7 @@ const Router = () => {
             <Route path="/" exact={true} component={HomePage} />
             <Route path="/tactics"  exact={true} component={TacticsBrowsePage} />
             <Route path="/tactics/:title" component={TacticPage} />
+            <Route path="/authors" component={AuthorPage} />
             <Route path="/forum" component={ForumPage} />
             <Route path="/about" component={AboutPage} />
             <Route path="/post-editor" component={PostEditorPage} />

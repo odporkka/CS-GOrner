@@ -48,7 +48,7 @@ describe('When no AWS user is logged in the app renders', () => {
         /*
          * Nav bar with hrefs set is present
          */
-        const tabs = ['/', '/tactics', '/forum', '/about']
+        const tabs = ['/', '/tactics', '/forum', '/authors', '/about']
         const nav = screen.getAllByRole('tab')
         expect(nav.length).toBe(tabs.length)
         nav.forEach((tab) => {
@@ -145,7 +145,7 @@ describe('When AWS user is logged in the app renders', () => {
         /*
          * Nav bar with hrefs set is present
          */
-        const tabs = ['/', '/tactics', '/forum', '/about']
+        const tabs = ['/', '/tactics', '/forum', '/authors', '/about']
         const nav = screen.getAllByRole('tab')
         expect(nav.length).toBe(tabs.length)
         nav.forEach((tab) => {

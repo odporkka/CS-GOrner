@@ -66,6 +66,7 @@ export const onCreatePost = /* GraphQL */ `
         id
         cognitoUserSud
         username
+        nOfPosts
         profilePic {
           key
           url
@@ -109,6 +110,7 @@ export const onUpdatePost = /* GraphQL */ `
         id
         cognitoUserSud
         username
+        nOfPosts
         profilePic {
           key
           url
@@ -152,6 +154,7 @@ export const onDeletePost = /* GraphQL */ `
         id
         cognitoUserSud
         username
+        nOfPosts
         profilePic {
           key
           url
@@ -169,6 +172,7 @@ export const onCreateAuthor = /* GraphQL */ `
       id
       cognitoUserSud
       username
+      nOfPosts
       profilePic {
         key
         url
@@ -185,6 +189,7 @@ export const onUpdateAuthor = /* GraphQL */ `
       id
       cognitoUserSud
       username
+      nOfPosts
       profilePic {
         key
         url
@@ -201,6 +206,7 @@ export const onDeleteAuthor = /* GraphQL */ `
       id
       cognitoUserSud
       username
+      nOfPosts
       profilePic {
         key
         url
