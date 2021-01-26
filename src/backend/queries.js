@@ -196,6 +196,7 @@ export const getAuthor = /* GraphQL */ `
       id
       cognitoUserSud
       username
+      nOfPosts
       profilePic {
         key
         url
@@ -224,6 +225,7 @@ export const listAuthors = /* GraphQL */ `
       items {
         cognitoUserSud
         username
+        nOfPosts
       }
       nextToken
     }

@@ -183,7 +183,7 @@ export const steamRenew = async (token) => {
 export const createPost = async (data) => {
     try {
         // Set authorID if not present
-        // (Can be present i.e. if validation failed but author was already created)
+        // (Can be present i.e. if post validation failed but author was already created)
         if (!data.authorID) {
             const currentUser = await Auth.currentUserInfo()
             const sud = await getUserSud(currentUser)
@@ -195,10 +195,15 @@ export const createPost = async (data) => {
             let author = await fetchAuthorWithSud(sud)
             if (!author || author.error) {
                 // console.log(`Author is not yet made for sud ${sud}!`)
-                author = await createAuthor(currentUser, sud)
+                const authorPostCount = data.published ? 1 : 0
+                author = await createAuthor(currentUser, sud, authorPostCount)
                 if (author.error) return handleError({ message: authorCouldNotBeCreatedError})
             } else {
                 // console.log(`Author ${author.username} found for sud ${sud}!`)
+                author = await updateAuthor({
+                    ...author,
+                    nOfPosts: data.published ? author.nOfPosts + 1 : author.nOfPosts})
+                if (author.error) return author
             }
             data.authorID = sud
         }
@@ -252,11 +257,12 @@ export const deletePostById = async (id) => {
     }
 }
 
-export const createAuthor = async (currentUser, sud) => {
+export const createAuthor = async (currentUser, sud, postCount=0) => {
     if (!currentUser) return handleError({ message: userNotFound})
     const input = {
         cognitoUserSud: sud,
-        username: currentUser.username
+        username: currentUser.username,
+        nOfPosts: postCount
     }
     try {
         const response = await API.graphql({
@@ -265,6 +271,33 @@ export const createAuthor = async (currentUser, sud) => {
             authMode: 'AMAZON_COGNITO_USER_POOLS'
         })
         return response.data.createAuthor
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
+export const updateAuthor = async (author) => {
+    try {
+        delete author.createdAt
+        delete author.updatedAt
+        const response =  await API.graphql({
+            query: mutations.updateAuthor,
+            variables: {input: author},
+            authMode: 'AMAZON_COGNITO_USER_POOLS'
+        })
+        return response.data.updateAuthor
+    } catch (e) {
+        return handleError(e)
+    }
+}
+
+export const updateAuthorPostCount = async (change) => {
+    try {
+        const sud = await getUserSud()
+        let author = await fetchAuthorWithSud(sud)
+        if (author.error) return author
+        const updatedAuthor = { ...author, nOfPosts: author.nOfPosts + change}
+        return await updateAuthor(updatedAuthor)
     } catch (e) {
         return handleError(e)
     }

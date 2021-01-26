@@ -126,3 +126,23 @@ export const createAuthor = /* GraphQL */ `
     }
   }
 `;
+export const updateAuthor = /* GraphQL */ `
+  mutation UpdateAuthor(
+    $input: UpdateAuthorInput!
+    $condition: ModelAuthorConditionInput
+  ) {
+    updateAuthor(input: $input, condition: $condition) {
+      id
+      cognitoUserSud
+      username
+      nOfPosts
+      profilePic {
+        key
+        url
+      }
+      bio
+      createdAt
+      updatedAt
+    }
+  }
+`;

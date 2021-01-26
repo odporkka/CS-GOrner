@@ -156,8 +156,16 @@ const PostEditorPage = () => {
      */
     const deletePost = async () => {
         if (post.id) {
-            const response = await api.deletePostById(post.id)
-
+            let response
+            // If post was published, remove it from author post count
+            if (post.published) {
+                response = await api.updateAuthorPostCount(-1)
+                if (response.error) {
+                    alert(`Error(s) occurred while deleting post:\n${response.errorMessage}`)
+                }
+            }
+            // Delete post
+            response = await api.deletePostById(post.id)
             if (response && !response.error) {
                 try {
                     await s3.bulkRemoveFromS3(response.images)
@@ -230,15 +238,33 @@ const PostEditorPage = () => {
     /*
      * Toggle publish parameter (with confirmation)
      */
-    const togglePublish = () => {
+    const togglePublish = async () => {
         const confirmationMessage = !post.published ?
             'Are you sure you want to publish?' : 'Are you sure you want to take post down?'
         const confirmed = window.confirm(confirmationMessage)
         if (confirmed) {
             let firstPublishDate
-            // Calculate publishDate if first publish
-            if (!post.publishDate && !post.published) {
-                firstPublishDate = new Date().toISOString()
+            // Publishing
+            if (!post.published) {
+                if (!post.publishDate) {
+                    firstPublishDate = new Date().toISOString()
+                }
+                // Update user author count if author found
+                if (post.authorID) {
+                    const apiResponse = await api.updateAuthorPostCount(1)
+                    if (apiResponse.error) {
+                        console.log(apiResponse)
+                        alert(`Error\n${apiResponse.errorMessage}`)
+                        return
+                    }
+                }
+            // Taking post down
+            } else {
+                const apiResponse = await api.updateAuthorPostCount(-1)
+                if (apiResponse.error) {
+                    alert(`Error\n${apiResponse.errorMessage}`)
+                    return
+                }
             }
             const updatedPost = {
                 ...post,

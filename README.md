@@ -31,8 +31,8 @@ you can use `amplify console`. !! NOTE: Does not work on `@searchable` models
 4. To publish changes to backend, run `amplify push`. This publishes for branch you are working on
 (should always be dev).
 5. Run and fix tests `npm test`
-6. When satisfied, merge dev to prod: `git checkout master && git merge --no-ff development`.
-7. To deploy to prod, run `amplify publish`.
+6. When satisfied, merge dev to prod: `git checkout master && git merge --no-ff development`. 
+!! THIS WILL TRIGGER DEPLOY TO PROD !!
 
 
 ### Project structure:
