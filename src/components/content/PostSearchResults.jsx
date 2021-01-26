@@ -20,15 +20,15 @@ import { Context } from '../../context/Context'
 const PostSearchResults = (props) => {
     const {
         results,
-        searchCriteria,
         onPageChange,
         postsOnPage
     } = props
+    const searchCriteria = results.searchCriteriaUsed
     const { contentData } = useContext(Context)
 
-    const showMapCriteria = (searchCriteria.maps && searchCriteria.maps.length > 0)
-    const showTagCriteria = (searchCriteria.tags && searchCriteria.tags.length > 0)
-    const selectedAuthor = searchCriteria.author ?
+    const showMapCriteria = (searchCriteria && searchCriteria.maps && searchCriteria.maps.length > 0)
+    const showTagCriteria = (searchCriteria && searchCriteria.tags && searchCriteria.tags.length > 0)
+    const selectedAuthor = (searchCriteria && searchCriteria.author) ?
         contentData.authors.find(a => a.cognitoUserSud === searchCriteria.author).username : undefined
     const pages = Math.ceil(results.postCount / postsOnPage)
 

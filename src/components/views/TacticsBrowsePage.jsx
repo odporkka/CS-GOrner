@@ -50,6 +50,7 @@ const TacticsBrowsePage = () => {
         postCount: 0,
         items: [],
         page: 1,
+        searchCriteriaUsed: undefined,
         nextToken: undefined,
         apiFilter: undefined
     }
@@ -78,7 +79,7 @@ const TacticsBrowsePage = () => {
             setResultsLoading(false)
             return
         }
-        setResults(response)
+        setResults({...response, searchCriteriaUsed: searchInput})
         setResultsLoading(false)
     }
 
@@ -146,7 +147,6 @@ const TacticsBrowsePage = () => {
                             :
                                 <PostSearchResults
                                     results={results}
-                                    searchCriteria={searchCriteria}
                                     postsOnPage={POSTS_LIMIT}
                                     onPageChange={onPageChange}/>
                             }
