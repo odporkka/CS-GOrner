@@ -79,7 +79,6 @@ const TacticsSearchPanel = (props) => {
     const handleAuthorChange = (event) => {
         // Set empty string as undefined
         const value = event.target.value === 'no_author' ? undefined : event.target.value
-        console.log('changed', value)
         setSearchCriteria({...searchCriteria, author: value})
     }
 
