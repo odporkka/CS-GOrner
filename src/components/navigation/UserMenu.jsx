@@ -96,6 +96,10 @@ const UserMenu = () => {
         )
     }
 
+    if (steamUser && steamUser.loading) {
+        return (<b className={classes.logInText}>Loading...</b>)
+    }
+
 
     return (
         <div className={classes.userDiv}>

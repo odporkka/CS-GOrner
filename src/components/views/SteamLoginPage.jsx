@@ -2,6 +2,7 @@ import React, {useEffect, useContext, useState} from 'react'
 import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -15,7 +16,6 @@ import CheckBox from "@material-ui/core/Checkbox"
 import { SteamUserContext } from '../../context/SteamUserContext'
 import LoadingSpinner from '../content/LoadingSpinner'
 import * as steamService from '../../util/steamService'
-import {FormControlLabel, withStyles} from "@material-ui/core";
 
 
 
@@ -50,15 +50,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ConsentCheckBox = withStyles({
-    root: {
-        color: '#ffffff',
-        '&$checked': {
-            color: '#5d79ae'
-        }
-    }
-})((props) => <CheckBox color='default' {...props}/>)
-
 
 /**
  * '/admin' -page used for logging in as AWS IAM user (editors).
@@ -83,14 +74,15 @@ const SteamLoginPage = () => {
             const searchParams = new URLSearchParams(history.location.search)
             if (mounted) {
                 // Already logged in, don't do anything
-                if (steamUser) {
+                if (steamUser && steamUser.personaname) {
                     return
                 // Check if token present and validate
                 } else if (steamService.tokenPresent()) {
                     await steamService.renew(setSteamUser)
-                // Initial steam login redirect,
+                // Initial steam login redirect
                 } else if (searchParams.has('openid.mode') &&
                     searchParams.get('openid.mode') === 'id_res') {
+                    // console.log('auth')
                     await steamService.authenticate(searchParams, setSteamUser)
                 }
                 setLoading(false)
@@ -104,6 +96,7 @@ const SteamLoginPage = () => {
         steamService.logOut(setSteamUser)
         history.push('/login')
     }
+
 
     return (
         <Paper>
@@ -133,9 +126,10 @@ const SteamLoginPage = () => {
                         </Grid>
                         <Grid item xs={12} style={{textAlign: 'center'}}>
                             <FormControlLabel control={
-                                <ConsentCheckBox
-                                    checked={consentGiven}
-                                    onChange={() => setConsentGiven(!consentGiven)}
+                                <CheckBox
+                                checked={consentGiven}
+                                style={{color: 'white'}}
+                                onChange={() => setConsentGiven(!consentGiven)}
                                 />
                             }
                             label='I understand'

@@ -1,4 +1,5 @@
 import React, { createContext, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import * as steamService from '../util/steamService'
 
 // Values that context should have
@@ -22,6 +23,7 @@ const SteamUserContextAPIProvider = (props) => {
     const {
         setSteamUser
     } = props
+    const history = useHistory()
     /*
      * Called when rendering api component.
      * Tries to set steam user if token is found.
@@ -31,11 +33,17 @@ const SteamUserContextAPIProvider = (props) => {
         const fetchUser = async () => {
             if (steamService.tokenPresent() && mounted) {
                 await steamService.renew(setSteamUser)
+            } else {
+                const searchParams = new URLSearchParams(history.location.search)
+                // Dont reset "loading" if on steamLoginPage authenticate
+                if (!searchParams.has('openid.mode')) {
+                    steamService.logOut(setSteamUser)
+                }
             }
         }
         fetchUser().catch((e) => console.log(e))
         return () => { mounted = false }
-    }, [setSteamUser])
+    }, [history.location.search, setSteamUser])
 
 
     const value = {

@@ -62,7 +62,7 @@ const App = () => {
      * - Actual getter/setter for user (these are passed to context as props)
      * - UseEffect for fetching user if page is first loaded and previous login is still valid
      */
-    const [steamUser, setSteamUser] = useState(null)
+    const [steamUser, setSteamUser] = useState({ loading: true })
 
     /*
      * Content fetched at first page load
