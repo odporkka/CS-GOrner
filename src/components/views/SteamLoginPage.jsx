@@ -135,7 +135,7 @@ const SteamLoginPage = () => {
                                 <input type='hidden' name='openid.ns' value='http://specs.openid.net/auth/2.0' />
                                 <input type='hidden' name='openid.mode' value='checkid_setup' />
                                 <input type='hidden' name='openid.realm' value='https://csgorner.gg/' />
-                                <input type='hidden' name='openid.return_to' value='https://csgorner.gg/login' />
+                                <input type='hidden' name='openid.return_to' value='https://csgorner.gg/login/' />
                                 <input
                                     type='image'
                                     alt='steam_login_button'
